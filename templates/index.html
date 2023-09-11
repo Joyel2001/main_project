@@ -1,0 +1,672 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>EcoRecover</title>                               
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
+<!--
+ 
+Tooplate 2125 ArtXibition
+
+https://www.tooplate.com/view/2125-artxibition
+
+-->
+<!-- ***** Custom Loader Start ***** -->
+<div id="custom-loader" class="custom-loader">
+    <div class="loader-inner">
+        <div class="loader-spinner"></div>
+    </div>
+</div>
+<!-- ***** Custom Loader End ***** -->
+
+    </head>
+    <!-- ***** Custom Loader Start ***** -->
+
+<!-- ***** Custom Loader End ***** -->
+
+    <body>
+    <!-- ***** Preloader Start ***** -->
+    {% comment %} <div id="js-preloader" class="js-preloader"> {% endcomment %}
+      {% comment %} <div class="preloader-inner"> {% endcomment %}
+          {% comment %} <span></span>
+
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- ***** Preloader End ***** -->
+    
+    <!-- ***** Pre HEader ***** -->
+<!-- ***** Preloader Start ***** -->
+
+<!-- ***** Preloader End ***** -->
+
+    <div class="pre-header"> 
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    {% comment %} <span>Hey! The Show is Starting in 15 Days.</span> {% endcomment %}
+                </div>
+                <div class="col-lg-6 col-sm-6">
+                    {% if user.is_authenticated %}
+                    <div class="text-button">
+                        <a href="{% url 'user_profile_view' %}" class="btn px-0">
+                            Welcome, {{ request.user.username }}
+                         </a>
+                    </div>
+                
+               {% else %}
+               <div class="text-button">
+                <a href="{% url 'loginn' %}">Login <i class="fa fa-arrow-right"></i></a>
+            </div>
+               {% endif %}
+                    {% comment %} <div class="text-button">
+                        <a href="{% url 'loginn' %}">Login <i class="fa fa-arrow-right"></i></a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <header>
+                           
+                            <nav>
+                                <a href="index.html" class="logo">Eco<em>Recover</em></a>
+                                <style>
+                                    /* Custom Loader Styles */
+.custom-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Adjust as needed */
+}
+
+.loader-inner {
+    text-align: center;
+}
+
+.loader-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #ffffff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+                                    /* Your other CSS styles */
+                                    @media (max-width: 767px) {
+                                        /* Adjustments for screens smaller than 768px */
+                                        .main-banner {
+                                            height: 300px; /* Example adjustment for banner height */
+                                        }
+                                        /* Add more responsive adjustments as needed */
+                                    }
+                                    /* CSS for the logo within .logo div */
+                                    .logo img {
+                                        width: 150px;
+                                        height: 120px;
+                                        border-radius: 100%;
+                                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                                        position: relative; 
+                                        top: 2px; 
+                                       left: 20px; 
+                                    }
+                            
+                                    .logo a {
+                                        display: inline-block;
+                                        text-decoration: none;
+                                    }
+                                    
+                                </style>
+                                <!-- Other navigation links here -->
+                            </nav>
+                        </header>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle">Bin Booking</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'bin_order' %}">Home</a></li>
+                                    <li><a href="{% url 'bin_order_event' %}">Event</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'show_events' %}">campaigns and Seminars</a></li> 
+                            <li><a href="tickets.html">Contact</a></li> 
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <style>
+        
+            .dropdown {
+                position: relative;
+            }
+        
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1;
+                background-color: #ffffff;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+        
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        
+            .dropdown-menu li {
+                padding: 10px;
+            }
+        
+            .dropdown-menu li a {
+                display: block;
+                color: #333333;
+                text-decoration: none;
+            }
+        
+            .dropdown-menu li a:hover {
+                background-color: #f2f2f2;
+            }
+      
+        
+        .main-banner {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 500px; /* Adjust the height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        .main-banner h6 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .main-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        /* CSS styles for the map image container */
+        .map-image-container {
+            position: relative; /* Position container relative to its parent */
+            width: 100%;
+            text-align: center; /* Center-align content horizontally */
+        }
+        
+        /* CSS styles for the map image */
+        .map-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* CSS styles for the image text */
+        .image-text {
+            position: absolute; /* Position text absolutely within the container */
+            top: 50%; /* Position text vertically in the middle */
+            left: 50%; /* Position text horizontally in the middle */
+            transform: translate(-50%, -50%); /* Center text using translate */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff; /* Text color */
+        }
+        
+        .image-text h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .image-text p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .image-text a.btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .image-text a.btn:hover {
+            background-color: #0056b3; /* Hover color */
+        }
+        
+
+</style>
+    <div class="main-banner" style="background-image: url('{% static 'images/orginal/8.jpg' %}');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h6 style="color: black; font-weight:bold">Discover Innovations for a Cleaner Tomorrow</h6>
+                    <h2 style="color: black;font-weight:bold">Embrace the Green Revolution</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- *** Owl Carousel Items ***-->
+    <div class="show-events-carousel">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="owl-show-events owl-carousel">
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/9.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/1.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/3.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/4.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/5.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/6.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/7.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/2.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/8.jpg' %}" alt=""></a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- *** Amazing Venus ***-->
+    <div class="amazing-venues">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="left-content">
+                        <h4>Unite for a Greener, Healthier Planet</h4>
+                        
+                    
+                        <br>
+                        <p>Waste management plays a crucial role in maintaining environmental sustainability and public health. Proper waste management is necessary to prevent the accumulation of waste materials that can lead to pollution, habitat destruction, and the spread of diseases. Efficient waste management practices reduce the strain on natural resources by promoting recycling, reusing, and proper disposal of waste.
+
+                            By implementing effective waste management, we can minimize the negative impact of waste on ecosystems, water bodies, and air quality. It also contributes to the reduction of greenhouse gas emissions, helping combat climate change. In urban areas, proper waste management enhances the aesthetic appeal of communities and creates a healthier living environment for residents.
+                            
+                            Furthermore, waste management initiatives foster a sense of responsibility among individuals, encouraging them to make mindful choices about consumption, disposal, and recycling. Ultimately, a well-implemented waste management system promotes a cleaner, safer, and more sustainable world for current and future generations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="right-content">
+                        <h5><i class="fa fa-map-marker"></i> Visit Us</h5>
+                        <span>KNR <br>PALA, 686653<br>KOTTAYAM,KERALA</span>
+                        <div class="text-button"><a href="show-events-details.html">Need Directions? <i class="fa fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- *** Map ***-->
+    <!-- HTML -->
+    <div class="map-image-container">
+        <div class="map-image">
+            <img src="{% static '/images/pic.jpg' %}" alt="Maps of 3 Venues">
+            <div class="image-text">
+                <h2>Explore Our Venues</h2>
+                <p>Discover amazing places for your events!</p>
+                <a href="#" class="btn btn-primary">View Venues</a>
+            </div>
+        </div>
+    </div>
+    
+    
+
+
+   <!-- *** Venues & Tickets *** -->
+<div class="venue-tickets">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="venue-item">
+                    <div class="venue-box">
+                        <div class="thumb">
+                            <img src="" alt="">
+                        </div>
+                        <div class="right-content">
+                            <h4>Radio City Musical Hall</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <ul>
+                                <li><i class="fa fa-sitemap"></i>250</li>
+                                <li><i class="fa fa-user"></i>500</li>
+                            </ul>
+                            <div class="price">
+                                <span>1 ticket<br>from <em>$45</em></span>
+                            </div>
+                            <div class="main-white-button">
+                                <a href="ticket-details.html">Purchase Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="venue-item">
+                    <div class="venue-box">
+                        <div class="thumb">
+                            <img src="/images/disposal.jpg" alt="">
+                        </div>
+                        <div class="right-content">
+                            <h4>Madison Square Garden</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            <ul>
+                                <li><i class="fa fa-sitemap"></i>450</li>
+                                <li><i class="fa fa-user"></i>650</li>
+                            </ul>
+                            <div class="price">
+                                <span>1 ticket<br>from <em>$55</em></span>
+                            </div>
+                            <div class="main-white-button">
+                                <a href="ticket-details.html">Purchase Tickets</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="venue-item">
+                    <div class="venue-box">
+                        <div class="thumb">
+                            <img src="{% static '/images/disposal.jpg' %}" alt="">
+                        </div>
+                        <div class="right-content">
+                            <h4 class="venue-title">Royce Hall</h4>
+                            <p class="venue-description">Elevate your experience at Royce Hall, where luxury meets sustainability. Immerse yourself in the artistry of eco-friendly design while enjoying a variety of events and performances.</p>
+                            <ul class="venue-details">
+                                <li><i class="fa fa-sitemap"></i> Seating: 450</li>
+                                <li><i class="fa fa-user"></i> Capacity: 750</li>
+                            </ul>
+                            <div class="price">
+                                <span>1 ticket<br>from <em>$65</em></span>
+                            </div>
+                            <div class="main-white-button">
+                                <div class="purchase-button">
+                                    <a class="btn btn-primary" href="ticket-details.html">Get Your Tickets</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <h2>campaigns and Seminars</h2>
+    <div class="coming-events">
+        <div class="left-button">
+            <div class="main-white-button">
+                <a href="{% url 'show_events' %}">Discover More</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691944579648.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4> Mahadevapura Zone</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Tuesday: 15:30-19:30</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691944981946.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4>Madison Square Garden</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691945426035.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4>Royce Hall</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Thursday: 09:00-23:00</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- *** Subscribe *** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Subscribe Our Newsletter:</h4>
+                </div>
+                <div class="col-lg-8">
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** Footer *** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="address">
+                        <h4>Sunny Hill Festival Address</h4>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Info</a></li>
+                            <li><a href="#">Venues</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Videos</a></li>
+                            <li><a href="#">Outreach</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hours">
+                        <h4>Open Hours</h4>
+                        <ul>
+                            <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
+                            <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
+                            <li>Holidays: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <p>São Conrado, Rio de Janeiro</p>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <p class="copyright">Copyright 2021 ArtXibition Company 
+                    
+                    			<br>Design: <a rel="nofollow" href="https://www.tooplate.com" target="_parent">Tooplate</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="logo"><span>Eco<em>Recover</em></span></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="menu">
+                                    <ul>
+                                        <li><a href="index.html" class="active">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="rent-venue.html">Rent Venue</a></li>
+                                        <li><a href="shows-events.html">Shows & Events</a></li> 
+                                        <li><a href="tickets.html">Tickets</a></li> 
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="social-links">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{% static '/js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static '/js/popper.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static '/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static '/js/waypoints.min.js' %}"></script>
+    <script src="{% static '/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static '/js/imgfix.min.js' %}"></script> 
+    <script src="{% static '/js/mixitup.js' %}"></script> 
+    <script src="{% static '/js/accordions.js' %}"></script>
+    <script src="{% static '/js/owl-carousel.js' %}"></script>
+    
+    <!-- Global Init -->
+    <script src="{% static '/js/custom.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Simulate a 2-second delay for demonstration purposes
+            setTimeout(function() {
+                // Hide the custom loader
+                document.getElementById("custom-loader").style.display = "none";
+        
+                // Show the main content
+                document.body.style.overflow = "visible"; // Show overflow
+            }, 1000); // 2 seconds
+        });
+        </script>
+        
+
+  </body>
+</html>

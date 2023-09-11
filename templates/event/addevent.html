@@ -1,0 +1,344 @@
+{% load static %} 
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: url('images/orginal/9.jpg') no-repeat center center fixed;
+        background-size: cover;
+        overflow: hidden;
+    }
+    
+    .blur-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('images/orginal/9.jpg') no-repeat center center fixed;
+        background-size: cover;
+        filter: blur(10px); /* Adjust the blur amount as needed */
+        z-index: -1;
+    }
+    
+    .event-section {
+        background: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity as needed */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    <style>
+        .event-form {
+            display: grid;
+            grid-gap: 10px;
+        }
+
+        .event-form label,
+        .event-form input,
+        .event-form textarea {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .event-form input[type="text"],
+        .event-form textarea,
+        .event-form input[type="date"],
+        .event-form input[type="time"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .event-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .event-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        /* General styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('{% static 'images/orginal/3.jpg' %}');
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px); /* Adjust the blur intensity as needed */
+    z-index: -1;
+}
+
+/* Rest of your existing styles */
+.event-section {
+    /* Your event section styles */
+}
+.logo {
+    font-family: Arial, sans-serif;
+    font-size: 2rem;
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.logo em {
+    color: grey;
+}
+
+.logo:hover {
+    color: #2ecc71;
+    transform: scale(1.1);
+}
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #45a049;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn-show-events {
+    margin-top: 15px;
+    text-align: center;
+}
+/* CSS Styles for Category Dropdown */
+.category-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+.category-select:focus {
+    border-color: #007BFF;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+/* CSS Styles for Button Row */
+.button-row {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Add space between items */
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+/* Style for the "Add Event" button */
+.btn-add-event {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-add-event:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Style for the "Show Events" link */
+{% comment %} .btn-show-events {
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+    margin-left: 20px; /* Add spacing between button and link */
+}
+
+.btn-show-events:hover {
+    color: #0056b3; /* Darker color on hover */
+} {% endcomment %}
+
+/* Style for the error message */
+.error-message {
+    color: #FF0000; /* Red color for error messages */
+    font-size: 14px;
+    margin-left: 20px; /* Add spacing between link and error message */
+}
+/* Style for the "Show Events" link */
+.btn-show-events {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-show-events:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Add a slight scaling effect on hover */
+}
+
+/* Style for the "Add Event" submit button */
+.btn-add-event {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-add-event:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: scale(1.05); /* Add a slight scaling effect on hover */
+}
+/* Style for the separator (add space between buttons) */
+.button-separator {
+    margin: 0 10px; /* Adjust the margin as needed */
+}
+/* Style for the button row */
+.button-row {
+    display: flex; /* Use flexbox to align items in a row */
+    align-items: center; /* Center vertically within the row */
+}
+
+/* Style for the separator (add space between buttons) */
+.button-separator {
+    margin: 0 10px; /* Adjust the margin as needed */
+}
+/* Add space between the select and textarea */
+.spacer {
+    margin-top: 20px; /* Adjust the margin value as needed */
+}
+
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <div class="background-image"></div>
+    <div class="event-section">
+        <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+        <h3>Add Event Details</h3>
+<form method="post" enctype="multipart/form-data" class="event-form" id="event-form">
+    {% csrf_token %}
+    <!-- Remove the ID section -->
+    <!-- <label for="event-id">Event ID</label>
+    <input type="text" id="event-id" name="id" required> -->
+
+    <label for="event-name">Event Name</label>
+    <input type="text" id="event-name" name="name" required>
+    <label for="event-category">Category</label>
+
+
+    <select id="event-category" name="category" required class="category-select">
+        <option value="category1">Environmental Cleanup Campaign</option>
+        <option value="category2">Waste Management Seminar</option>
+        <option value="category3">Expo</option>
+        <option value="category4">Composting Workshop</option>
+        <option value="category5">Environmental Hackathon</option>
+        <!-- Add more category options as needed -->
+    </select>
+    
+    <div class="spacer"></div> <!-- Add a spacer element -->
+    
+    <label for="event-description">Event Description</label>
+    <textarea id="event-description" name="description" rows="4" required></textarea>
+    
+    <label for="event-image">Event Image</label>
+    <input type="file" id="event-image" name="image">
+    
+    <label for="event-date">Date</label>
+    <input type="date" id="event-date" name="date" required>
+    
+    <label for="event-time">Time</label>
+    <input type="time" id="event-time" name="time" required>
+    
+    <label for="event-location">Location</label>
+    <input type="text" id="event-location" name="location" required>
+    
+    <label for="event-max-participants">Max Participants</label>
+    <input type="number" id="event-max-participants" name="max_participants" required>
+
+    
+    <!-- Add a section to select categories -->
+    
+
+<div class="button-row">
+    <input type="submit" value="Add Event" class="btn-add-event">
+    <span class="button-separator"></span> <!-- Add a separator -->
+    <a href="{% url 'event_details_view' %}" class="btn-show-events">Show Events</a>
+    <p id="image-error" class="error-message"></p>
+</div>
+
+
+
+</form>
+
+        {% if success_message %}
+        <div class="success-message">
+            {{ success_message }}
+        </div>
+        {% endif %}
+    </div>
+    
+
+    
+    <script>
+    document.getElementById('event-form').addEventListener('submit', function(event) {
+        const imageInput = document.getElementById('event-image');
+        const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+        const fileName = imageInput.value.toLowerCase();
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+        const imageError = document.getElementById('image-error');
+    
+        if (!allowedExtensions.includes(fileExtension)) {
+            imageError.textContent = 'Please select a valid image file (JPG, JPEG, or PNG).';
+            event.preventDefault();
+        } else {
+            imageError.textContent = ''; // Clear the error message
+        }
+    });
+
+    
+        
+        
+        
+</script>
+    
+        {% comment %} <h3>Delete Event</h3>
+        <div class="event-section">
+            <a href="{% url 'delete_event' %}" class="btn">Delete Event</a>
+        </div> {% endcomment %}
+</div>
+</div>

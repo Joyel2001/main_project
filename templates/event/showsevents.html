@@ -1,0 +1,572 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>EcoRecover</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
+
+    </head>
+    
+    <body>
+        <style>
+            /* Basic reset for margins and padding */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            /* Styles for the main container */
+            .col-lg-12 {
+                width: 100%;
+                max-width: 1200px; /* Adjust as needed */
+                margin: 0 auto;
+                padding: 20px;
+            }
+    
+            /* Styles for the event items */
+            .event-item {
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+                padding: 20px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+    
+            /* Styles for the left content */
+            .left-content {
+                flex: 1;
+                padding-right: 20px;
+            }
+    
+            /* Styles for the thumbnail */
+            .thumb img {
+                max-width: 100%;
+                height: auto;
+            }
+    
+            /* Styles for the right content */
+            .right-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+    
+            /* Styles for the button */
+            .main-dark-button a {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #333;
+                color: #fff;
+                text-decoration: none;
+            }
+    
+            /* Media queries for responsiveness */
+            @media screen and (max-width: 992px) {
+                .event-item {
+                    flex-direction: column;
+                }
+    
+                .right-content {
+                    align-items: flex-start;
+                }
+            }
+            <!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Basic reset for margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles for the main container */
+        .col-lg-12 {
+            width: 100%;
+            max-width: 1200px; /* Adjust as needed */
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Styles for the event items */
+        .event-item {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Styles for the left content */
+        .left-content {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        /* Styles for the thumbnail */
+        .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Styles for the right content */
+        .right-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        /* Styles for the button */
+        .main-dark-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            text-align: center;
+        }
+
+        .main-dark-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px; /* Add rounded corners */
+            transition: background-color 0.3s ease; /* Add smooth hover transition */
+        }
+
+        /* Change button background color on hover */
+        .main-dark-button a:hover {
+            background-color: #555;
+        }
+        /* Media queries for responsiveness */
+        @media screen and (max-width: 992px) {
+            .event-item {
+                flex-direction: column;
+            }
+
+            .right-content {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your HTML code here -->
+</body>
+</html>
+
+        </style>
+    
+    <!-- ***** Preloader Start ***** -->
+    {% comment %} <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- ***** Preloader End ***** -->
+    
+    <!-- ***** Pre HEader ***** -->
+    <div class="pre-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    <div class="text-button">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+
+
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="rent-venue.html">Contact Us</a></li>
+                            <li><a href="{% url 'show_events' %}" class="active">Campigns and Events</a></li> 
+                    
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** About Us Page ***** -->
+    <div class="page-heading-shows-events">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Our Campigns & Events</h2>
+                    <span>Check out upcoming  Campigns & events.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shows-events-tabs">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row" id="tabs">
+                        <div class="col-lg-12">
+                            <div class="heading-tabs">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <ul>
+                                            <li>
+                                                <a class="tab-link" href="#tabs-1" style="color: #FF5733; font-weight: bold;">
+                                                    <span class="tab-icon"><i class="fa fa-calendar"></i></span>
+                                                    Upcoming Events
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Add links in the same row -->
+                    
+                    
+                    <style>
+                        {% comment %} .category-links {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-top: 20px;
+                        } {% endcomment %}
+                    
+                        .category-link {
+                            text-decoration: none;
+                            color: #000; /* Set the text color to black */
+                            font-weight: bold; /* Make the text bold */
+                            margin: 0 10px; /* Adjust the margin here for spacing */
+                        }
+                    </style>
+                    
+                        
+                    <div class="row mt-3 category-links">
+                        <div class="col-lg-8">
+                            <!-- Add links to filter events by category -->
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events' %}" class="category-link">All Events</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events_by_category' 'category5' %}" class="category-link">Hackathon</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events_by_category' 'category1' %}" class="category-link">Campaign</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events_by_category' 'category2' %}" class="category-link">Seminar</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events_by_category' 'category3' %}" class="category-link">Expo</a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="{% url 'show_events_by_category' 'category4' %}" class="category-link">Workshop</a>
+                                </li>
+                                
+                                <!-- Add more category links as needed -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+                        
+                        
+    <div class="row">
+        {% if no_events_message %}
+        <div class="col-lg-12">
+            <p>{{ no_events_message }}</p>
+        </div>
+        {% endif %}    
+                                        
+        <div class="col-lg-12">
+            <section class="tabs-content">
+                <article id="tabs-1">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="row">
+                                {% for event in events %}
+                                <div class="col-lg-12">
+                                    <div class="event-item">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="left-content">
+                                                    <h4>{{ event.name }}</h4>
+                                                    <p>{{ event.description }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="thumb">
+                                                    <img src="{{ event.image.url }}" alt="{{ event.name }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="right-content">
+                                                    <ul class="list-unstyled event-details">
+                                                        <li>
+                                                            <i class="fa "></i>
+                                                            <h6>Event Date: {{ event.date|date:"M d D" }}</h6>
+                                                            <h6>Event Time:  {{ event.time|time:"g:i A" }}</h6>
+                                                            <h6>Event Location:  {{ event.location }}</h6>
+                                                        </li>
+                                                        <li>
+                                                            <i class="fa "></i>
+                                                            <br> <!-- Add a line break here -->
+                                                        </li>
+                                                        <li>
+                                                            <br> 
+                                                            <br>
+                                                            <br>
+                                                            <br> <!-- Add a line break here -->
+                                                            {% if event.category == 'category2' or event.category == 'category4' %}
+                                                            <div class="main-dark-button">
+                                                                <a href="{% url 'event_booking' event.event_id %}">BOOK NOW</a>
+                                                            </div>
+                                                        {% endif %}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                          
+                                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+        
+                                             
+                                                            
+                                                
+                                                         
+                                       
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>    
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- *** Subscribe *** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Subscribe Our Newsletter:</h4>
+                </div>
+                <div class="col-lg-8">
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** Footer *** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="address">
+                        <h4>Sunny Hill Festival Address</h4>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Info</a></li>
+                            <li><a href="#">Venues</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Videos</a></li>
+                            <li><a href="#">Outreach</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hours">
+                        <h4>Open Hours</h4>
+                        <ul>
+                            <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
+                            <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
+                            <li>Holidays: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <p>São Conrado, Rio de Janeiro</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="copyright">Copyright 2021 ArtXibition Company 
+                    
+                    			<br>Design: <a rel="nofollow" href="https://www.tooplate.com" target="_parent">Tooplate</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="logo"><span>Eco<em>Recover</em></span></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="menu">
+                                    <ul>
+                                        <li><a href="index.html" class="active">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="rent-venue.html">Rent Venue</a></li>
+                                        <li><a href="shows-events.html">Shows & Events</a></li> 
+                                        <li><a href="tickets.html">Tickets</a></li> 
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="social-links">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    
+
+    <!-- jQuery -->
+    <script src="js/jquery-2.1.0.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/mixitup.js' %}"></script> 
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Simulate a 2-second delay for demonstration purposes
+            setTimeout(function() {
+                // Hide the custom loader
+                document.getElementById("custom-loader").style.display = "none";
+        
+                // Show the main content
+                document.body.style.overflow = "visible"; // Show overflow
+            }, 1000); // 2 seconds
+        });
+        </script>
+  </body>
+
+</html>

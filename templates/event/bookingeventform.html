@@ -1,0 +1,213 @@
+<div class="container">
+    <h1 class="mt-5">Event Booking Form</h1>
+    {% if event %}
+        <p class="mb-4">Book your spot for the event: {{ event.name }}</p>
+    {% else %}
+        <p class="alert alert-warning">No events available for booking at the moment.</p>
+    {% endif %}
+
+    <form method="post" class="mt-4" id="booking-form" onsubmit="return validateForm()">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label for="attendees" class="form-label">Number of Attendees:</label>
+            <input type="text" id="attendees" name="attendees" class="form-control">
+            <span id="attendees-error" class="error"></span> <!-- Error message placeholder -->
+        </div>
+        
+        <div class="mb-4">
+            <label for="available-seats" class="form-label">Seats Available:</label>
+            <span id="available-seats">{{ event.max_participants }}</span>
+        </div>
+        
+        <button type="submit" name="submit" class="btn btn-primary">Register</button>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if event.max_participants > 0 %}
+        <!-- Display the booking form here -->
+        <!-- Your booking form HTML goes here -->
+    {% else %}
+        <!-- Display a message indicating that booking is closed -->
+        <p>Booking for this event is closed. Maximum participants have been reached.</p>
+    {% endif %}
+</div>
+
+        
+        
+            
+            
+<script>
+    function validateForm() {
+        var attendeesInput = document.getElementById("attendees");
+        var attendeesValue = parseInt(attendeesInput.value);
+        var attendeesError = document.getElementById("attendees-error");
+        
+        // Check if the input is a number and is less than 5
+        if (isNaN(attendeesValue) || attendeesValue <= 0 || attendeesValue >= 5) {
+            attendeesError.textContent = "Please enter a valid number between 1 and 4.";
+            attendeesInput.classList.add("is-invalid"); // Add a CSS class to highlight the input as invalid
+            return false; // Prevent form submission
+        } else {
+            attendeesError.textContent = ""; // Clear the error message
+            attendeesInput.classList.remove("is-invalid"); // Remove the CSS class if it was added previously
+            return true; // Allow form submission
+        }
+    }
+</script>
+
+
+
+
+
+
+         
+        
+    
+    
+        
+    </form>
+</div>
+<style>
+    .error-message {
+        color: red;
+        font-size: 14px;
+    }
+    
+    /* Style the container */
+    /* Center the container horizontally and vertically */
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    
+        /* Center the container vertically */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+/* Style the headings */
+h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 0;
+}
+
+p {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Style form elements */
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+/* Style the submit button */
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Add hover effect to the submit button */
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Style the warning message */
+.alert-warning {
+    padding: 10px;
+    background-color: #ffc107;
+    color: #000;
+    border-radius: 3px;
+    text-align: center;
+}
+/* Add a background image */
+body {
+    background-image: url('images/orginal/10.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Center the container horizontally and vertically */
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+
+    /* Center the container vertically */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Style form elements */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+button[type="submit"] {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 3px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+</style>

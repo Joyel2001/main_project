@@ -1,0 +1,311 @@
+
+        <!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoRecover</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        .error-message {
+            font-size: 12px;
+            color: #e53935;
+            margin-top: 5px;
+            text-align: left;
+        }
+        button {
+            background-color: #fb641b;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #f78239;
+        }
+        p {
+            font-size: 14px;
+            color: #878787;
+            margin-top: 10px;
+        }
+        a {
+            color: #fb641b;
+            text-decoration: none;
+        }
+      
+      body {
+        font-family: Assistant, sans-serif;
+        display: flex;
+        min-height: 100vh;
+        margin: 0;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(to bottom right, #ABCDEF, #E5F2FF);
+    }
+    .container {
+        position: relative;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 350px;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        background-color: white;
+    }
+    .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('path_to_your_image.jpg'); /* Replace with your image URL */
+        filter: blur(10px);
+        z-index: -1;
+    }
+    body {
+        font-family: Assistant, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(to bottom right, #ABCDEF, #E5F2FF);
+        background-image: url('{% static "images/orginal/10.jpg" %}'); /* Replace with your image URL */
+        background-size: cover;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        width: 350px;
+        margin: auto;
+        text-align: center;
+        background-color: white; /* Set the entire container background to white */
+    }
+    .logo {
+        font-family: Arial, sans-serif;
+        font-size: 2rem;
+        text-decoration: none;
+        color: black;
+        display: inline-block;
+        transition: color 0.3s, transform 0.3s;
+    }
+    
+    .logo em {
+        color: grey;
+    }
+    
+    .logo:hover {
+        color: #2ecc71;
+        transform: scale(1.1);
+    }
+    </style>
+    <script>
+       
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the required DOM elements
+        var emailInput = document.getElementById("email");
+        var emailError = document.getElementById("email-error");
+
+        // Add an input event listener to the email input
+        emailInput.addEventListener("input", function() {
+            validateEmail(); // Call the validation function when the user interacts with the input
+        });
+
+        function validateEmail() {
+            // Get the trimmed value of the email input
+            var emailValue = emailInput.value.trim();
+
+            // Regular expression pattern for valid email address
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+            // Check if the email value is empty
+            if (emailValue === "") {
+                emailError.textContent = ""; // Clear the error message if empty
+                return false;
+            } else if (!emailPattern.test(emailValue)) {
+                emailError.textContent = "Please enter a valid email address in the format 'user@example.com'.";
+                return false;
+            } else {
+                emailError.textContent = ""; // Clear the error message if valid
+                return true;
+            }
+        }
+    });
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const emailField = document.getElementById("email");
+            const emailError = document.getElementById("email-error");
+            const registrationForm = document.getElementById("registration-form");
+    
+            emailField.addEventListener("blur", async function() {
+                const email = emailField.value;
+    
+                if (email) {
+                    const response = await fetch(`/check-email-exists/?email=${email}`);
+                    const data = await response.json();
+    
+                    if (data.exists) {
+                        emailError.textContent = "Email Already Exists";
+                        registrationForm.classList.add("has-error");
+                    } else {
+                        emailError.textContent = "";
+                        registrationForm.classList.remove("has-error");
+                    }
+                }
+            });
+        });
+        
+        
+
+        function validatePassword() {
+            var passwordInput = document.getElementById("password");
+            var passwordValue = passwordInput.value.trim();
+            var errorMessage = document.getElementById("password-error");
+
+            if (passwordValue === "") {
+                errorMessage.textContent = "Please enter a password.";
+                return false;
+            } else if (passwordValue.length < 6) {
+                errorMessage.textContent = "Password must be at least 6 characters long.";
+                return false;
+            } else {
+                errorMessage.textContent = "";
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("confirm_password");
+            var confirmPasswordValue = confirmPasswordInput.value.trim();
+            var errorMessage = document.getElementById("confirm-password-error");
+    
+            if (confirmPasswordValue === "") {
+                errorMessage.textContent = "Please confirm your password.";
+                return false;
+            } else if (confirmPasswordValue !== passwordInput.value) {
+                errorMessage.textContent = "Passwords do not match.";
+                return false;
+            } else {
+                errorMessage.textContent = "";
+                return true;
+            }
+        }
+    
+        function validateForm() {
+            return (
+                validateEmail() &&
+                validatePassword() &&
+                validateConfirmPassword()
+            );
+        }
+        function validateUsername() {
+            var usernameInput = document.getElementById('username');
+            var usernameError = document.getElementById('username-error');
+            
+            // Your validation criteria
+            var usernamePattern = /^[a-zA-Z0-9_-]{3,20}$/; // Example pattern
+            
+            if (!usernamePattern.test(usernameInput.value)) {
+                usernameError.textContent = 'Username must be 3 to 20 characters and can only contain letters, numbers, hyphens, and underscores.';
+                return false;
+            } else {
+                usernameError.textContent = '';
+                return true;
+            }
+        } 
+        document.addEventListener("DOMContentLoaded", function() {
+            const usernameField = document.getElementById("username");
+            const usernameError = document.getElementById("username-error");
+            const registrationForm = document.querySelector("form[name='registration-form']");
+        
+            usernameField.addEventListener("blur", async function() {
+                const username = usernameField.value;
+        
+                if (username) {
+                    const response = await fetch(`/check-username-exists/?username=${username}`);
+                    const data = await response.json();
+        
+                    if (data.exists) {
+                        usernameError.textContent = "Username Already Exists";
+                        registrationForm.classList.add("has-error");
+                    } else {
+                        usernameError.textContent = "";
+                        registrationForm.classList.remove("has-error");
+                    }
+                }
+            });
+        });
+        
+
+        
+    </script>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>    
+
+        <form method="POST"  onsubmit="return validateForm()" name="registration-form">
+            {% csrf_token %}
+            <input type="text" id="username" name="username" placeholder="Enter Username" required>
+            <span class="error-message" id="username-error"></span>
+            {% comment %} <span class="error-message" id="email-error"></span> {% endcomment %}
+            <input type="text" id="email" name="email" placeholder="Enter Email" required onblur="validateEmail()">
+            <span class="error-message" id="email-error"></span>
+            <input type="password" id="password" name="password" placeholder="Enter Password" required onblur="validatePassword()">
+            <span class="error-message" id="password-error"></span>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required oninput="validateConfirmPassword()">
+        <span class="error-message" id="confirm-password-error"></span>
+        <p>Select User Role:</p>
+    <input type="radio" id="customer" name="user_role" value="customer" checked>
+    <label for="customer">Customer</label>
+    <input type="radio" id="staff" name="user_role" value="staff">
+    <label for="staff">Staff</label>
+            <button type="submit">Sign Up</button>
+            <p>Already have an account? <a href="{% url 'loginn' %}">Login</a></p>
+        </form>
+    </div>
+</body>
+</html>
+
+
+   

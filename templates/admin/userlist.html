@@ -1,0 +1,498 @@
+<!-- userlist/user_list.html -->
+
+{% load static %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords"
+        content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Xtreme lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Xtreme admin lite design, Xtreme admin lite dashboard bootstrap 5 dashboard template">
+    <meta name="description"
+        content="Xtreme Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+    <meta name="robots" content="noindex,nofollow">
+    <title>EcoRecover</title>
+    <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
+    <!-- Custom CSS -->
+    <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  {% comment %} <div class="preloader">
+      <div class="lds-ripple">
+          <div class="lds-pos"></div>
+          <div class="lds-pos"></div>
+      </div>
+  </div> {% endcomment %}
+  <!-- ============================================================== -->
+  <!-- Main wrapper - style you can find in pages.scss -->
+  <!-- ============================================================== -->
+  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+      data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+      <!-- ============================================================== -->
+      <!-- Topbar header - style you can find in pages.scss -->
+      <!-- ============================================================== -->
+      <header class="topbar" data-navbarbg="skin5">
+          <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+              <div class="navbar-header" data-logobg="skin5">
+                  <!-- ============================================================== -->
+                  <!-- Logo -->
+                  <!-- ============================================================== -->
+                  <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+
+                  <style>
+                      .logo {
+                          display: inline-block;
+                          font-size: 28px;
+                          font-weight: bold;
+                          text-decoration: none;
+                          color: #000; /* Black for "Eco" */
+                      }
+              
+                      .logo em {
+                          color: #777; /* Grey for "Recover" */
+                      }
+                      .col-md-8 {
+                        -webkit-box-flex: 0;
+                        -ms-flex: 0 0 auto;
+                        flex: 0 0 auto;
+                        width: 100%;
+                      }
+                  </style>
+                      <!-- Logo icon -->
+                      <b class="logo-icon">
+                          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                          <!-- Dark Logo icon -->
+                          
+                      </b>
+                      <!--End Logo icon -->
+                      <!-- Logo text -->
+                      <span class="logo-text">
+                          <!-- dark Logo text -->
+                          <!-- Light Logo text -->
+                      </span>
+                  </a>
+                  <!-- ============================================================== -->
+                  <!-- End Logo -->
+                  <!-- ============================================================== -->
+                  <!-- This is for the sidebar toggle which is visible on mobile only -->
+                  <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                          class="ti-menu ti-close"></i></a>
+              </div>
+              <!-- ============================================================== -->
+              <!-- End Logo -->
+              <!-- ============================================================== -->
+              <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                  <!-- ============================================================== -->
+                  <!-- toggle and nav items -->
+                  <!-- ============================================================== -->
+                  <ul class="navbar-nav float-start me-auto">
+                      <!-- ============================================================== -->
+                      <!-- Search -->
+                      <!-- ============================================================== -->
+                      <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark"
+                              href="javascript:void(0)"><i class="ti-search"></i></a>
+                          <form class="app-search position-absolute">
+                              <input type="text" class="form-control" placeholder="Search &amp; enter"> <a
+                                  class="srh-btn"><i class="ti-close"></i></a>
+                          </form>
+                      </li>
+                  </ul>
+                  <!-- ============================================================== -->
+                  <!-- Right side toggle and nav items -->
+                  <!-- ============================================================== -->
+                  <ul class="navbar-nav float-end">
+                      <!-- ============================================================== -->
+                      <!-- User profile and search -->
+                      <!-- ============================================================== -->
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
+                          </a>
+                          <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i>
+                                  My Profile</a>
+                              <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i>
+                                  Logout</a>
+                              
+                          </ul>
+                      </li>
+                      <!-- ============================================================== -->
+                      <!-- User profile and search -->
+                      <!-- ============================================================== -->
+                  </ul>
+              </div>
+          </nav>
+      </header>
+      <!-- ============================================================== -->
+      <!-- End Topbar header -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Left Sidebar - style you can find in sidebar.scss  -->
+      <!-- ============================================================== -->
+      <aside class="left-sidebar" data-sidebarbg="skin6">
+          <!-- Sidebar scroll-->
+          <div class="scroll-sidebar">
+              <!-- Sidebar navigation-->
+              <nav class="sidebar-nav">
+                  <ul id="sidebarnav">
+                      <!-- User Profile-->
+                      <li>
+                          <!-- User Profile-->
+                          <div class="user-profile d-flex no-block dropdown m-t-20">
+                              <div class="user-content hide-menu m-l-10">
+                                  
+                                  
+                              </div>
+                          </div>
+                          <!-- End User Profile-->
+                      </li>
+                      
+                      <!-- User Profile-->
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
+                                  class="hide-menu">Dashboard</span></a></li>
+                                  
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="{% url 'user_list' %}" aria-expanded="false"><i class="mdi mdi-account-network "></i><span
+                                  class="hide-menu">User Details</span></a></li>
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
+                                  class="hide-menu">Event Details</span></a></li>
+                                  <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                                      href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
+                                          class="hide-menu">Event Booking Details</span></a></li>
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span
+                                  class="hide-menu">Add Bin</span></a></li>
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="starter-kit.html" aria-expanded="false"><i class="mdi mdi-file"></i><span
+                                  class="hide-menu">Bin Booking details</span></a></li>
+                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
+                              href="error-404.html" aria-expanded="false"><i class="mdi mdi-alert-outline"></i><span
+                                  class="hide-menu">404</span></a></li>
+                      <li class="text-center p-40 upgrade-btn">
+                          
+                  </ul>
+                  
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Bread crumb and right sidebar toggle -->
+            <!-- ============================================================== -->
+            <div class="page-breadcrumb">
+                <div class="row align-items-center">
+                    <div class="col-5">
+                        <h4 class="page-title">Dashboard</h4>
+                        <div class="d-flex align-items-center">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">User Details</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                  <div class="card">
+                      <div class="card-body">
+                        {% block content %}
+  <h2>User List</h2>
+  <label for="role-filter" class="filter-label">Filter by Role:</label>
+<select id="role-filter" class="filter-select">
+  <option value="all">All</option>
+  <option value="superuser">Superuser</option>
+  <option value="staff">Staff</option>
+  <option value="customer">Customer</option>
+</select>
+
+
+  <br>
+  <br>
+  <!-- Search form -->
+  <form id="user-search-form" class="search-form">
+    <label for="username" class="search-label">Search by Username:</label>
+    <input type="text" id="username" name="username" class="search-input">
+    <button type="submit" class="search-button">Search</button>
+  </form>
+  <br>
+  <br>
+
+  <p id="no-user-message" style="display: none;">No such user</p>
+  <table class="user-list">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th> <!-- New column for Staff status -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            {% if user.is_superuser %}
+              Admin
+            {% elif user.is_staff %}
+              Staff
+            {% else %}
+              Customer
+            {% endif %}
+            
+
+          </td> 
+          <td> <a href="{% url 'edit_user' user.id %}" class="btn btn-edit">Edit Details</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+
+<style>
+    /* userlist/static/userlist/styles.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+/* Add this to your CSS stylesheet */
+.filter-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 10px;
+  color: #333; /* Text color */
+}
+
+.filter-select {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #f7f7f7;
+  color: #333; /* Text color */
+}
+
+/* Style for the dropdown arrow */
+.filter-select::after {
+  content: "\25BC"; /* Unicode down arrow character */
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  pointer-events: none; /* Disable click on the arrow */
+}
+
+/* Hover effect for the dropdown */
+.filter-select:hover {
+  border-color: #007bff; /* Border color on hover */
+}
+
+/* Focus effect for the dropdown */
+.filter-select:focus {
+  outline: none;
+  border-color: #007bff; /* Border color on focus */
+}
+/* Add this to your CSS stylesheet */
+.search-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 10px;
+  color: #333; /* Text color */
+}
+
+.search-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #f7f7f7;
+  color: #333; /* Text color */
+  width: 200px; /* Adjust the width as needed */
+}
+
+.search-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3; /* Hover color */
+}
+
+/* Focus effect for the search input */
+.search-input:focus {
+  outline: none;
+  border-color: #007bff; /* Border color on focus */
+}
+/* Add these styles to your CSS file */
+.btn-edit {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: #0056b3; /* Button background color on hover */
+}
+
+
+</style>
+<!-- userlist/user_list.html -->
+
+
+
+
+
+  
+  <!-- JavaScript for live search -->
+  {% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.querySelector('#user-search-form');
+      const input = document.querySelector('#username');
+      const rows = document.querySelectorAll('.user-list tbody tr');
+      const noUserMessage = document.querySelector('#no-user-message');
+
+      
+       
+
+    input.addEventListener('input', filterUsers);
+    roleFilter.addEventListener('change', filterUsers);
+
+    function filterUsers() {
+      const searchTerm = input.value.toLowerCase();
+      const selectedRole = roleFilter.value;
+      let found = false; // Flag to track if a matching user is found
+      
+      rows.forEach(function (row) {
+        const username = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const role = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+        
+        if ((selectedRole === 'all' || role === selectedRole) && username.includes(searchTerm)) {
+          row.style.display = 'table-row';
+          found = true; // Matching user found
+        } else {
+          row.style.display = 'none';
+        }
+      });
+      
+      // Show/hide "No such user" message
+      if (found) {
+        noUserMessage.style.display = 'none';
+      } else {
+        noUserMessage.style.display = 'block';
+      }
+    }
+  });
+
+  </script> {% endcomment %}
+ {% comment %} scriptforsearch  {% endcomment %}
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.querySelector('#username');
+    const roleFilter = document.querySelector('#role-filter');
+    const rows = document.querySelectorAll('.user-list tbody tr');
+    const noUserMessage = document.querySelector('#no-user-message');
+
+    input.addEventListener('input', filterUsers);
+    roleFilter.addEventListener('change', filterUsers);
+
+    function filterUsers() {
+      const searchTerm = input.value.toLowerCase();
+      const selectedRole = roleFilter.value;
+      let found = false; // Flag to track if a matching user is found
+
+      rows.forEach(function (row) {
+        const username = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const role = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+        // Check if the search term is a single character (e.g., 'j') and the username starts with it
+        if (searchTerm.length === 1 && username.startsWith(searchTerm)) {
+          row.style.display = 'table-row';
+          found = true; // Matching user found
+        } else if (searchTerm.length > 1 && username.includes(searchTerm)) {
+          row.style.display = 'table-row';
+          found = true; // Matching user found
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Show/hide "No such user" message
+      if (found) {
+        noUserMessage.style.display = 'none';
+      } else {
+        noUserMessage.style.display = 'block';
+      }
+    }
+  });
+</script>
+
+  
+{% endblock %}

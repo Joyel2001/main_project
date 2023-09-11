@@ -1,0 +1,407 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>ArtXibition - Tickets Page</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
+<!--
+
+Tooplate 2125 ArtXibition
+
+https://www.tooplate.com/view/2125-artxibition
+
+-->
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    
+    <!-- ***** Preloader End ***** -->
+    
+    <!-- ***** Pre HEader ***** -->
+    
+        
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                                                <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="shows-events.html">Campigns And Events</a></li> 
+                            <li><a href="tickets.html" class="active">Contact</a></li> 
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** About Us Page ***** -->
+    <!-- Background Image Header -->
+<div class="page-heading-shows-events" style="background-image: url({% static 'images/orginal/4.jpg' %});">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="heading-content">
+                    <h2>Home Trash & Recycling Pickup</h2>
+                    <p class="sustainability-text">Embrace sustainability right at home. With WM, rest assured that your trash and recycling are not only collected promptly and securely, but also treated in a manner that is environmentally responsible. Join us in making a positive impact on our planet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bin Display Section -->
+<div class="tickets-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>For Home</h2>
+                </div>
+            </div>
+            
+            {% for bin in bins %}
+            <div class="col-lg-4">
+                <div class="ticket-item">
+                    <div class="thumb">
+                        <img src="{{ bin.image.url }}" alt="{{ bin.title }}" class="bin-image">
+                    </div>
+                    <div class="down-content">
+                        <h4>{{ bin.title }}</h4>
+                        <p class="availability">Available: {{ bin.size }} size</p>
+                        <ul class="bin-details">
+                            <li><i class="fa "></i> Capacity: {{ bin.capacity }}</li>
+                            <li><i class="fa "></i> {{ bin.description }}</li>
+                        </ul>
+                        <div class="order-button">
+                            <a href="{% url 'orderforhome' %}">Order Bin</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- *** Subscribe *** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Subscribe Our Newsletter:</h4>
+                </div>
+                <div class="col-lg-8">
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** Footer *** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="address">
+                        <h4>Sunny Hill Festival Address</h4>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Info</a></li>
+                            <li><a href="#">Venues</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Videos</a></li>
+                            <li><a href="#">Outreach</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hours">
+                        <h4>Open Hours</h4>
+                        <ul>
+                            <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
+                            <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
+                            <li>Holidays: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <p>São Conrado, Rio de Janeiro</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <p class="copyright">Copyright 2021 ArtXibition Company 
+                    
+                    			<br>Design: <a rel="nofollow" href="https://www.tooplate.com" target="_parent">Tooplate</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="menu">
+                                    <ul>
+                                        <li><a href="index.html" class="active">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="rent-venue.html">Rent Venue</a></li>
+                                        <li><a href="shows-events.html">Shows & Events</a></li> 
+                                        <li><a href="tickets.html">Tickets</a></li> 
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="social-links">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="a"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/mixitup.js' %}"></script> 
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+  </body>
+</html>
+
+<style>
+    .sustainability-text {
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+        margin: 20px 0;
+    }
+    
+        
+    /* Set a maximum width for bin images */
+    .bin-image {
+        max-width: 70%; /* You can adjust this value as needed */
+        height: 70%;
+    }
+    
+    /* Style for the ticket item container */
+    .ticket-item {
+        border: 1px solid #e1e1e1;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .ticket-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Style for the bin title */
+    .ticket-item h4 {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+    
+    /* Style for availability text */
+    .availability {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    /* Style for bin details list */
+    .bin-details {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .bin-details li {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    
+    /* Style for the order button */
+    .order-button a {
+        background-color: #ff9800;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .order-button a:hover {
+        background-color: #ffad33;
+    }
+    /* Set a maximum width for bin images */
+    
+    /* Style for the ticket item container */
+    .ticket-item {
+        border: 1px solid #e1e1e1;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%; /* Ensure all ticket items have the same height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .ticket-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Style for the bin title */
+    .ticket-item h4 {
+        font-size: 20px;
+        margin: 10px 0;
+    }
+    
+    /* Style for availability text */
+    .availability {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    /* Style for bin details list */
+    .bin-details {
+        list-style: none;
+        padding: 0;
+        flex-grow: 1; /* Expand to take remaining space */
+    }
+    
+    .bin-details li {
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    
+    /* Style for the order button */
+    .order-button a {
+        background-color: #ff9800;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    
+    .order-button a:hover {
+        background-color: #ffad33;
+    }
+    /* Style for bin details list */
+    .bin-details {
+        list-style: none;
+        padding: 0;
+        flex-grow: 1; /* Expand to take remaining space */
+    }
+    
+    .bin-details li {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #888;
+        margin-bottom: 5px;
+    }
+    
+    .bin-details li i {
+        margin-right: 8px;
+    }
+    
+
+</style>

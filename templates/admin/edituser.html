@@ -1,0 +1,26 @@
+<!-- edit_user.html -->
+
+
+{% block content %}
+  <h2>Edit User Details</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="{{ user.username }}"><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ user.email }}"><br>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role">
+      <option value="customer" {% if user.is_staff == False and user.is_superuser == False %}selected{% endif %}>Customer</option>
+      <option value="staff" {% if user.is_staff == True and user.is_superuser == False %}selected{% endif %}>Staff</option>
+      <option value="superuser" {% if user.is_superuser == True %}selected{% endif %}>Superuser</option>
+    </select><br>
+
+    <!-- Add more fields for other user details as needed -->
+
+    <button type="submit">Save Changes</button>
+  </form>
+{% endblock %}

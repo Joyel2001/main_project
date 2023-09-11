@@ -1,0 +1,7 @@
+{% comment %} <h1>Details</h1>
+<p>Name Is: {{det.name}}</p>
+<p>Roll Number Is: {{det.roll_no}}</p>
+{% if det.profile_picture %}
+    <img src="{{ det.profile_picture.url }}" alt="Profile Picture">
+{% endif %}
+ {% endcomment %}

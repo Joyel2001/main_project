@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin Details Form</title>
+    <!-- Add your CSS links here -->
+</head>
+<body>
+    <div class="container">
+        <h1>Bin Details Form</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="bin-id">Bin ID</label>
+            <input type="text" id="bin-id" name="bin_id" required>
+            <label for="bin-title">Title</label>
+            <input type="text" id="bin-title" name="title" required>
+            <label for="bin-size">Size</label>
+            <input type="text" id="bin-size" name="size" required>
+            <label for="bin-capacity">Capacity</label>
+            <input type="text" id="bin-capacity" name="capacity" required>
+            <label for="bin-description">Description</label>
+            <textarea id="bin-description" name="description" rows="4" required></textarea>
+            <label for="bin-image">Image</label>
+            <input type="file" id="bin-image" name="image">
+            <input type="submit" value="Submit">
+        </form>
+        
+            {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booked Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            background-color: #007BFF;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+        strong {
+            color: #007BFF;
+        }
+        a.back-to-profile {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Change to your desired background color */
+            color: #fff; /* Text color */
+            text-decoration: none; /* Remove underline */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth color transition */
+        }
+
+        a.back-to-profile:hover {
+            background-color: #0056b3; /* Change to a darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    
+    
+    <h1>Events Booked by {{ user.username }}</h1>
+    <a href="{% url 'user_profile_view' %}" class="back-to-profile">Back to Profile</a>
+    <ul>
+        {% for event_booking in booked_events %}
+            <li>
+                
+                <strong>Event Name:</strong> {{ event_booking.event.name }}<br>
+                <strong>About the event:</strong> {{ event_booking.event.description }}<br>
+                <strong>Venue :</strong> {{ event_booking.event.location }}<br>
+                <strong>Date :</strong> {{ event_booking.event.date }}<br>
+                <strong>Time :</strong> {{ event_booking.event.time }}<br>
+                <strong>Attendees:</strong> {{ event_booking.attendees }}<br>
+            </li>
+        {% empty %}
+            <p>No events booked yet.</p>
+        {% endfor %}
+    </ul>
+</body>
+</html>
