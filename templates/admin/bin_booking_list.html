@@ -284,6 +284,7 @@
                 <th>Bin Size</th>
                 <th>Bin Capacity</th>
                 <th>Collection Period</th>
+                <th>Fill Level</th> <!-- Add this column for bin status -->
             </tr>
         </thead>
         <tbody>
@@ -298,12 +299,44 @@
                     <td>{{ booking.bin_size }}</td>
                     <td>{{ booking.bin_capacity }}</td>
                     <td>{{ booking.collection_period }}</td>
+                    <td>
+                        {% for status in booking.statuses.all %}
+                            {% with fill_level=status.fill_level %}
+                                <span class="{% if fill_level == 20 %}fill-green{% elif fill_level == 40 %}fill-blue{% elif fill_level == 50 %}fill-yellow{% elif fill_level == 70 %}fill-orange{% elif fill_level == 90 %}fill-red{% endif %}">
+                                    {{ status.fill_level }}
+                                </span>{% if not forloop.last %}, {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </td>
+                    
+                    
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 </body>
+
 <style>
+    .fill-green {
+        color: green;
+    }
+    
+    .fill-blue {
+        color: blue;
+    }
+    
+    .fill-yellow {
+        color: yellow;
+    }
+    
+    .fill-orange {
+        color: orange;
+    }
+    
+    .fill-red {
+        color: red;
+    }
+    
     /* userlist/static/userlist/styles.css */
 table {
     width: 100%;

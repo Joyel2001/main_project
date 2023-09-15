@@ -1,20 +1,75 @@
 {% comment %} {% extends "base.html" %} {% endcomment %}
 
 {% block content %}
-  <h2>Update Bin Status for Booking {{ booking.booking_id }}</h2>
-  <form method="post">
-    {% csrf_token %}
-    <label for="fill_level">Fill Level:</label>
-    <select name="fill_level" id="fill_level">
-      <option value="20">20%</option>
-      <option value="40">40%</option>
-      <option value="50">50%</option>
-      <option value="70">70%</option>
-      <option value="90">90%</option>
-    </select>
-    <br>
-    <input type="submit" value="Update Fill Level">
-  </form>
-  <br>
-  <a href="{% url 'bin_details' user_id=booking.user.id %}" class="btn btn-secondary">Back to Bin Details</a>
+  <div class="update-bin-status">
+    <h2>Update Bin Status for Booking {{ booking.booking_id }}</h2>
+    <form method="post" class="status-form">
+      {% csrf_token %}
+      <label for="fill_level">Fill Level:</label>
+      <select name="fill_level" id="fill_level" class="select-fill-level">
+        <option value="20">20%</option>
+        <option value="40">40%</option>
+        <option value="50">50%</option>
+        <option value="70">70%</option>
+        <option value="90">90%</option>
+      </select>
+      <input type="submit" value="Update Fill Level" class="btn-update-fill">
+    </form>
+    <a href="{% url 'bin_details' user_id=booking.user.id %}" class="btn-back">Back to Bin Details</a>
+  </div>
 {% endblock %}
+<style>
+    /* Style for the whole container */
+.update-bin-status {
+  text-align: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Style for the form */
+.status-form {
+  margin-top: 20px;
+}
+
+/* Style for the select element */
+.select-fill-level {
+  padding: 8px;
+  font-size: 16px;
+}
+
+/* Style for the submit button */
+.btn-update-fill {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-update-fill:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the Back to Bin Details link */
+.btn-back {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ccc;
+  color: #000;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #999;
+}
+
+</style>
