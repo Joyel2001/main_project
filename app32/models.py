@@ -87,10 +87,11 @@ class BinBooking(models.Model):
     bin_size = models.CharField(max_length=20)
     bin_capacity = models.CharField(max_length=20)
     collection_period = models.CharField(max_length=20, default=None)  # New field for collection period
-    booking_id = models.CharField(max_length=5,default=None)  # New field for booking ID
+    booking_id = models.CharField(max_length=5, default=None,unique=True)  # New field for booking ID
 
     def __str__(self):
-        return f"Booking {self.booking_id} for Bin {self.bin_id}: {self.bin.size} - {self.bin.capacity}"
+        return f"{self.booking_id}"  # Only return the booking ID
+                                                                       
 
 
     # eventbooking
@@ -112,4 +113,22 @@ class EventBooking(models.Model):
 
     def __str__(self):
         return f"Booking ID: {self.booking_id}, Event: {self.event.event_id}, User: {self.user.username}"
+    
+
+    # bookingststus
+class BookedBinStatus(models.Model):
+    status_id = models.AutoField(primary_key=True)
+    booking = models.ForeignKey(BinBooking, on_delete=models.CASCADE, related_name='statuses')
+    fill_level = models.PositiveIntegerField(choices=[(20, '20%'), (40, '40%'), (50, '50%'), (70, '70%'), (90, '90%')])
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.status_id)  # Convert status_id to a string and return it
+
+
+
+
+
+    
 

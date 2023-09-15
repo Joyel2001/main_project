@@ -1,0 +1,14 @@
+<form method="post" action="{% url 'add_bin_status' booking.id %}">
+    {% csrf_token %}
+    <input type="hidden" name="bin_id" value="{{ bin.id }}">
+    <label for="fill_level">Fill Level:</label>
+    <select name="fill_level">
+        <option value="20">20%</option>
+        <option value="40">40%</option>
+        <option value="50">50%</option>
+        <option value="70">70%</option>
+        <option value="90">90%</option>
+    </select>
+    <br>
+    <input type="submit" value="Add Bin Status">
+</form>

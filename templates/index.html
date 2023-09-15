@@ -68,7 +68,7 @@ https://www.tooplate.com/view/2125-artxibition
                 <div class="col-lg-6 col-sm-6">
                     {% if user.is_authenticated %}
                     <div class="text-button">
-                        <a href="{% url 'user_profile_view' %}" class="btn px-0">
+                        <a href="{% url 'hello_admin' %}" class="btn px-0">
                             Welcome, {{ request.user.username }}
                          </a>
                     </div>
@@ -172,6 +172,7 @@ https://www.tooplate.com/view/2125-artxibition
                             </li>
                             <li><a href="{% url 'show_events' %}">campaigns and Seminars</a></li> 
                             <li><a href="tickets.html">Contact</a></li> 
+                            <li><a href="tickets.html">Disposal Methods</a></li> 
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -253,7 +254,7 @@ https://www.tooplate.com/view/2125-artxibition
         /* CSS styles for the map image */
         .map-image img {
             max-width: 100%;
-            height: auto;
+            height: 500px;
         }
         
         /* CSS styles for the image text */
@@ -353,10 +354,15 @@ https://www.tooplate.com/view/2125-artxibition
                 <div class="col-lg-9">
                     <div class="left-content">
                         <h4>Unite for a Greener, Healthier Planet</h4>
-                        
+                        <style>
+                            .para
+                            {
+                                text-align: justify;
+                            }
+                            </style>
                     
                         <br>
-                        <p>Waste management plays a crucial role in maintaining environmental sustainability and public health. Proper waste management is necessary to prevent the accumulation of waste materials that can lead to pollution, habitat destruction, and the spread of diseases. Efficient waste management practices reduce the strain on natural resources by promoting recycling, reusing, and proper disposal of waste.
+                        <p class="para">Waste management plays a crucial role in maintaining environmental sustainability and public health. Proper waste management is necessary to prevent the accumulation of waste materials that can lead to pollution, habitat destruction, and the spread of diseases. Efficient waste management practices reduce the strain on natural resources by promoting recycling, reusing, and proper disposal of waste.
 
                             By implementing effective waste management, we can minimize the negative impact of waste on ecosystems, water bodies, and air quality. It also contributes to the reduction of greenhouse gas emissions, helping combat climate change. In urban areas, proper waste management enhances the aesthetic appeal of communities and creates a healthier living environment for residents.
                             
@@ -381,14 +387,18 @@ https://www.tooplate.com/view/2125-artxibition
         <div class="map-image">
             <img src="{% static '/images/pic.jpg' %}" alt="Maps of 3 Venues">
             <div class="image-text">
-                <h2>Explore Our Venues</h2>
-                <p>Discover amazing places for your events!</p>
-                <a href="#" class="btn btn-primary">View Venues</a>
+                <h2>Explore the Waste Disposal Methods</h2>
+                <!-- <p>Discover amazing places for your events!</p> -->
+                <a href="#" class="btn btn-primary">View Now</a>
             </div>
         </div>
     </div>
     
     
+<br>
+<br>
+
+<br>
 
 
    <!-- *** Venues & Tickets *** -->
@@ -435,7 +445,11 @@ https://www.tooplate.com/view/2125-artxibition
                                 <span>1 ticket<br>from <em>$55</em></span>
                             </div>
                             <div class="main-white-button">
-                                <a href="ticket-details.html">Purchase Tickets</a>
+                                <div class="main-white-button">
+                                    <div class="purchase-button">
+                                        <a class="btn btn-primary" href="ticket-details.html">Get Your Tickets</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -527,7 +541,107 @@ https://www.tooplate.com/view/2125-artxibition
             </div>
         </div>
     </div>
-
+    <style>
+        /* Style for venue items */
+        .venue-item {
+            margin-bottom: 30px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    
+        .venue-box {
+            display: flex;
+        }
+    
+        .venue-box .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .right-content {
+            padding: 0 20px;
+        }
+    
+        .venue-title {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    
+        .venue-description {
+            font-size: 14px;
+        }
+    
+        .venue-details {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .venue-details li {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+    
+        .price {
+            margin-top: 10px;
+        }
+    
+        .price span {
+            font-size: 16px;
+        }
+    
+        .main-white-button a {
+            color: #fff;
+        }
+    
+        /* Style for event items */
+        .event-item {
+            margin-bottom: 30px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+    
+        .event-item .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .down-content {
+            padding: 15px;
+        }
+    
+        .event-item h4 {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    
+        .event-item ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .event-item ul li {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    
+        /* Style for "Discover More" button */
+        .left-button {
+            text-align: center;
+            margin-top: 30px;
+        }
+    
+        .left-button a {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+    
 
     <!-- *** Subscribe *** -->
     <div class="subscribe">

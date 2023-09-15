@@ -35,6 +35,8 @@ class BinEventAdmin(admin.ModelAdmin):
 
 
 
+
+
 from django.contrib import admin
 from .models import BinBooking
 
@@ -51,3 +53,14 @@ admin.site.register(BinBooking, BinBookingAdmin)
 from .models import EventBooking
 
 admin.site.register(EventBooking)
+
+# binbookiedststus
+from django.contrib import admin
+from .models import BinBooking, BookedBinStatus
+@admin.register(BookedBinStatus)
+class BookedBinStatusAdmin(admin.ModelAdmin):
+    list_display = ('status_id', 'booking', 'fill_level', 'created_at', 'updated_at')
+    list_filter = ('fill_level', 'created_at', 'updated_at')
+    list_per_page = 20
+
+

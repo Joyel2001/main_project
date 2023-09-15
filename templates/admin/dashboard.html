@@ -157,28 +157,80 @@
                         </li>
                         
                         <!-- User Profile-->
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
-                                    class="hide-menu">Dashboard</span></a></li>
-                                    
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{% url 'user_list' %}" aria-expanded="false"><i class="mdi mdi-account-network "></i><span
-                                    class="hide-menu">User Details</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
-                                    class="hide-menu">Event Details</span></a></li>
-                                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                        href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
-                                            class="hide-menu">Event Booking Details</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span
-                                    class="hide-menu">Add Bin</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="starter-kit.html" aria-expanded="false"><i class="mdi mdi-file"></i><span
-                                    class="hide-menu">Bin Booking details</span></a></li>
-                        <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                href="error-404.html" aria-expanded="false"><i class="mdi mdi-alert-outline"></i><span
-                                    class="hide-menu">404</span></a></li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
+                                <i class="mdi mdi-view-dashboard"></i>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+                        
+                        <!-- User Details - Always visible for all users -->
+                        {% if  user.is_superuser %}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                                <i class="mdi mdi-account-network"></i>
+                                <span class="hide-menu">User Details</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <!-- Event Details - Visible for staff and superuser -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'event_details_view' %}" aria-expanded="false">
+                                <i class="mdi mdi-border-all"></i>
+                                <span class="hide-menu">Event Details</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        <!-- Booked Event Details - Visible for staff and superuser -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_list' %}" aria-expanded="false">
+                                <i class="mdi mdi-face"></i>
+                                <span class="hide-menu">Booked Event Details</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        <!-- Bin Details - Visible for staff and superuser -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_list' %}" aria-expanded="false">
+                                <i class="mdi mdi-file"></i>
+                                <span class="hide-menu">Bin Details</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        
+                        <!-- Bin Booking Details - Visible for staff and superuser -->
+                        <!-- Bin Booking Details - Visible for staff and superuser -->
+                        {% if user.is_staff or user.is_superuser %}
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
+                                <i class="mdi mdi-alert-outline"></i>
+                                <span class="hide-menu">Bin Booking Details</span>
+                            </a>
+                        </li>
+                        {% else %}
+                        <!-- Booked Bin - Visible for customers -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
+                                <i class="mdi mdi-delete"></i>
+                                <span class="hide-menu">Booked Bin</span>
+                            </a>
+                        </li>
+                        <!-- Event Booking Details - Visible for customers -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
+                                <i class="mdi mdi-calendar-text"></i>
+                                <span class="hide-menu">Event Booking Details</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                          
+                                             
+                                                                  
                         <li class="text-center p-40 upgrade-btn">
                             
                     </ul>
@@ -195,6 +247,7 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
+            {% block content %}
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -206,7 +259,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                                 </ol>
                             </nav>
                         </div>
@@ -572,6 +625,7 @@
         <!-- End Page wrapper  -->
         <!-- ============================================================== -->
     </div>
+    {% endblock %}
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->

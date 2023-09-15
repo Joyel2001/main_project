@@ -42,12 +42,16 @@ urlpatterns = [
     path('registration/confirmation/', views.registration_confirmation, name='registration_confirmation'),
     path('book_event/<str:event_id>/', views.event_booking, name='event_booking'),
     path('reset/done/',auth_views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
-        path('hello_admin/', views.hello_admin, name='hello_admin'),
+    path('hello_admin/', views.hello_admin, name='hello_admin'),
     path('edit_profile/', views.edit_profile, name='edit_profile'),
     path('reset_password/', views.reset_password, name='reset_password'),
-     path('user-booked-events/', views.user_booked_events, name='user_booked_events'),
-     path('bin_details/<int:user_id>/', views.bin_details, name='bin_details'),
-     path('user-list/', views.user_list, name='user_list'),
-     path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('user-booked-events/', views.user_booked_events, name='user_booked_events'),
+    path('bin_details/<str:user_id>/', views.bin_details, name='bin_details'),
+    path('user-list/', views.user_list, name='user_list'),
+    path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
+    path('booking_list/', views.booking_list, name='booking_list'),
+    path('bins/', views.bin_list, name='bin_list'),
+    path('bin_booking_list/', views.bin_booking_list, name='bin_booking_list'),
+    # Add the URL pattern for updating bin status
+path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
 ]
-

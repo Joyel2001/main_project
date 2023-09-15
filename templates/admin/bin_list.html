@@ -157,91 +157,77 @@
                       </li>
                       
                       <!-- User Profile-->
-                      <!-- User Profile-->
-<li>
-    <!-- User Profile-->
-    <div class="user-profile d-flex no-block dropdown m-t-20">
-        <div class="user-content hide-menu m-l-10">
-            
-        </div>
-    </div>
-    <!-- End User Profile-->
-</li>
-
-<!-- Dashboard - Always visible for all users -->
-
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
-        <i class="mdi mdi-view-dashboard"></i>
-        <span class="hide-menu">Dashboard</span>
-    </a>
-</li>
-
-<!-- User Details - Always visible for all users -->
-{% if  user.is_superuser %}
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
-        <i class="mdi mdi-account-network"></i>
-        <span class="hide-menu">User Details</span>
-    </a>
-</li>
-{% endif %}
-<!-- Event Details - Visible for staff and superuser -->
-{% if user.is_staff or user.is_superuser %}
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'event_details_view' %}" aria-expanded="false">
-        <i class="mdi mdi-border-all"></i>
-        <span class="hide-menu">Event Details</span>
-    </a>
-</li>
-{% endif %}
-
-<!-- Booked Event Details - Visible for staff and superuser -->
-{% if user.is_staff or user.is_superuser %}
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_list' %}" aria-expanded="false">
-        <i class="mdi mdi-face"></i>
-        <span class="hide-menu">Booked Event Details</span>
-    </a>
-</li>
-{% endif %}
-
-<!-- Bin Details - Visible for staff and superuser -->
-{% if user.is_staff or user.is_superuser %}
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_list' %}" aria-expanded="false">
-        <i class="mdi mdi-file"></i>
-        <span class="hide-menu">Bin Details</span>
-    </a>
-</li>
-{% endif %}
-
-<!-- Bin Booking Details - Visible for staff and superuser -->
-<!-- Bin Booking Details - Visible for staff and superuser -->
-{% if user.is_staff or user.is_superuser %}
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
-        <i class="mdi mdi-alert-outline"></i>
-        <span class="hide-menu">Bin Booking Details</span>
-    </a>
-</li>
-{% else %}
-<!-- Booked Bin - Visible for customers -->
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
-        <i class="mdi mdi-delete"></i>
-        <span class="hide-menu">Booked Bin</span>
-    </a>
-</li>
-<!-- Event Booking Details - Visible for customers -->
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
-        <i class="mdi mdi-calendar-text"></i>
-        <span class="hide-menu">Event Booking Details</span>
-    </a>
-</li>
-{% endif %}
-
+                      <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <!-- User Details - Always visible for all users -->
+                    {% if  user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-account-network"></i>
+                            <span class="hide-menu">User Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <!-- Event Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'event_details_view' %}" aria-expanded="false">
+                            <i class="mdi mdi-border-all"></i>
+                            <span class="hide-menu">Event Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Booked Event Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-face"></i>
+                            <span class="hide-menu">Booked Event Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Bin Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-file"></i>
+                            <span class="hide-menu">Bin Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Bin Booking Details - Visible for staff and superuser -->
+                    <!-- Bin Booking Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-alert-outline"></i>
+                            <span class="hide-menu">Bin Booking Details</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <!-- Booked Bin - Visible for customers -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
+                            <i class="mdi mdi-delete"></i>
+                            <span class="hide-menu">Booked Bin</span>
+                        </a>
+                    </li>
+                    <!-- Event Booking Details - Visible for customers -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
+                            <i class="mdi mdi-calendar-text"></i>
+                            <span class="hide-menu">Event Booking Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
                     
             </ul>
                   
@@ -281,31 +267,71 @@
               <div class="col-md-8">
                   <div class="card">
                       <div class="card-body">
-<html lang="en">
+                   
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booked Events</title>
-    
+    <title>Bin List</title>
 </head>
 <body>
-    
-    
-    <h1>Events Booked by {{ user.username }}</h1>
-    <ul>
-        {% for event_booking in booked_events %}
-            <li>
-                
-                <strong>Event Name:</strong> {{ event_booking.event.name }}<br>
-                <strong>About the event:</strong> {{ event_booking.event.description }}<br>
-                <strong>Venue :</strong> {{ event_booking.event.location }}<br>
-                <strong>Date :</strong> {{ event_booking.event.date }}<br>
-                <strong>Time :</strong> {{ event_booking.event.time }}<br>
-                <strong>Attendees:</strong> {{ event_booking.attendees }}<br>
-            </li>
-        {% empty %}
-            <p>No events booked yet.</p>
-        {% endfor %}
-    </ul>
+    <h1>Bin List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Size</th>
+                <th>Capacity</th>
+                <th>Description</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bin in bins %}
+                <tr>
+                    <td>{{ bin.title }}</td>
+                    <td>{{ bin.size }}</td>
+                    <td>{{ bin.capacity }}</td>
+                    <td>{{ bin.description }}</td>
+                    <td>
+                        {% if bin.image %}
+                            <img src="{{ bin.image.url }}" alt="{{ bin.title }}" width="100">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
+<style>
+    /* userlist/static/userlist/styles.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+</style>
+</div>
+                    
+</div>
+</div>
 </html>

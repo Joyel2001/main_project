@@ -124,7 +124,7 @@ def user_profile_view(request):
     context = {
         'profile': profile,
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'profile/profile.html', context)
 
 
 
@@ -273,9 +273,10 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def delete_event(request, event_id):
-    event = get_object_or_404(Event, event_id=event_id, user=request.user)
+    event = get_object_or_404(Event, event_id=event_id)
     event.delete()
     return redirect('event_details_view')
+
 
 
 
@@ -410,7 +411,8 @@ def orderforhome(request):
         }
         
         # Generate the booking ID
-        booking_id = f"{bin_size_to_code.get(bin_size, 'u')}{count + 1}"
+        code = bin_size_to_code.get(bin_size, 'u')
+        booking_id = f"{code}{count + 1}"
 
         # Create and save the BinBooking instance with the logged-in user
         booking = BinBooking(
@@ -438,6 +440,7 @@ def orderforhome(request):
     }
 
     return render(request, 'bin/orderforhome.html', context)
+ 
 
 
 
@@ -581,9 +584,6 @@ def user_booked_events(request):
 
 # bin_details
 # In your app's views.py
-from django.shortcuts import render
-from .models import BinBooking
-from django.contrib.auth.models import User
 
 def bin_details(request, user_id):
     try:
@@ -598,7 +598,11 @@ def bin_details(request, user_id):
         'bookings': bookings,
     }
 
-    return render(request, 'bin/bin_details.html', context)
+    return render(request, 'admin/bin_detailsforhome.html', context)
+
+
+
+
 
 
 # admin_list_user
@@ -612,10 +616,10 @@ def user_list(request):
 
 
 #edit_user_details_by admin
-# views.py
-# views.py
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
@@ -637,10 +641,86 @@ def edit_user(request, user_id):
             user.is_staff = True
             user.is_superuser = True
 
+        # Update user status based on the selected status option
+        status = request.POST.get('status')
+        if status == 'active':
+            user.is_active = True
+        elif status == 'inactive':
+            user.is_active = False
+
         user.save()
-        return redirect('user_list')  # Redirect back to the user list page
+        
+        # Add a success message
+        # messages.success(request, 'User details updated successfully.')
+
+        # Redirect back to the user list page
+        return redirect('user_list')
 
     return render(request, 'admin/edituser.html', {'user': user})
 
 
 
+
+
+
+# admin_event_details
+from django.shortcuts import render
+from .models import EventBooking
+
+def booking_list(request):
+    event_bookings = EventBooking.objects.all()
+    context = {'event_bookings': event_bookings}
+    return render(request, 'admin/event_booking_detail.html', context)
+
+
+# admin_bin_details
+from django.shortcuts import render
+from .models import Bin
+
+def bin_list(request):
+    bins = Bin.objects.all()
+    context = {'bins': bins}
+    return render(request, 'admin/bin_list.html', context)
+
+
+# admin_binbooking_details
+from django.shortcuts import render
+from .models import BinBooking
+
+def bin_booking_list(request):
+    bin_bookings = BinBooking.objects.all()
+    context = {'bin_bookings': bin_bookings}
+    return render(request, 'admin/bin_booking_list.html', context)
+
+
+
+
+# binststus
+# views.py
+from django.shortcuts import render, redirect
+from .models import BinBooking, BookedBinStatus
+
+def update_bin_status(request, booking_id):
+    try:
+        booking = BinBooking.objects.get(booking_id=booking_id)
+    except BinBooking.DoesNotExist:
+        booking = None
+
+    if request.method == 'POST':
+        fill_level = request.POST.get('fill_level')
+        if fill_level and booking:
+            # Check if a status entry already exists for this booking
+            existing_status = BookedBinStatus.objects.filter(booking=booking).first()
+            if existing_status:
+                # If a status entry exists, update it
+                existing_status.fill_level = fill_level
+                existing_status.save()
+            else:
+                # If no status entry exists, create a new one
+                BookedBinStatus.objects.create(booking=booking, fill_level=fill_level)
+            # You can also add other logic here, such as updating the bin status
+            # Redirect to bin_details page with the user_id parameter
+            return redirect('bin_details', user_id=booking.user.id)
+
+    # Render a template with the form to update the fill level
+    return render(request, 'admin/bin_status.html', {'booking': booking})

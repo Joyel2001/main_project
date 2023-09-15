@@ -22,6 +22,14 @@
     <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
+    <!-- jQuery and Bootstrap JS -->
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    {% comment %} <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> {% endcomment %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -164,31 +172,78 @@
                       </li>
                       
                       <!-- User Profile-->
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="index.html" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span
-                                  class="hide-menu">Dashboard</span></a></li>
-                                  
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="{% url 'user_list' %}" aria-expanded="false"><i class="mdi mdi-account-network "></i><span
-                                  class="hide-menu">User Details</span></a></li>
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
-                                  class="hide-menu">Event Details</span></a></li>
-                                  <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                                      href="{% url 'event_details_view' %}" aria-expanded="false"><i class="mdi mdi-border-all"></i><span
-                                          class="hide-menu">Event Booking Details</span></a></li>
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="icon-material.html" aria-expanded="false"><i class="mdi mdi-face"></i><span
-                                  class="hide-menu">Add Bin</span></a></li>
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="starter-kit.html" aria-expanded="false"><i class="mdi mdi-file"></i><span
-                                  class="hide-menu">Bin Booking details</span></a></li>
-                      <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                              href="error-404.html" aria-expanded="false"><i class="mdi mdi-alert-outline"></i><span
-                                  class="hide-menu">404</span></a></li>
-                      <li class="text-center p-40 upgrade-btn">
-                          
-                  </ul>
+                      <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+                    
+                    <!-- User Details - Always visible for all users -->
+                    {% if  user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-account-network"></i>
+                            <span class="hide-menu">User Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <!-- Event Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'event_details_view' %}" aria-expanded="false">
+                            <i class="mdi mdi-border-all"></i>
+                            <span class="hide-menu">Event Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Booked Event Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-face"></i>
+                            <span class="hide-menu">Booked Event Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Bin Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-file"></i>
+                            <span class="hide-menu">Bin Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Bin Booking Details - Visible for staff and superuser -->
+                    <!-- Bin Booking Details - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-alert-outline"></i>
+                            <span class="hide-menu">Bin Booking Details</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <!-- Booked Bin - Visible for customers -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
+                            <i class="mdi mdi-delete"></i>
+                            <span class="hide-menu">Booked Bin</span>
+                        </a>
+                    </li>
+                    <!-- Event Booking Details - Visible for customers -->
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
+                            <i class="mdi mdi-calendar-text"></i>
+                            <span class="hide-menu">Event Booking Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+            </ul>
                   
                 </nav>
                 <!-- End Sidebar navigation -->
@@ -218,6 +273,7 @@
                             </nav>
                         </div>
                     </div>
+                
                     
                 </div>
             </div>
@@ -230,11 +286,10 @@
   <label for="role-filter" class="filter-label">Filter by Role:</label>
 <select id="role-filter" class="filter-select">
   <option value="all">All</option>
-  <option value="superuser">Superuser</option>
+  <option value="admin">Admin</option>
   <option value="staff">Staff</option>
   <option value="customer">Customer</option>
 </select>
-
 
   <br>
   <br>
@@ -248,42 +303,165 @@
   <br>
 
   <p id="no-user-message" style="display: none;">No such user</p>
-  <table class="user-list">
+<table class="user-list">
     <thead>
-      <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Role</th> <!-- New column for Staff status -->
-      </tr>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th> <!-- New column for Edit Details button -->
+        </tr>
     </thead>
     <tbody>
-      {% for user in users %}
+        {% for user in users %}
         <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            {% if user.is_superuser %}
-              Admin
-            {% elif user.is_staff %}
-              Staff
-            {% else %}
-              Customer
-            {% endif %}
-            
-
-          </td> 
-          <td> <a href="{% url 'edit_user' user.id %}" class="btn btn-edit">Edit Details</a></td>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>
+                {% if user.is_superuser %}
+                Admin
+                {% elif user.is_staff %}
+                Staff
+                {% else %}
+                Customer
+                {% endif %}
+            </td>
+            <td id="user-status">
+              {% if user.is_active %}
+              Active
+              {% else %}
+              Inactive
+              {% endif %}
+          </td>
+          
+            <td>
+                <button class="btn btn-edit" data-toggle="modal" data-target="#userDetailsModal" 
+                    data-id="{{ user.id }}" data-username="{{ user.username }}"
+                    data-email="{{ user.email }}" data-role="{% if user.is_superuser %}superuser{% elif user.is_staff %}staff{% else %}customer{% endif %}">
+                    Edit Details
+                </button>
+            </td>
         </tr>
-      {% endfor %}
+        {% endfor %}
     </tbody>
-  </table>
+</table>
+
 </div>
 </div>
 </div>
+<!-- Modal for editing user details -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1" role="dialog" aria-labelledby="userDetailsModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userDetailsModalLabel">Edit User Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="editUserForm" action="{% url 'edit_user' 0 %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="edit-username">Username:</label>
+            <input type="text" id="edit-username" name="username" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-email">Email:</label>
+            <input type="email" id="edit-email" name="email" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-role">Role:</label>
+            <select id="edit-role" name="role" class="form-control" required>
+              <option value="customer">Customer</option>
+              <option value="staff">Staff</option>
+              <option value="superuser">Superuser</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Status:</label>
+            <div class="form-check">
+                <input type="radio" id="edit-status-active" name="status" value="active" {% if user.is_active %}checked{% endif %}>
+                <label for="edit-status-active" class="form-check-label">Active</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" id="edit-status-inactive" name="status" value="inactive" {% if not user.is_active %}checked{% endif %}>
+                <label for="edit-status-inactive" class="form-check-label">Inactive</label>
+            </div>
+        </div>
+        
+        
+        
+        
+
+          <input type="hidden" id="edit-user-id" name="user_id" value="">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 
 <style>
+  /* Customize the modal header */
+.modal-header {
+  background-color: #007bff; /* Header background color */
+  color: #fff; /* Header text color */
+}
+
+/* Style the modal close button */
+.close {
+  color: red; /* Close button text color */
+  opacity: 1; /* Close button opacity (fully visible) */
+  font-size: 24px;
+}
+
+/* Customize the modal body */
+.modal-body {
+  background-color: #f7f7f7; /* Body background color */
+}
+
+/* Style the form controls */
+.form-group label {
+  font-weight: bold;
+  color: #333; /* Label text color */
+}
+
+.form-control {
+  border: 1px solid #ccc; /* Input border */
+}
+
+/* Style the submit button */
+.btn-primary {
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Button text color */
+  border: none; /* Remove button border */
+  border-radius: 4px; /* Button border radius */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Button background color on hover */
+}
+
+
+/* Additional CSS for styling the modal's content and form */
+/* Add your styles here */
+
     /* userlist/static/userlist/styles.css */
 table {
     width: 100%;
@@ -404,55 +582,7 @@ tr:hover {
 
 
 </style>
-<!-- userlist/user_list.html -->
-
-
-
-
-
-  
-  <!-- JavaScript for live search -->
-  {% comment %} <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const form = document.querySelector('#user-search-form');
-      const input = document.querySelector('#username');
-      const rows = document.querySelectorAll('.user-list tbody tr');
-      const noUserMessage = document.querySelector('#no-user-message');
-
-      
-       
-
-    input.addEventListener('input', filterUsers);
-    roleFilter.addEventListener('change', filterUsers);
-
-    function filterUsers() {
-      const searchTerm = input.value.toLowerCase();
-      const selectedRole = roleFilter.value;
-      let found = false; // Flag to track if a matching user is found
-      
-      rows.forEach(function (row) {
-        const username = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-        const role = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-        
-        if ((selectedRole === 'all' || role === selectedRole) && username.includes(searchTerm)) {
-          row.style.display = 'table-row';
-          found = true; // Matching user found
-        } else {
-          row.style.display = 'none';
-        }
-      });
-      
-      // Show/hide "No such user" message
-      if (found) {
-        noUserMessage.style.display = 'none';
-      } else {
-        noUserMessage.style.display = 'block';
-      }
-    }
-  });
-
-  </script> {% endcomment %}
- {% comment %} scriptforsearch  {% endcomment %}
+<!--- scriptforsearch-->
  <script>
   document.addEventListener('DOMContentLoaded', function () {
     const input = document.querySelector('#username');
@@ -492,7 +622,83 @@ tr:hover {
       }
     }
   });
+  
 </script>
+<!-- JavaScript code to handle filtering -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const roleFilter = document.getElementById('role-filter');
+    const userRows = document.querySelectorAll('.user-list tbody tr');
+    const noUserMessage = document.getElementById('no-user-message');
+
+    roleFilter.addEventListener('change', filterUsers);
+
+    function filterUsers() {
+      const selectedRole = roleFilter.value.toLowerCase();
+
+      userRows.forEach((row) => {
+        const roleCell = row.querySelector('td:nth-child(4)').textContent.trim().toLowerCase();
+
+        if (selectedRole === 'all' || roleCell === selectedRole.toLowerCase()) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Show/hide "No users found" message
+      const visibleRows = Array.from(userRows).filter((row) => row.style.display !== 'none');
+      if (selectedRole === 'all' || visibleRows.length > 0) {
+        noUserMessage.style.display = 'none';
+      } else {
+        noUserMessage.style.display = 'block';
+      }
+    }
+  });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+    $('#userDetailsModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var modal = $(this);
+
+      // Populate the modal fields with user data
+      modal.find('#edit-user-id').val(button.data('id'));
+      modal.find('#edit-username').val(button.data('username'));
+      modal.find('#edit-email').val(button.data('email'));
+      modal.find('#edit-role').val(button.data('role'));
+
+      // Update the form action URL to include the correct user ID
+      var formAction = modal.find('#editUserForm').attr('action');
+      modal.find('#editUserForm').attr('action', formAction.replace('0', button.data('id')));
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const editStatusCheckbox = document.getElementById("edit-status");
+      const editDeactivateCheckbox = document.getElementById("edit-deactivate");
+      const userStatusDisplay = document.getElementById("user-status");
+
+      function updateStatusDisplay() {
+          if (editStatusCheckbox.checked && !editDeactivateCheckbox.checked) {
+              userStatusDisplay.textContent = "Active";
+          } else if (!editStatusCheckbox.checked && editDeactivateCheckbox.checked) {
+              userStatusDisplay.textContent = "Inactive";
+          }
+      }
+
+      editStatusCheckbox.addEventListener("change", updateStatusDisplay);
+      editDeactivateCheckbox.addEventListener("change", updateStatusDisplay);
+
+      // Initialize the status display
+      updateStatusDisplay();
+  });
+</script>
+
+
 
   
 {% endblock %}

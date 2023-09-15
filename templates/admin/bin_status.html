@@ -1,0 +1,20 @@
+{% comment %} {% extends "base.html" %} {% endcomment %}
+
+{% block content %}
+  <h2>Update Bin Status for Booking {{ booking.booking_id }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <label for="fill_level">Fill Level:</label>
+    <select name="fill_level" id="fill_level">
+      <option value="20">20%</option>
+      <option value="40">40%</option>
+      <option value="50">50%</option>
+      <option value="70">70%</option>
+      <option value="90">90%</option>
+    </select>
+    <br>
+    <input type="submit" value="Update Fill Level">
+  </form>
+  <br>
+  <a href="{% url 'bin_details' user_id=booking.user.id %}" class="btn btn-secondary">Back to Bin Details</a>
+{% endblock %}
