@@ -73,22 +73,81 @@
             color: #a94442;
         }
     </style>
+
+    <script>
+        function validateOldPassword() {
+            var oldPassword = document.getElementById("old_password").value;
+            var oldPasswordError = document.getElementById("old_password_error");
+
+            if (oldPassword === "") {
+                oldPasswordError.textContent = "Old Password is required.";
+                return false;
+            }
+
+            oldPasswordError.textContent = "";
+            return true;
+        }
+
+        function validateNewPassword() {
+            var newPassword = document.getElementById("new_password").value;
+            var newPasswordError = document.getElementById("new_password_error");
+
+            if (newPassword === "") {
+                newPasswordError.textContent = "New Password is required.";
+                return false;
+            } else if (newPassword.length < 6) {
+                newPasswordError.textContent = "Password must be at least 6 characters long.";
+                return false;
+            }
+
+            newPasswordError.textContent = "";
+            return true;
+        }
+
+        function validateConfirmPassword() {
+            var confirmPassword = document.getElementById("confirm_password").value;
+            var confirmPasswordError = document.getElementById("confirm_password_error");
+            var newPassword = document.getElementById("new_password").value;
+
+            if (confirmPassword === "") {
+                confirmPasswordError.textContent = "Confirm Password is required.";
+                return false;
+            } else if (confirmPassword !== newPassword) {
+                confirmPasswordError.textContent = "Passwords do not match.";
+                return false;
+            }
+
+            confirmPasswordError.textContent = "";
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Password Reset</h1>
-       
-            
-    <form method="post">
+
+        <form method="post">
             {% csrf_token %}
+            
+            <!-- Old Password Input -->
             <div class="form-group">
-                <label for="new_password">New Password:</label>
-                <input type="password" id="new_password" name="new_password" required class="form-control">
+                <label for="old_password">Old Password:</label>
+                <input type="password" id="old_password" name="old_password" required class="form-control" oninput="validateOldPassword();">
+                <span id="old_password_error" class="error-message"></span>
             </div>
 
+            <!-- New Password Input -->
+            <div class="form-group">
+                <label for="new_password">New Password:</label>
+                <input type="password" id="new_password" name="new_password" required class="form-control" oninput="validateNewPassword();">
+                <span id="new_password_error" class="error-message"></span>
+            </div>
+
+            <!-- Confirm Password Input -->
             <div class="form-group">
                 <label for="confirm_password">Confirm Password:</label>
-                <input type="password" id="confirm_password" name="confirm_password" required class="form-control">
+                <input type="password" id="confirm_password" name="confirm_password" required class="form-control" oninput="validateConfirmPassword();">
+                <span id="confirm_password_error" class="error-message"></span>
             </div>
 
             <button type="submit" class="btn btn-primary">Reset Password</button>
@@ -97,3 +156,5 @@
     </div>
 </body>
 </html>
+</html>
+

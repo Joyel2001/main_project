@@ -138,37 +138,54 @@
     }
     </style>
     <script>
-       
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get the required DOM elements
-        var emailInput = document.getElementById("email");
-        var emailError = document.getElementById("email-error");
+       {% comment %} email_validation {% endcomment %}
 
-        // Add an input event listener to the email input
-        emailInput.addEventListener("input", function() {
-            validateEmail(); // Call the validation function when the user interacts with the input
-        });
 
-        function validateEmail() {
-            // Get the trimmed value of the email input
-            var emailValue = emailInput.value.trim();
-
-            // Regular expression pattern for valid email address
-            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-            // Check if the email value is empty
-            if (emailValue === "") {
-                emailError.textContent = ""; // Clear the error message if empty
-                return false;
-            } else if (!emailPattern.test(emailValue)) {
-                emailError.textContent = "Please enter a valid email address in the format 'user@example.com'.";
-                return false;
-            } else {
-                emailError.textContent = ""; // Clear the error message if valid
-                return true;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the required DOM elements
+            var emailInput = document.getElementById("email");
+            var emailError = document.getElementById("email-error");
+            var registrationForm = document.forms["registration-form"]; // Get the registration form
+        
+            // Add an input event listener to the email input
+            emailInput.addEventListener("input", function() {
+                validateEmail(); // Call the validation function when the user interacts with the input
+            });
+        
+            // Add a submit event listener to the registration form
+            registrationForm.addEventListener("submit", function(event) {
+                // Perform form validation here
+                if (!validateEmail()) {
+                    // Prevent the form from submitting if email validation fails
+                    event.preventDefault();
+                    // Optionally, you can display a message to the user
+                    emailError.textContent = "Please enter a valid email address.";
+                }
+                // Add additional validation for other form fields as needed
+            });
+        
+            function validateEmail() {
+                // Get the trimmed value of the email input
+                var emailValue = emailInput.value.trim();
+        
+                // Updated regular expression pattern for valid email address
+                var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+                // Check if the email value is empty
+                if (emailValue === "") {
+                    emailError.textContent = ""; // Clear the error message if empty
+                    return true; // Email is considered valid if empty (you can change this behavior)
+                } else if (!emailPattern.test(emailValue)) {
+                    emailError.textContent = "Please enter a valid email address.";
+                    return false;
+                } else {
+                    emailError.textContent = ""; // Clear the error message if valid
+                    return true;
+                }
             }
-        }
-    });
+        });
+        
+        
 
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -198,20 +215,36 @@
 
         function validatePassword() {
             var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("confirm_password");
             var passwordValue = passwordInput.value.trim();
+            var confirmPasswordValue = confirmPasswordInput.value.trim();
             var errorMessage = document.getElementById("password-error");
-
-            if (passwordValue === "") {
+            var confirmErrorMessage = document.getElementById("confirm-password-error");
+        
+            if (confirmPasswordValue === "") {
+                // If Confirm Password is empty, clear both error messages
+                errorMessage.textContent = "";
+                confirmErrorMessage.textContent = "";
+                return true;
+            } else if (passwordValue === "") {
                 errorMessage.textContent = "Please enter a password.";
+                confirmErrorMessage.textContent = "";
                 return false;
             } else if (passwordValue.length < 6) {
                 errorMessage.textContent = "Password must be at least 6 characters long.";
+                confirmErrorMessage.textContent = "";
+                return false;
+            } else if (confirmPasswordValue !== passwordValue) {
+                errorMessage.textContent = "Passwords do not match.";
+                confirmErrorMessage.textContent = "Passwords do not match.";
                 return false;
             } else {
                 errorMessage.textContent = "";
+                confirmErrorMessage.textContent = "";
                 return true;
             }
         }
+        
 
         function validateConfirmPassword() {
             var passwordInput = document.getElementById("password");
@@ -238,21 +271,29 @@
                 validateConfirmPassword()
             );
         }
+
+        var usernameInput = document.getElementById('username');
+        usernameInput.addEventListener("blur", validateUsername);
+
         function validateUsername() {
+            console.log("Validation function called."); // Add this line
             var usernameInput = document.getElementById('username');
             var usernameError = document.getElementById('username-error');
             
-            // Your validation criteria
-            var usernamePattern = /^[a-zA-Z0-9_-]{3,20}$/; // Example pattern
+            // Updated validation criteria
+            var usernamePattern = /^[a-zA-Z][a-zA-Z0-9_-]{0,7}$/;
             
             if (!usernamePattern.test(usernameInput.value)) {
-                usernameError.textContent = 'Username must be 3 to 20 characters and can only contain letters, numbers, hyphens, and underscores.';
+                usernameError.textContent = 'Username must start with a letter and contain 8 characters or fewer, consisting of letters, numbers, hyphens, and underscores.';
                 return false;
             } else {
-                usernameError.textContent = '';
+                usernameError.textContent = ''; // Clear the error message if valid
                 return true;
             }
-        } 
+        }
+        
+        
+        
         document.addEventListener("DOMContentLoaded", function() {
             const usernameField = document.getElementById("username");
             const usernameError = document.getElementById("username-error");

@@ -134,8 +134,7 @@ from django.shortcuts import render, redirect
 from .models import Event
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-@login_required
+@login_required(login_url='loginn')
 
 
 def addevent(request):
@@ -240,7 +239,7 @@ from .models import Event
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-@login_required
+@login_required(login_url='loginn')
 def edit_event(request, event_id):
     event = get_object_or_404(Event, event_id=event_id, user=request.user)
 
@@ -271,7 +270,7 @@ from django.shortcuts import redirect, get_object_or_404
 from .models import Event
 from django.contrib.auth.decorators import login_required
 
-@login_required
+@login_required(login_url='loginn')
 def delete_event(request, event_id):
     event = get_object_or_404(Event, event_id=event_id)
     event.delete()
@@ -348,11 +347,15 @@ def add_bin_event(request):
     return render(request, 'bin/addbinevent.html')
 
 # showbin
+@login_required(login_url='loginn')
 def bin_order(request):
     bins = Bin.objects.all()
     context = {'bins': bins}
     return render(request, 'bin/binorder.html', context)
 
+
+
+@login_required(login_url='loginn')
 def bin_order_event(request):
     binss = BinEvent.objects.all()
     context = {'binss': binss}
@@ -377,7 +380,7 @@ from .models import Bin, BinBooking
 from django.contrib import messages
 from django.db.models import Count
 
-@login_required
+@login_required(login_url='loginn')
 
 
 
@@ -457,6 +460,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Event, EventBooking
 
+@login_required(login_url='loginn')
+
 def event_booking(request, event_id=None):
     event = None
 
@@ -509,7 +514,7 @@ def event_booking(request, event_id=None):
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-@login_required
+@login_required(login_url='loginn')
 def edit_profile(request):
     if request.method == "POST":
         new_username = request.POST.get('username')
@@ -540,30 +545,61 @@ def edit_profile(request):
 
     return render(request, "profile/edit_profile.html")
 #  profile_password_reset
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
-@login_required
+from django.contrib.auth import authenticate, login, get_backends
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import get_backends  # Import get_backends
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+
+@login_required(login_url='loginn')
 def reset_password(request):
     if request.method == "POST":
+        old_password = request.POST.get('old_password')
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
 
-        if new_password != confirm_password:
-            messages.error(request, "Passwords do not match. Please try again.")
-        else:
-            user = request.user
-            user.set_password(new_password)
-            user.save()
-            update_session_auth_hash(request, user)  # Update the session with the new password
-            messages.success(request, "Password reset successful!")
+        user = request.user
 
-            # Redirect to the user's profile page or any other desired page
-            return redirect('user_profile_view')  # Change 'user_profile' to your actual profile page URL name
+        # Explicitly specify the authentication backend
+        auth_user = authenticate(request, username=user.username, password=old_password, backend='django.contrib.auth.backends.ModelBackend')
+
+        if auth_user is not None:
+            if new_password != confirm_password:
+                request.session['password_change_status'] = 'error'
+            else:
+                # Set the new password
+                user.set_password(new_password)
+                user.save()
+
+                # Update the user's session with the new password
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+                request.session['password_change_status'] = 'success'
+
+                # Redirect to the user's profile page or any other desired page
+                return redirect('user_profile_view')  # Change 'user_profile' to your actual profile page URL name
+        else:
+            request.session['password_change_status'] = 'incorrect_old_password'
 
     return render(request, "profile/pass_reset.html")
+
+
+
 
 # user_booked_events_to dispaly
 from django.shortcuts import render

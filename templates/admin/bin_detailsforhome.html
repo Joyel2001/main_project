@@ -158,12 +158,12 @@
                       </li>
                       
                       <!-- User Profile-->
-                      <li class="sidebar-item">
+                      {% comment %} <li class="sidebar-item">
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
                             <i class="mdi mdi-view-dashboard"></i>
                             <span class="hide-menu">Dashboard</span>
                         </a>
-                    </li>
+                    </li> {% endcomment %}
                     
                     <!-- User Details - Always visible for all users -->
                     {% if  user.is_superuser %}
@@ -280,7 +280,6 @@
                             <ul>
                                 {% for booking in bookings %}
                                     <li>
-                                        <strong>Booking ID:</strong> {{ booking.booking_id }}<br>
                                         <strong>Bin Size:</strong> {{ booking.bin_size }}<br>
                                         <strong>Bin Capacity:</strong> {{ booking.bin_capacity }}<br>
                                         <strong>Collection Day:</strong> {{ booking.collection_period }}<br>
@@ -296,83 +295,14 @@
                             </ul>
                         </body>
                         <!-- Include this HTML in your base.html file, preferably at the end of the <body> section -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    {% block modal_content %}
-      <!-- Your form and link content goes here -->
-    {% endblock %}
-  </div>
-</div>
+
 
 <!-- Add this CSS in your CSS file or within a <style> tag in your HTML -->
 <style>
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-/* Close Button */
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
 </style>
 
-<!-- Add this JavaScript at the end of your HTML body or include it in a separate .js file -->
-<script>
-// Get the modal element
-var modal = document.getElementById('myModal');
 
-// Get the button that opens the modal
-var btn = document.getElementById('openModalButton'); // Add an ID to your button element
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName('close')[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function () {
-  modal.style.display = 'block';
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-  modal.style.display = 'none';
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = 'none';
-  }
-};
-</script>
 
                         
 
