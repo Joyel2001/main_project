@@ -64,3 +64,12 @@ class BookedBinStatusAdmin(admin.ModelAdmin):
     list_per_page = 20
 
 
+
+# message
+from django.contrib import admin
+from .models import Message
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'description')
+
+

@@ -20,7 +20,14 @@
     <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
-    
+    <!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Include Bootstrap JavaScript and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
@@ -36,12 +43,12 @@
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div class="preloader">
+    {% comment %} <div class="preloader">
         <div class="lds-ripple">
             <div class="lds-pos"></div>
             <div class="lds-pos"></div>
         </div>
-    </div>
+    </div> {% endcomment %}
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -122,13 +129,16 @@
                                 <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i>
-                                    My Profile</a>
-                                <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i>
-                                    Logout</a>
-                                
+                                <li><a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a></li>
                             </ul>
                         </li>
+                        <script>
+                            $(document).ready(function () {
+                                $('.dropdown-toggle').dropdown();
+                            });
+                        </script>
+                        
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -161,24 +171,25 @@
                         </li>
                         
                         <!-- User Profile-->
+                        
+                        
+                        <!-- User Details - Always visible for all users -->
                         {% if user.is_staff or user.is_superuser %}
-                      <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
-                            <i class="mdi mdi-view-dashboard"></i>
-                            <span class="hide-menu">Dashboard</span>
+                        <li class="sidebar-item">
+                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
+                              <i class="mdi mdi-view-dashboard"></i>
+                              <span class="hide-menu">Dashboard</span>
+                          </a>
+                      </li>
+                      {% endif %}
+                      {% if  user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-account-network"></i>
+                            <span class="hide-menu">User Details</span>
                         </a>
                     </li>
                     {% endif %}
-                        
-                        <!-- User Details - Always visible for all users -->
-                        {% if  user.is_superuser %}
-                        <li class="sidebar-item">
-                            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
-                                <i class="mdi mdi-account-network"></i>
-                                <span class="hide-menu">User Details</span>
-                            </a>
-                        </li>
-                        {% endif %}
                         <!-- Event Details - Visible for staff and superuser -->
                         {% if user.is_staff or user.is_superuser %}
                         <li class="sidebar-item">
@@ -253,7 +264,7 @@
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
         <div class="page-wrapper">
-            {% block content %}
+            
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
@@ -273,92 +284,136 @@
                     
                 </div>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
-            <!-- ============================================================== -->
-            <div class="container-fluid">
-                <!-- ============================================================== -->
-                <!-- Sales chart -->
-                <!-- ============================================================== -->
-                <body>
-                    <h1>Booking Chart</h1>
-                    <canvas id="bookingChart" width="1000" height="200"></canvas>
-                
-                    <script>
-                        // Get the data passed from the view
-                        var labels = {{ labels|safe }};
-                        var data = {{ data|safe }};
-                
-                        // Create a chart using Chart.js
-                        var ctx = document.getElementById('bookingChart').getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: 'Booking Count',
-                                    data: data,
-                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
-                                    }
-                                }
-                            }
-                        });
-                    </script>
-                </body>
-                    
-                
-            </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                All Rights Reserved by EcoRecover Admin. Designed and Developed by <a
-                    href="{% url 'index' %}">EcoRecover</a>.
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
-        </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
-        <!-- ============================================================== -->
-    </div>
-    {% endblock %}
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
-    <script src="{% static 'assets/libs/jquery/dist/jquery.min.js' %}"></script>
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'dist/js/app-style-switcher.js' %}"></script>
-    <!--Wave Effects -->
-    <script src="{% static 'dist/js/waves.js' %}"></script>
-    <!--Menu sidebar -->
-    <script src="{% static 'dist/js/sidebarmenu.js' %}"></script>
-    <!--Custom JavaScript -->
-    <script src="{% static 'dist/js/custom.js' %}"></script>
-    <!--This page JavaScript -->
-    <!--chartis chart-->
-    <script src="{% static 'assets/libs/chartist/dist/chartist.min.js' %}"></script>
-    <script src="{% static 'assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js' %}"></script>
-    <script src="{% static 'dist/js/pages/dashboards/dashboard1.js' %}"></script>
-</body>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include necessary chart.js script -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Booking Chart</h1>
+    <canvas id="bookingChart" width="1200" height="400"></canvas>
+
+    <h1>User Chart</h1>
+    <canvas id="userChart" width="1000" height="400"></canvas>
+
+    <h1>Event Booking Chart</h1>
+<canvas id="eventBookingChart" width="400" height="300"></canvas>
+
+
+    <script>
+        // Get the data passed from the view for the booking chart
+        var bookingLabels = {{ booking_labels|safe }};
+        var bookingData = {{ booking_data|safe }};
+
+        // Create a booking chart using Chart.js
+        var bookingCtx = document.getElementById('bookingChart').getContext('2d');
+        var bookingChart = new Chart(bookingCtx, {
+            type: 'bar',
+            data: {
+                labels: bookingLabels,
+                datasets: [{
+                    label: 'Booking Count',
+                    data: bookingData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Get the data passed from the view for the user chart
+        var userLabels = {{ user_labels|safe }};
+        var userData = {{ user_data|safe }};
+
+        // Create a user pie chart using Chart.js
+        var userCtx = document.getElementById('userChart').getContext('2d');
+        var userChart = new Chart(userCtx, {
+            type: 'bar',
+            data: {
+                labels: userLabels,
+                datasets: [{
+                    data: userData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,  // Disable responsive mode to maintain fixed dimensions
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+            }
+        });
+        
+        var eventCategories = {{ event_categories|safe }};
+        var eventCounts = {{ event_counts|safe }};
+        
+        // Create an event booking pie chart using Chart.js
+        var eventBookingCtx = document.getElementById('eventBookingChart').getContext('2d');
+        var eventBookingChart = new Chart(eventBookingCtx, {
+            type: 'pie',
+            data: {
+                labels: eventCategories,
+                datasets: [{
+                    label: 'Event Booking Count',
+                    data: eventCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false, // Disable responsive mode to maintain fixed dimensions
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+            }
+        });
+        
+        
+    </script>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    canvas {
+        max-width: 100%;
+        height: 400px; /* Set a fixed height for all canvas elements */
+    }
+</style>
 </html>

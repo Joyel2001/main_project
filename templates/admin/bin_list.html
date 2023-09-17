@@ -125,6 +125,11 @@
                               
                           </ul>
                       </li>
+                      <script>
+                        $(document).ready(function () {
+                            $('.dropdown-toggle').dropdown();
+                        });
+                    </script>
                       <!-- ============================================================== -->
                       <!-- User profile and search -->
                       <!-- ============================================================== -->
@@ -157,19 +162,14 @@
                       </li>
                       
                       <!-- User Profile-->
-                      <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
-                            <i class="mdi mdi-view-dashboard"></i>
-                            <span class="hide-menu">Dashboard</span>
-                        </a>
-                    </li>
+                      
                     
                     <!-- User Details - Always visible for all users -->
-                    {% if  user.is_superuser %}
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
-                            <i class="mdi mdi-account-network"></i>
-                            <span class="hide-menu">User Details</span>
+                    {% if user.is_staff or user.is_superuser %}
+                      <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
+                            <i class="mdi mdi-view-dashboard"></i>
+                            <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
                     {% endif %}

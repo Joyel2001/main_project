@@ -54,4 +54,6 @@ urlpatterns = [
     path('bin_booking_list/', views.bin_booking_list, name='bin_booking_list'),
     # Add the URL pattern for updating bin status
 path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
+path('bin-collection-notification/', views.bin_collection_notification, name='bin_collection_notification'),
+path('booking-chart/', views.booking_chart, name='booking_chart'),
 ]

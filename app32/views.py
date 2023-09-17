@@ -10,12 +10,18 @@ from django.contrib.auth import views as auth_views
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from .models import Message
 
 
 
 def index(request):
-
-    return render(request,'index.html')
+    # Retrieve the message from the Message model (assuming you want to display the latest message)
+    latest_message = Message.objects.latest('id')
+    
+    # Retrieve the list of bins from the Bin model
+    bins = Bin.objects.all()
+    
+    return render(request, 'index.html', {'latest_message': latest_message, 'bins': bins})
 
 def resetpass(request):
     return render(request,'resetpass.html')
@@ -730,7 +736,6 @@ def bin_booking_list(request):
 
 
 
-
 # binststus
 # views.py
 from django.shortcuts import render, redirect
@@ -760,3 +765,64 @@ def update_bin_status(request, booking_id):
 
     # Render a template with the form to update the fill level
     return render(request, 'admin/bin_status.html', {'booking': booking})
+
+
+
+
+# notification
+
+from django.shortcuts import render
+
+def bin_collection_notification(request):
+    return render(request, 'admin/bin_collection_notification.html')
+
+# views.py
+
+
+
+from django.shortcuts import render
+from .models import BinBooking, User
+
+def booking_chart(request):
+    # Query the database to get the booking data
+    booking_data = BinBooking.objects.all()
+    event_bookings = EventBooking.objects.all()
+    # Process the booking data to create the chart dataset for bookings
+    booking_labels = []  # Labels for the x-axis (e.g., booking IDs)
+    booking_data_points = []  # Data for the y-axis (e.g., counts)
+    event_booking_counts = {}
+    for booking in booking_data:
+        booking_labels.append(booking.booking_id)
+        booking_data_points.append(1)  # You can customize this to represent the data you want to display (e.g., counts)
+
+    # Query the database to get the user data
+    users = User.objects.all()
+
+    # Process the user data to create the chart dataset for users
+    user_labels = []  # Labels for the x-axis (e.g., user usernames)
+    user_data_points = []  # Data for the y-axis (e.g., active/inactive)
+
+    for user in users:
+        user_labels.append(user.username)  # You can use any user attribute as the label
+        user_data_points.append(1 if user.is_active else 0)  # 1 for active, 0 for inactive
+    for event_booking in event_bookings:
+        category = event_booking.event.category
+        if category in event_booking_counts:
+            event_booking_counts[category] += 1
+        else:
+            event_booking_counts[category] = 1
+
+    # Extract category labels and counts
+    event_categories = list(event_booking_counts.keys())
+    event_counts = list(event_booking_counts.values())
+    context = {
+        'booking_labels': booking_labels,
+        'booking_data': booking_data_points,
+        'user_labels': user_labels,
+        'user_data': user_data_points,
+        'event_categories': event_categories,
+        'event_counts': event_counts,
+    }
+
+    return render(request, 'admin/chart.html', context)
+

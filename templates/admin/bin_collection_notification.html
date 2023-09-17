@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Collection Notification</title>
+    <style>
+        /* CSS for the notification */
+        .notification {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Button to trigger the notification -->
+    <button id="showNotificationBtn">Show Notification</button>
+
+    <!-- Notification container -->
+    <div id="notification" class="notification">
+        Your waste is collected
+    </div>
+
+    <script>
+        // Function to display the notification
+        function showNotification() {
+            var notification = document.getElementById("notification");
+            notification.style.display = "block";
+
+            // Automatically hide the notification after 3 seconds (adjust as needed)
+            setTimeout(function () {
+                notification.style.display = "none";
+            }, 3000);
+        }
+
+        // Attach an event listener to the button
+        var showNotificationBtn = document.getElementById("showNotificationBtn");
+        showNotificationBtn.addEventListener("click", showNotification);
+    </script>
+</body>
+</html>

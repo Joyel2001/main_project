@@ -59,33 +59,104 @@ https://www.tooplate.com/view/2125-artxibition
 
 <!-- ***** Preloader End ***** -->
 
-    <div class="pre-header"> 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-sm-6">
-                    {% comment %} <span>Hey! The Show is Starting in 15 Days.</span> {% endcomment %}
-                </div>
-                <div class="col-lg-6 col-sm-6">
-                    {% if user.is_authenticated %}
-                    <div class="text-button">
-                        <a href="{% url 'hello_admin' %}" class="btn px-0">
-                            Welcome, {{ request.user.username }}
-                         </a>
-                    </div>
+<div class="pre-header"> 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-sm-6">
+                <!-- Add a notification icon here -->
                 
-               {% else %}
-               <div class="text-button">
+                
+                
+                
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                {% if user.is_authenticated %}
+                <div class="text-button">
+                    <a href="{% url 'booking_chart' %}" class="btn px-0">
+                        Welcome, {{ request.user.username }}
+                        
+                    </a>
+                    <button id="notificationButton">
+                        <span class="bell-icon">&#x1F514;</span> <!-- Bell icon Unicode character -->
+                    </button>
+                </div>
+            {% else %}
+            <div class="text-button">
                 <a href="{% url 'loginn' %}">Login <i class="fa fa-arrow-right"></i></a>
             </div>
-               {% endif %}
-                    {% comment %} <div class="text-button">
-                        <a href="{% url 'loginn' %}">Login <i class="fa fa-arrow-right"></i></a>
-                    </div> {% endcomment %}
-                </div>
-            </div>
+            {% endif %}
         </div>
     </div>
-    
+</div>
+
+<!-- Add this code at the end of your HTML file, just before the closing </body> tag -->
+<body>
+    <!-- Your existing content here -->
+
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Notification</h2>
+            <p class="message">{{ latest_message.description }}</p>        </div>
+    </div>
+    <!-- Add your JavaScript for the modal functionality here -->
+</body>
+<script>
+    // Get the modal and button
+    var notificationModal = document.getElementById("notificationModal");
+    var notificationButton = document.getElementById("notificationButton");
+    var closeNotificationBtn = document.querySelector("#notificationModal .close");
+
+    // Function to open the notification modal
+    notificationButton.onclick = function() {
+        notificationModal.style.display = "block";
+    }
+
+    // Function to close the notification modal
+    closeNotificationBtn.onclick = function() {
+        notificationModal.style.display = "none";
+    }
+
+    // Function to close the modal when the user clicks outside of it
+    window.onclick = function(event) {
+        if (event.target == notificationModal) {
+            notificationModal.style.display = "none";
+        }
+    }
+
+    // Add click event listeners to the "Collection Details" buttons
+    var openModalButtons = document.querySelectorAll(".openModalBtn");
+    openModalButtons.forEach(function(button) {
+        button.onclick = function() {
+            var username = button.getAttribute("data-username");
+
+            // Find the message associated with the clicked user
+            var message = null;
+            {% for message in messages %}
+                if ("{{ message.user.username }}" === username) {
+                    message = "{{ message.description }}";
+                    break;
+                }
+            {% endfor %}
+
+            // Set the modal content based on user-specific data
+            var modalContent = notificationModal.querySelector(".modal-content");
+            modalContent.querySelector("h2").textContent = "Collection Details for " + username;
+            modalContent.querySelector(".message").textContent = message;
+
+            // Display the modal
+            notificationModal.style.display = "block";
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
         <div class="container">
@@ -98,6 +169,73 @@ https://www.tooplate.com/view/2125-artxibition
                             <nav>
                                 <a href="index.html" class="logo">Eco<em>Recover</em></a>
                                 <style>
+                                    /* Add custom styles for the bell icon */
+.bell-icon {
+    font-size: 24px; /* Adjust the size as needed */
+    line-height: 1; /* Adjust line height for vertical alignment */
+}
+
+                                    /* style.css */
+
+/* Style for the message */
+/* style.css */
+
+/* Style for the message */
+.message {
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #333; /* Text color */
+    background-color: #f7f7f7; /* Background color */
+    padding: 10px; /* Padding around the message */
+    border: 1px solid #ddd; /* Border around the message */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 10px; /* Margin at the top of the message */
+    
+    /* Add this CSS property for text wrapping */
+    word-wrap: break-word;
+}
+
+
+                                    
+                                    /* CSS for the notification modal */
+                                    #notificationModal {
+                                        display: none;
+                                        position: fixed;
+                                        z-index: 1;
+                                        left: 0;
+                                        top: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        overflow: auto;
+                                        background-color: rgba(0, 0, 0, 0.4);
+                                    }
+                                    
+                                    /* Style the modal content */
+                                    #notificationModal .modal-content {
+                                        background-color: #fefefe;
+                                        margin: 15% auto;
+                                        padding: 20px;
+                                        border: 1px solid #888;
+                                        width: 80%;
+                                    }
+                                    
+                                    /* Close button style */
+                                    #notificationModal .close {
+                                        color: #aaa;
+                                        float: right;
+                                        font-size: 28px;
+                                        font-weight: bold;
+                                    }
+                                    
+                                    /* Close button on hover */
+                                    #notificationModal .close:hover {
+                                        color: black;
+                                        text-decoration: none;
+                                        cursor: pointer;
+                                    }
+                                    
+                                    
+                                    
+                                        
                                     /* Custom Loader Styles */
 .custom-loader {
     position: fixed;
@@ -153,7 +291,18 @@ https://www.tooplate.com/view/2125-artxibition
                                         display: inline-block;
                                         text-decoration: none;
                                     }
-                                    
+                                    /* Add hover effect for venue items */
+.venue-item:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Add a style for clickable elements */
+.venue-item-clickable {
+    cursor: pointer;
+}
+
                                 </style>
                                 <!-- Other navigation links here -->
                             </nav>
@@ -254,7 +403,7 @@ https://www.tooplate.com/view/2125-artxibition
         /* CSS styles for the map image */
         .map-image img {
             max-width: 100%;
-            height: 500px;
+            height: auto;
         }
         
         /* CSS styles for the image text */
@@ -263,7 +412,7 @@ https://www.tooplate.com/view/2125-artxibition
             top: 50%; /* Position text vertically in the middle */
             left: 50%; /* Position text horizontally in the middle */
             transform: translate(-50%, -50%); /* Center text using translate */
-            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            {% comment %} background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */ {% endcomment %}
             padding: 20px;
             border-radius: 10px;
             color: #fff; /* Text color */
@@ -292,6 +441,62 @@ https://www.tooplate.com/view/2125-artxibition
             background-color: #0056b3; /* Hover color */
         }
         
+        /* CSS for making the Bin List more attractive */
+
+/* Style the container */
+/* CSS for making the Bin List more attractive */
+
+/* Style the container */
+.venue-tickets {
+    background-color: #f4f4f4;
+    padding: 30px 0;
+}
+
+/* Style the venue items */
+.venue-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Ensure that all containers have the same height */
+}
+
+/* Style the bin title */
+.venue-item h2 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+/* Style the bin image */
+.venue-item .thumb img {
+    max-width: 100%;
+    height: 150px; /* Set a fixed height for all images */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the list of bin details */
+.venue-item ul {
+    list-style: none;
+    padding: 0;
+}
+
+.venue-item ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Style the bin description */
+.venue-item .description {
+    font-size: 18px;
+    color: #777;
+}
+
 
 </style>
     <div class="main-banner" style="background-image: url('{% static 'images/orginal/8.jpg' %}');">
@@ -402,92 +607,37 @@ https://www.tooplate.com/view/2125-artxibition
 
 
    <!-- *** Venues & Tickets *** -->
-<div class="venue-tickets">
+   <div class="venue-tickets">
     <div class="container">
+        <h1 class="text-center">Bin List</h1>
+        <br>
         <div class="row">
+            {% for bin in bins %}
             <div class="col-lg-4 col-md-6">
-                <div class="venue-item">
+                <div class="venue-item venue-item-clickable" onclick="location.href='{% url 'bin_order'  %}'">
                     <div class="venue-box">
                         <div class="thumb">
-                            <img src="" alt="">
+                            <img src="{{ bin.image.url }}" alt="{{ bin.title }}" class="img-bin">
                         </div>
-                        <div class="right-content">
-                            <h4>Radio City Musical Hall</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <div class="venue-details">
+                            <h2>{{ bin.title }}</h2>
                             <ul>
-                                <li><i class="fa fa-sitemap"></i>250</li>
-                                <li><i class="fa fa-user"></i>500</li>
+                                <li><strong>Size:</strong> {{ bin.size }}</li>
+                                <li><strong>Capacity:</strong> {{ bin.capacity }}</li>
                             </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$45</em></span>
-                            </div>
-                            <div class="main-white-button">
-                                <a href="ticket-details.html">Purchase Tickets</a>
-                            </div>
+                            <p class="description">{{ bin.description }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="venue-item">
-                    <div class="venue-box">
-                        <div class="thumb">
-                            <img src="/images/disposal.jpg" alt="">
-                        </div>
-                        <div class="right-content">
-                            <h4>Madison Square Garden</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            <ul>
-                                <li><i class="fa fa-sitemap"></i>450</li>
-                                <li><i class="fa fa-user"></i>650</li>
-                            </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$55</em></span>
-                            </div>
-                            <div class="main-white-button">
-                                <div class="main-white-button">
-                                    <div class="purchase-button">
-                                        <a class="btn btn-primary" href="ticket-details.html">Get Your Tickets</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="venue-item">
-                    <div class="venue-box">
-                        <div class="thumb">
-                            <img src="{% static '/images/disposal.jpg' %}" alt="">
-                        </div>
-                        <div class="right-content">
-                            <h4 class="venue-title">Royce Hall</h4>
-                            <p class="venue-description">Elevate your experience at Royce Hall, where luxury meets sustainability. Immerse yourself in the artistry of eco-friendly design while enjoying a variety of events and performances.</p>
-                            <ul class="venue-details">
-                                <li><i class="fa fa-sitemap"></i> Seating: 450</li>
-                                <li><i class="fa fa-user"></i> Capacity: 750</li>
-                            </ul>
-                            <div class="price">
-                                <span>1 ticket<br>from <em>$65</em></span>
-                            </div>
-                            <div class="main-white-button">
-                                <div class="purchase-button">
-                                    <a class="btn btn-primary" href="ticket-details.html">Get Your Tickets</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
+<br><br>
 
-
-    <h2>campaigns and Seminars</h2>
+    <h2 class="seminarclss">campaigns and Seminars</h2><br><br>
     <div class="coming-events">
         <div class="left-button">
             <div class="main-white-button">
@@ -542,6 +692,17 @@ https://www.tooplate.com/view/2125-artxibition
         </div>
     </div>
     <style>
+        .seminarclss
+        {
+            Text-align:center;
+        }
+        /* CSS for hover effect */
+.event-item:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
+    transform: scale(1.05); /* Scale up the item on hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
         /* Style for venue items */
         .venue-item {
             margin-bottom: 30px;
@@ -676,19 +837,19 @@ https://www.tooplate.com/view/2125-artxibition
             <div class="row">
                 <div class="col-lg-4">
                     <div class="address">
-                        <h4>Sunny Hill Festival Address</h4>
-                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                        <h4>EcoRecover Address</h4>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>KOTTAYAM</span>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="links">
                         <h4>Useful Links</h4>
                         <ul>
-                            <li><a href="#">Info</a></li>
-                            <li><a href="#">Venues</a></li>
-                            <li><a href="#">Guides</a></li>
-                            <li><a href="#">Videos</a></li>
-                            <li><a href="#">Outreach</a></li>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Bin Booking</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">campaigns and Semiinars</a></li>
+                            <li><a href="#"></a></li>
                         </ul>
                     </div>
                 </div>
@@ -706,12 +867,10 @@ https://www.tooplate.com/view/2125-artxibition
                     <div class="under-footer">
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
-                                <p>São Conrado, Rio de Janeiro</p>
                             </div>
                             <div class="col-lg-6 col-sm-6">
-                                <p class="copyright">Copyright 2021 ArtXibition Company 
+                                <p class="copyright">Copyright 2021 EcoRecover Company 
                     
-                    			<br>Design: <a rel="nofollow" href="https://www.tooplate.com" target="_parent">Tooplate</a></p>
                             </div>
                         </div>
                     </div>
@@ -724,13 +883,7 @@ https://www.tooplate.com/view/2125-artxibition
                             </div>
                             <div class="col-lg-6">
                                 <div class="menu">
-                                    <ul>
-                                        <li><a href="index.html" class="active">Home</a></li>
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="rent-venue.html">Rent Venue</a></li>
-                                        <li><a href="shows-events.html">Shows & Events</a></li> 
-                                        <li><a href="tickets.html">Tickets</a></li> 
-                                    </ul>
+                                    
                                 </div>
                             </div>
                             <div class="col-lg-3">

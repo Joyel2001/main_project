@@ -127,6 +127,16 @@ class BookedBinStatus(models.Model):
         return str(self.status_id)  # Convert status_id to a string and return it
 
 
+# notification
+
+from django.db import models
+
+class Message(models.Model):
+    # Fields for the message model
+    description = models.TextField()
+    
+    def __str__(self):
+        return f"Message {self.id}"
 
 
 

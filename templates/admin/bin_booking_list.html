@@ -157,12 +157,15 @@
                       </li>
                       
                       <!-- User Profile-->
+                      {% if user.is_staff or user.is_superuser %}
                       <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
                             <i class="mdi mdi-view-dashboard"></i>
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
+                    {% endif %}
+                    
                     
                     <!-- User Details - Always visible for all users -->
                     {% if  user.is_superuser %}
@@ -267,9 +270,12 @@
               <div class="col-md-8">
                   <div class="card">
                       <div class="card-body">
-<head>
-    <title>Bin Booking List</title>
-</head>
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>Bin Booking List</title>
+                            <!-- Add your CSS and JavaScript links here -->
+                        </head>
 <body>
     <h1>Bin Booking List</h1>
     <table>
@@ -299,6 +305,7 @@
                     <td>{{ booking.bin_size }}</td>
                     <td>{{ booking.bin_capacity }}</td>
                     <td>{{ booking.collection_period }}</td>
+
                     <td>
                         {% for status in booking.statuses.all %}
                             {% with fill_level=status.fill_level %}
@@ -308,15 +315,66 @@
                             {% endwith %}
                         {% endfor %}
                     </td>
-                    
+                <!-- Table data here -->
+                    <td><button id="openModalBtn">Collection Details</button></td>
+                
+
                     
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Collection Details</h2>
+            <p>Was the waste collected?</p>
+            <button id="wasteCollectedBtn">Waste Collected</button>
+            <button id="notCollectedBtn">Not Collected</button>
+        </div>
+    </div>
+    
 </body>
 
 <style>
+    /* The Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    text-align: center;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
     .fill-green {
         color: green;
     }
@@ -367,4 +425,46 @@ tr:hover {
 </div>
 </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+    // Get the modal and buttons
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("openModalBtn");
+    var wasteCollectedBtn = document.getElementById("wasteCollectedBtn");
+    var notCollectedBtn = document.getElementById("notCollectedBtn");
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // When the user clicks the "Waste Collected" button
+    wasteCollectedBtn.onclick = function () {
+        // Perform actions for waste collected (e.g., update status)
+        // Close the modal
+        modal.style.display = "none";
+    }
+
+    // When the user clicks the "Not Collected" button
+    notCollectedBtn.onclick = function () {
+        // Perform actions for waste not collected (e.g., update status)
+        // Close the modal
+        modal.style.display = "none";
+    }
+
+    // Close the modal when the close button is clicked
+    $(".close").on("click", function () {
+        modal.style.display = "none";
+    });
+});
+</script>
+
 </html>

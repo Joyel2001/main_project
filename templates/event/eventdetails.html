@@ -114,17 +114,23 @@
                       <!-- ============================================================== -->
                       <!-- User profile and search -->
                       <!-- ============================================================== -->
-                      <li class="nav-item dropdown" style="background-color: #414755;">                          <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
-                          </a>
-                          <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i>
-                                  My Profile</a>
-                              <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i>
-                                  Logout</a>
-                              
-                          </ul>
-                      </li>
+                      <li class="nav-item dropdown" style="background-color: #414755;">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    
+                    <script>
+                        $(document).ready(function () {
+                            $('.dropdown-toggle').dropdown();
+                        });
+                    </script>
+                    
+                    
                       <!-- ============================================================== -->
                       <!-- User profile and search -->
                       <!-- ============================================================== -->
@@ -157,12 +163,14 @@
                       </li>
                       
                       <!-- User Profile-->
+                      {% if user.is_staff or user.is_superuser %}
                       <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'hello_admin' %}" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
                             <i class="mdi mdi-view-dashboard"></i>
                             <span class="hide-menu">Dashboard</span>
                         </a>
                     </li>
+                    {% endif %}
                     
                     <!-- User Details - Always visible for all users -->
                     {% if  user.is_superuser %}
@@ -230,7 +238,11 @@
                     {% endif %}
                     
             </ul>
-                  
+                  <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
