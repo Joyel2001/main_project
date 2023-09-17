@@ -11,16 +11,17 @@
       <textarea class="form-control" id="description" name="description" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">{{ event.description }}</textarea>
     </div>
     <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="date" style="font-weight: bold; color: #555;">Date:</label>
-            <input type="date" class="form-control" id="date" name="date" value="{{ event.date }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            <span id="dateError" style="color: red;"></span>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="time" style="font-weight: bold; color: #555;">Time:</label>
-            <input type="time" class="form-control" id="time" name="time" value="{{ event.time }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-            <span id="timeError" style="color: red;"></span>
-          </div>
+      <div class="form-group col-md-6">
+        <label for="date" style="font-weight: bold; color: #555;">Date:</label>
+        <input type="date" class="form-control" id="date" name="date" value="{{ event.date|date:'Y-m-d' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <span id="dateError" style="color: red;"></span>
+    </div>
+    <div class="form-group col-md-6">
+        <label for="time" style="font-weight: bold; color: #555;">Time:</label>
+        <input type="time" class="form-control" id="time" name="time" value="{{ event.time|time:'H:i' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <span id="timeError" style="color: red;"></span>
+    </div>
+    
           
     </div>
     <div class="form-group">

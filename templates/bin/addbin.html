@@ -13,28 +13,196 @@
             {% csrf_token %}
             <label for="bin-id">Bin ID</label>
             <input type="text" id="bin-id" name="bin_id" required>
+            <div id="bin-id-feedback" class="invalid-feedback"></div>
+
             <label for="bin-title">Title</label>
             <input type="text" id="bin-title" name="title" required>
+            <div id="bin-title-feedback" class="invalid-feedback"></div>
+
             <label for="bin-size">Size</label>
             <input type="text" id="bin-size" name="size" required>
+            <div id="bin-size-feedback" class="invalid-feedback"></div>
+
             <label for="bin-capacity">Capacity</label>
             <input type="text" id="bin-capacity" name="capacity" required>
+            <div id="bin-capacity-feedback" class="invalid-feedback"></div>
+
             <label for="bin-description">Description</label>
             <textarea id="bin-description" name="description" rows="4" required></textarea>
-            <label for="bin-image">Image</label>
-            <input type="file" id="bin-image" name="image">
-            <input type="submit" value="Submit">
-        </form>
-        
-            {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+            <div id="bin-description-feedback" class="invalid-feedback"></div>
 
+            <label for="bin-image">Image</label>
+            <input type="file" id="bin-image" name="image" accept=".jpg, .jpeg, .png">
+            <div id="bin-image-feedback" class="invalid-feedback"></div>
+
+            <input type="submit" value="Submit">
         </form>
     </div>
 </body>
+<style>
+    .invalid-feedback {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #007bff;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    input[type="file"] {
+        margin-top: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    ul.messages {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    ul.messages li {
+        color: #007bff;
+    }
+
+    ul.messages .error {
+        color: #ff0000;
+    }
+</style>
+<script>
+    // JavaScript/jQuery for real-time validation
+    document.addEventListener("DOMContentLoaded", function() {
+        // Bin ID validation
+        const binIdInput = document.getElementById("bin-id");
+        const binIdFeedback = document.getElementById("bin-id-feedback");
+
+        binIdInput.addEventListener("input", function() {
+            const value = binIdInput.value.trim();
+            if (value === "") {
+                binIdFeedback.textContent = "Bin ID cannot be empty.";
+            } else {
+                binIdFeedback.textContent = "";
+            }
+        });
+
+        // Title validation
+        const binTitleInput = document.getElementById("bin-title");
+        const binTitleFeedback = document.getElementById("bin-title-feedback");
+
+        binTitleInput.addEventListener("input", function() {
+            const value = binTitleInput.value.trim();
+            if (value === "") {
+                binTitleFeedback.textContent = "Title cannot be empty.";
+            } else {
+                binTitleFeedback.textContent = "";
+            }
+        });
+
+        // Size validation
+        const binSizeInput = document.getElementById("bin-size");
+        const binSizeFeedback = document.getElementById("bin-size-feedback");
+
+        binSizeInput.addEventListener("input", function() {
+            const value = binSizeInput.value.trim();
+            if (value === "") {
+                binSizeFeedback.textContent = "Size cannot be empty.";
+            } else {
+                binSizeFeedback.textContent = "";
+            }
+        });
+
+        // Capacity validation
+        const binCapacityInput = document.getElementById("bin-capacity");
+        const binCapacityFeedback = document.getElementById("bin-capacity-feedback");
+
+        binCapacityInput.addEventListener("input", function() {
+            const value = binCapacityInput.value.trim();
+            if (value === "") {
+                binCapacityFeedback.textContent = "Capacity cannot be empty.";
+            } else {
+                binCapacityFeedback.textContent = "";
+            }
+        });
+
+        // Description validation
+        const binDescriptionInput = document.getElementById("bin-description");
+        const binDescriptionFeedback = document.getElementById("bin-description-feedback");
+
+        binDescriptionInput.addEventListener("input", function() {
+            const value = binDescriptionInput.value.trim();
+            if (value === "") {
+                binDescriptionFeedback.textContent = "Description cannot be empty.";
+            } else {
+                binDescriptionFeedback.textContent = "";
+            }
+        });
+
+        // Image validation
+        const binImageInput = document.getElementById("bin-image");
+        const binImageFeedback = document.getElementById("bin-image-feedback");
+
+        binImageInput.addEventListener("input", function() {
+            const allowedFormats = [".jpg", ".jpeg", ".png"];
+            const selectedFile = binImageInput.files[0];
+            if (selectedFile) {
+                const fileExtension = selectedFile.name.toLowerCase().slice(-4);
+                if (!allowedFormats.includes(fileExtension)) {
+                    binImageFeedback.textContent = "Invalid image format. Supported formats: .jpg, .jpeg, .png";
+                } else {
+                    binImageFeedback.textContent = "";
+                }
+            } else {
+                binImageFeedback.textContent = "";
+            }
+        });
+    });
+</script>
 </html>

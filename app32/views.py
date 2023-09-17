@@ -54,7 +54,7 @@ def loginn(request):
         if user is not None:
             login(request, user)
             if user.is_staff or user.is_superuser:
-                return redirect('hello_admin')
+                return redirect('booking_chart')
             else:
                 return redirect('index')
         else:
@@ -300,6 +300,19 @@ def registration_confirmation(request):
 from django.contrib import messages
 from .models import Bin
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import IntegrityError
+
+import logging  # Import the logging module
+
+# Add this at the top of your views.py
+logger = logging.getLogger(__name__)
+
+# Inside your add_bin view
+from django.db import IntegrityError
+from django.contrib import messages
+
 def add_bin(request):
     if request.method == 'POST':
         bin_id = request.POST['bin_id']
@@ -309,20 +322,25 @@ def add_bin(request):
         description = request.POST['description']
         image = request.FILES.get('image')  # Get the uploaded image
 
-        new_bin = Bin(
-            bin_id=bin_id,
-            title=title,
-            size=size,
-            capacity=capacity,
-            description=description,
-            image=image
-        )
-        new_bin.save()
-
-        messages.success(request, 'Bin details added successfully.')
+        try:
+            new_bin = Bin(
+                bin_id=bin_id,
+                title=title,
+                size=size,
+                capacity=capacity,
+                description=description,
+                image=image
+            )
+            new_bin.save()
+            messages.success(request, 'Bin details added successfully.')
+        except IntegrityError:
+            messages.error(request, 'An error occurred while saving the bin details.')
+        
         return redirect('add_bin')  # Redirect to the form after adding
 
     return render(request, 'bin/addbin.html')
+
+
 
 # addbinfor home
 from django.contrib import messages
@@ -466,52 +484,56 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Event, EventBooking
 
-@login_required(login_url='loginn')
+
+from django.contrib.messages import constants as messages
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Event, EventBooking
+import uuid
 
 def event_booking(request, event_id=None):
     event = None
 
     if event_id:
-        # If 'event_id' is provided, fetch the event using the correct field name
         event = get_object_or_404(Event, event_id=event_id)
 
     if request.method == 'POST':
-        # Handle the form submission here
-        attendees = int(request.POST.get('attendees', 0))  # Convert input to an integer
-        max_participants = event.max_participants  # Get the maximum participants from the event
+        attendees = int(request.POST.get('attendees', 0))
+        max_participants = event.max_participants
 
         if event:
             if max_participants <= 0:
-                # Booking is closed if max_participants is zero or negative
-                messages.error(request, 'Booking is closed for this event.')
-                return redirect('event_booking', event_id=event.event_id)  # Use event.event_id
-
-            try:
-                if attendees <= max_participants:
-                    # Generate a unique booking ID using uuid
-                    booking_id = uuid.uuid4().hex
-
-                    booking = EventBooking.objects.create(
-                        booking_id=booking_id,
-                        user=request.user,  # Assuming you have user authentication
-                        event=event,
-                        attendees=attendees
-                    )
-                    # Deduct the number of attendees from the maximum participants
-                    event.max_participants -= attendees
-                    event.save()
-
-                    messages.success(request, 'Booking successfully created.')
-                    return redirect('event_booking', event_id=event.event_id)  # Use event.event_id
+                booking_status = 'Booking is closed for this event.'
+            else:
+                # Check if the user has already booked this event
+                existing_booking = EventBooking.objects.filter(event=event, user=request.user).first()
+                if existing_booking:
+                    booking_status = 'You have already booked this event.'
                 else:
-                    messages.error(request, 'Number of attendees exceeds maximum participants.')
-                    return redirect('event_booking', event_id=event.event_id)  # Use event.event_id
+                    try:
+                        if attendees <= max_participants:
+                            booking_id = uuid.uuid4().hex
 
-            except Exception as e:
-                messages.error(request, f'An error occurred: {str(e)}')
-                return redirect('event_booking', event_id=event.event_id)  # Use event.event_id
+                            booking = EventBooking.objects.create(
+                                booking_id=booking_id,
+                                user=request.user,
+                                event=event,
+                                attendees=attendees
+                            )
+                            event.max_participants -= attendees
+                            event.save()
+
+                            booking_status = 'Booking successfully created.'
+                        else:
+                            booking_status = 'Number of attendees exceeds maximum participants.'
+                    except Exception as e:
+                        booking_status = f'An error occurred: {str(e)}'
+
+            return render(request, 'event/bookingeventform.html', {'event': event, 'booking_status': booking_status})
 
     return render(request, 'event/bookingeventform.html', {'event': event})
+
+
 
 
 
@@ -707,12 +729,20 @@ def edit_user(request, user_id):
 
 # admin_event_details
 from django.shortcuts import render
-from .models import EventBooking
+from .models import EventBooking, Event
 
 def booking_list(request):
     event_bookings = EventBooking.objects.all()
-    context = {'event_bookings': event_bookings}
+    events = Event.objects.all()
+
+    selected_event = request.GET.get('event')  # Get the selected event from the query parameters
+
+    if selected_event:
+        event_bookings = event_bookings.filter(event__name=selected_event)
+
+    context = {'event_bookings': event_bookings, 'events': events, 'selected_event': selected_event}
     return render(request, 'admin/event_booking_detail.html', context)
+
 
 
 # admin_bin_details

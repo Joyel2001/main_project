@@ -321,9 +321,15 @@
 
                     
                 </tr>
+                {% empty %}
+            <tr>
+                <td colspan="10">No bookings at this time.</td>
+            </tr>
             {% endfor %}
+            
         </tbody>
     </table>
+    
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

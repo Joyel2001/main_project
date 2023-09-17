@@ -132,13 +132,11 @@
                           <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                               <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
                           </a>
-                          <ul class="dropdown-menu dropdown-menu-end user-dd animated" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i>
-                                  My Profile</a>
-                              <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i>
-                                  Logout</a>
-                              
-                          </ul>
+                          <ul class="dropdown-menu dropdown-menu-end user-dd animated dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+                            <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a>
+                        </ul>
+                        
                       </li>
                       <!-- ============================================================== -->
                       <!-- User profile and search -->
@@ -371,12 +369,15 @@
           <div class="form-group">
             <label for="edit-username">Username:</label>
             <input type="text" id="edit-username" name="username" class="form-control" required>
+            <div id="username-error" class="text-danger"></div>
           </div>
-
+          
           <div class="form-group">
             <label for="edit-email">Email:</label>
             <input type="email" id="edit-email" name="email" class="form-control" required>
+            <div id="email-error" class="text-danger"></div>
           </div>
+          
 
           <div class="form-group">
             <label for="edit-role">Role:</label>
@@ -680,8 +681,58 @@ tr:hover {
       var formAction = modal.find('#editUserForm').attr('action');
       modal.find('#editUserForm').attr('action', formAction.replace('0', button.data('id')));
     });
+
+    // Username validation (6-8 characters starting with a letter)
+    $('#edit-username').on('input', function () {
+      var username = $(this).val();
+      var usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,7}$/;
+      if (!usernameRegex.test(username)) {
+        $('#username-error').text('Username must be 6-8 characters and start with a letter.');
+      } else {
+        $('#username-error').text('');
+      }
+    });
+
+    // Email validation
+$('#edit-email').on('input', function () {
+  var email = $(this).val();
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    $('#email-error').text('Invalid email address.');
+  } else {
+    $('#email-error').text('');
+  }
+});
+
+
+    // Validation function for form submission
+    $('#editUserForm').submit(function (event) {
+      var username = $('#edit-username').val();
+      var email = $('#edit-email').val();
+
+      // Username validation (6-8 characters starting with a letter)
+      var usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,7}$/;
+      if (!usernameRegex.test(username)) {
+        $('#username-error').text('Username must be 6-8 characters and start with a letter.');
+        event.preventDefault(); // Prevent form submission
+        return;
+      } else {
+        $('#username-error').text('');
+      }
+
+      // Email validation
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        $('#email-error').text('Invalid email address.');
+        event.preventDefault(); // Prevent form submission
+        return;
+      } else {
+        $('#email-error').text('');
+      }
+    });
   });
 </script>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
       const editStatusCheckbox = document.getElementById("edit-status");

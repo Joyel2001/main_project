@@ -250,95 +250,67 @@ body {
     <div class="event-section">
         <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
         <h3>Add Event Details</h3>
-<form method="post" enctype="multipart/form-data" class="event-form" id="event-form">
-    {% csrf_token %}
-    <!-- Remove the ID section -->
-    <!-- <label for="event-id">Event ID</label>
-    <input type="text" id="event-id" name="id" required> -->
-
-    <label for="event-name">Event Name</label>
-    <input type="text" id="event-name" name="name" required>
-    <label for="event-category">Category</label>
-
-
-    <select id="event-category" name="category" required class="category-select">
-        <option value="category1">Environmental Cleanup Campaign</option>
-        <option value="category2">Waste Management Seminar</option>
-        <option value="category3">Expo</option>
-        <option value="category4">Composting Workshop</option>
-        <option value="category5">Environmental Hackathon</option>
-        <!-- Add more category options as needed -->
-    </select>
-    
-    <div class="spacer"></div> <!-- Add a spacer element -->
-    
-    <label for="event-description">Event Description</label>
-    <textarea id="event-description" name="description" rows="4" required></textarea>
-    
-    <label for="event-image">Event Image</label>
-    <input type="file" id="event-image" name="image">
-    
-    <label for="event-date">Date</label>
-    <input type="date" id="event-date" name="date" required>
-    
-    <label for="event-time">Time</label>
-    <input type="time" id="event-time" name="time" required>
-    
-    <label for="event-location">Location</label>
-    <input type="text" id="event-location" name="location" required>
-    
-    <label for="event-max-participants">Max Participants</label>
-    <input type="number" id="event-max-participants" name="max_participants" required>
-
-    
-    <!-- Add a section to select categories -->
-    
-
-<div class="button-row">
-    <input type="submit" value="Add Event" class="btn-add-event">
-    <span class="button-separator"></span> <!-- Add a separator -->
-    <a href="{% url 'event_details_view' %}" class="btn-show-events">Show Events</a>
-    <p id="image-error" class="error-message"></p>
-</div>
-
-
-
-</form>
-
-        {% if success_message %}
-        <div class="success-message">
-            {{ success_message }}
-        </div>
-        {% endif %}
-    </div>
-    
-
-    
-    <script>
-    document.getElementById('event-form').addEventListener('submit', function(event) {
-        const imageInput = document.getElementById('event-image');
-        const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-        const fileName = imageInput.value.toLowerCase();
-        const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
-        const imageError = document.getElementById('image-error');
-    
-        if (!allowedExtensions.includes(fileExtension)) {
-            imageError.textContent = 'Please select a valid image file (JPG, JPEG, or PNG).';
-            event.preventDefault();
-        } else {
-            imageError.textContent = ''; // Clear the error message
-        }
-    });
-
-    
+        <form method="post" enctype="multipart/form-data" class="event-form" id="event-form">
+            {% csrf_token %}
+            
+            <label for="event-name">Event Name</label>
+            <input type="text" id="event-name" name="name" required>
+            
+            <label for="event-category">Category</label>
+            <select id="event-category" name="category" required class="category-select">
+                <option value="category1">Environmental Cleanup Campaign</option>
+                <option value="category2">Waste Management Seminar</option>
+                <option value="category3">Expo</option>
+                <option value="category4">Composting Workshop</option>
+                <option value="category5">Environmental Hackathon</option>
+                <!-- Add more category options as needed -->
+            </select>
+            
+            <div class="spacer"></div>
+            
+            <label for="event-description">Event Description</label>
+            <textarea id="event-description" name="description" rows="4" required></textarea>
+            
+            <label for="event-image">Event Image</label>
+            <input type="file" id="event-image" name="image">
+            <span id="image-error" class="error-message" style="color: red;"></span> <!-- Error message span -->
+            
+            <label for="event-date">Date</label>
+            <input type="date" id="event-date" name="date" required>
+            
+            <label for="event-time">Time</label>
+            <input type="time" id="event-time" name="time" required>
+            
+            <label for="event-location">Location</label>
+            <input type="text" id="event-location" name="location" required>
+            
+            <label for="event-max-participants">Max Participants</label>
+            <input type="number" id="event-max-participants" name="max_participants" required>
+            
+            <div class="button-row">
+                <input type="submit" value="Add Event" class="btn-add-event">
+                <span class="button-separator"></span>
+                <a href="{% url 'event_details_view' %}" class="btn-show-events">Show Events</a>
+                <!-- Remove the image error message here -->
+            </div>
+        </form>
         
+        <script>
+            document.getElementById('event-form').addEventListener('submit', function(event) {
+                const imageInput = document.getElementById('event-image');
+                const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+                const fileName = imageInput.value.toLowerCase();
+                const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+                const imageError = document.getElementById('image-error');
         
+                if (!allowedExtensions.includes(fileExtension)) {
+                    imageError.textContent = 'Please select a valid image file (JPG, JPEG, or PNG).';
+                    event.preventDefault();
+                } else {
+                    imageError.textContent = ''; // Clear the error message
+                }
+            });
         
-</script>
-    
-        {% comment %} <h3>Delete Event</h3>
-        <div class="event-section">
-            <a href="{% url 'delete_event' %}" class="btn">Delete Event</a>
-        </div> {% endcomment %}
-</div>
-</div>
+            // Add date and time validation (as shown in the previous response)
+        </script>
+        
