@@ -198,13 +198,71 @@
                     
                     <!-- Bin Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_list' %}" aria-expanded="false">
-                            <i class="mdi mdi-file"></i>
-                            <span class="hide-menu">Bin Details</span>
-                        </a>
-                    </li>
-                    {% endif %}
+    <li class="sidebar-item">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleMenu()">
+            <i class="mdi mdi-file"></i>
+            <span class="hide-menu">Bin Details</span>
+        </a>
+    </li>
+    <div id="binDetailsSubMenu" class="sidebar-submenu">
+        <ul class="submenu-list">
+            <li><a href="{% url 'bin_list' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'bin_list_forevent' %}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+        </ul>
+        
+    </div>
+{% endif %}
+<style>
+    /* Custom styles for submenu list */
+.submenu-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.submenu-list li {
+    margin-bottom: 10px;
+}
+
+/* Style for icon elements */
+.submenu-list a {
+    color: grey; /* Set the default text color */
+    text-decoration: none; /* Remove underline from links */
+    transition: color 0.3s; /* Smooth transition for text color */
+}
+
+/* Hover effect: change text color to black */
+.submenu-list a:hover {
+    color: #000;
+}
+
+    .sidebar-submenu {
+        display: none;
+        margin-left: 30px; /* Adjust the margin as needed */
+    }
+    
+    .sidebar-submenu ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .sidebar-submenu ul li {
+        margin-bottom: 10px; /* Adjust the spacing between menu items */
+    }
+    
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<script>
+    function toggleMenu() {
+        var submenu = document.getElementById('binDetailsSubMenu');
+        if (submenu.style.display === 'block') {
+            submenu.style.display = 'none';
+        } else {
+            submenu.style.display = 'block';
+        }
+    }
+    
+</script>
                     
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     <!-- Bin Booking Details - Visible for staff and superuser -->

@@ -856,3 +856,12 @@ def booking_chart(request):
 
     return render(request, 'admin/chart.html', context)
 
+# BIN_ADMIN_FOR_EVENT_LIST
+
+from django.shortcuts import render
+from .models import BinEvent
+
+def bin_list_forevent(request):
+    bin_list = BinEvent.objects.all()
+    return render(request, 'admin/bin_list_for_events.html', {'bin_list': bin_list})
+

@@ -56,4 +56,5 @@ urlpatterns = [
 path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
 path('bin-collection-notification/', views.bin_collection_notification, name='bin_collection_notification'),
 path('booking-chart/', views.booking_chart, name='booking_chart'),
+ path('bin_list_forevent/', views.bin_list_forevent, name='bin_list_forevent'),
 ]

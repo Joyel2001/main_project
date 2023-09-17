@@ -364,8 +364,8 @@
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Event Details</li>
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
                                 </ol>
                             </nav>
                         </div>
@@ -383,190 +383,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Details</title>
-    <!-- Add your CSS links if needed -->
-    <style>
-        .nav-item.dropdown {
-            background-color: #414755;
-          }
-        body, h1, h2, h3, p {
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Flexbox container for alignment */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-image: url('images/orginal/5.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Event section styling */
-        .event-section {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 80%; /* Adjust as needed */
-            text-align: center;
-        }
-
-        .event-section h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .event-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .event-item {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .event-item img {
-            max-width: 100px;
-            margin-right: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .event-details {
-            flex: 1;
-            text-align: left;
-        }
-
-        .event-number {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .event-actions {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-
-        .nav-link {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px 20px;
-            border: 1px solid #45a049;
-            border-radius: 4px;
-            transition: background-color 0.3s, color 0.3s;
-            background-color: #45a049;
-        }
-
-        .nav-link:hover {
-            background-color: #359841;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-edit {
-            margin-right: 10px;
-        }
-
-        .delete-form {
-            display: inline-block;
-            margin: 0;
-        }
-
-        .btn-delete {
-            padding: 5px 10px;
-            background-color: #e74c3c;
-            transition: background-color 0.3s;
-        }
-
-        .btn-delete:hover {
-            background-color: #c0392b;
-        }
-        .t1
-        {
-            text-align:justify;
-        }
-
-    </style>
+    <title>Bin Details</title>
+    <!-- Add your CSS links here if needed -->
 </head>
 <body>
-    <div class="container">
-        <div class="event-section">
-            <h2>Event Details</h2>
-            <br>
-            <ul class="event-list">
-                {% for event in events %}
-                    <li class="event-item">
-                        <span class="event-number">{{ forloop.counter }}</span>
-                        <img src="{{ event.image.url }}" alt="{{ event.name }} Image">
-                        <div class="event-details">
-                            <h2>{{ event.name }}</h2>
-                            <br>
-                            <p class ="t1">{{ event.description }}</p>
-                            <p><strong>Date:</strong> {{ event.date }}</p>
-                            <p><strong>Time:</strong> {{ event.time }}</p>
-                            <p><strong>Location:</strong> {{ event.location }}</p>
-                        </div>
-                        &nbsp&nbsp
-                        <div class="event-actions">
-                            <a href="{% url 'delete_event' event.event_id %}" class="btn btn-delete" style="margin-left: 10px;">Delete</a>
-
-                            
-                            <!-- Add margin to the "Edit" button to create space -->
-                            <a href="{% url 'edit_event' event.event_id %}" class="btn btn-edit" style="margin-left: 10px;">Edit</a>
-                        </div>
-                        
-                    </li>
-                {% endfor %}
-            </ul>
-            
-            <div class="nav-links">
-                <a class="nav-link" href="{% url 'addevent' %}">Add Events</a>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        function confirmDelete(eventName) {
-            const confirmDelete = confirm(`Are you sure you want to delete the event "${eventName}"?`);
-            if (confirmDelete) {
-                document.querySelector('.delete-form').submit();
-            }
-        }
-    </script>
-
-
-
-
-    
+    <h1>Bin Details</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Bin ID</th>
+                <th>Title</th>
+                <th>Size</th>
+                <th>Capacity</th>
+                <th>Description</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bin in bin_list %}
+                <tr>
+                    <td>{{ bin.bin_id }}</td>
+                    <td>{{ bin.title }}</td>
+                    <td>{{ bin.size }}</td>
+                    <td>{{ bin.capacity }}</td>
+                    <td>{{ bin.description }}</td>
+                    <td>
+                        {% if bin.image %}
+                            <img src="{{ bin.image.url }}" alt="{{ bin.title }}" width="100">
+                        {% else %}
+                            No Image
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No bins available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
-</div>
-</div>
-</div>
+<style>
+    /* userlist/static/userlist/styles.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+thead {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+</style>
 </html>
