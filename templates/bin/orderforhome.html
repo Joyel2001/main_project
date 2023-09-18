@@ -83,8 +83,9 @@
                 </select><br>
             
 
-            <label for="pin">Pin Code:</label>
-            <input type="text" id="pin" name="pin" required>
+                <label for="pin">Pin Code:</label>
+                <input type="text" id="pin" name="pin" required pattern="[0-9]{6}" title="Please enter a 6-digit numeric pin code">
+                <div id="pin-error" style="color: red;"></div>
 
             <div class="down-content">
                 <label for="binDetails">Select Bin Size and Capacity:</label>
@@ -139,10 +140,25 @@
                     }
         
                     // Validate 10-digit phone number
-                    if (!validatePhoneNumber(phone)) {
-                        alert('Please enter a valid 10-digit phone number.');
-                        return false;
-                    }
+                    var pinInput = document.getElementById('pin');
+
+      // Get the pin code input element
+      var pinInput = document.getElementById('pin');
+
+      // Get the error message element
+      var pinError = document.getElementById('pin-error');
+  
+      // Add an input event listener to the pin code input
+      pinInput.addEventListener('input', function () {
+          // Check if the input matches the pattern
+          if (!pinInput.checkValidity()) {
+              // Display an error message
+              pinError.textContent = pinInput.validationMessage;
+          } else {
+              // Clear the error message
+              pinError.textContent = '';
+          }
+      });
         
                     // Add your validation logic here
                     // For example: Check if fields are not empty
