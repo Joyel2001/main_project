@@ -87,7 +87,7 @@ class BinBooking(models.Model):
     bin_size = models.CharField(max_length=20)
     bin_capacity = models.CharField(max_length=20)
     collection_period = models.CharField(max_length=20, default=None)  # New field for collection period
-    booking_id = models.CharField(max_length=5, default=None,unique=True)  # New field for booking ID
+    booking_id = models.CharField(primary_key=True,max_length=5)  # New field for booking ID
 
     def __str__(self):
         return f"{self.booking_id}"  # Only return the booking ID
@@ -117,7 +117,7 @@ class EventBooking(models.Model):
 
     # bookingststus
 class BookedBinStatus(models.Model):
-    status_id = models.AutoField(primary_key=True)
+    status_id = models.AutoField(primary_key=True,default=None)
     booking = models.ForeignKey(BinBooking, on_delete=models.CASCADE, related_name='statuses')
     fill_level = models.PositiveIntegerField(choices=[(20, '20%'), (40, '40%'), (50, '50%'), (70, '70%'), (90, '90%')])
     created_at = models.DateTimeField(auto_now_add=True)
@@ -138,6 +138,20 @@ class Message(models.Model):
     def __str__(self):
         return f"Message {self.id}"
 
+
+
+# wastefill_status
+from django.db import models
+
+class WasteCollection(models.Model):
+    id = models.AutoField(primary_key=True)
+    booking = models.ForeignKey(BinBooking, on_delete=models.CASCADE)
+    collection_status = models.CharField(max_length=20)
+    timestamp = models.DateTimeField(auto_now=True)  # Auto-generate timestamp on creation
+    datestamp = models.DateField(auto_now=True)      # Auto-generate datestamp on creation
+
+    def __str__(self):
+        return f"Collection ID: {self.id}"
 
 
     

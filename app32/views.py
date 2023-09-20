@@ -458,7 +458,7 @@ def orderforhome(request):
         messages.success(request, 'Booking saved successfully.', extra_tags='bin message')
 
         # Redirect to a different URL or view (you can specify your profile page here)
-        return redirect('bin_order')
+        return redirect('subscription_plans')
 
     bins = Bin.objects.all()
 
@@ -865,3 +865,52 @@ def bin_list_forevent(request):
     bin_list = BinEvent.objects.all()
     return render(request, 'admin/bin_list_for_events.html', {'bin_list': bin_list})
 
+
+#pay,ent 
+from django.shortcuts import render
+
+def subscription_plans(request):
+    return render(request, 'payment/subscription_plans.html')
+
+
+
+
+
+
+
+from django.shortcuts import render
+
+def notification_page(request):
+    return render(request, 'notifications/notification_page.html')
+
+
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import WasteCollection
+from .models import BinBooking 
+
+def bin_waste_collection(request, booking_id):
+    if request.method == 'POST':
+        collection_status = request.POST.get('collection_status')
+        
+        # Set custom status messages based on the selected option
+        if collection_status == 'collected':
+            status_message = "We are pleased to inform you that your scheduled waste collection has been successfully completed by EcoRecover."
+        else:
+            status_message = "We are pleased to inform you that your scheduled waste collection has not been completed by EcoRecover."
+
+        # Create a new WasteCollection object with the custom status message
+        booking = BinBooking.objects.get(pk=booking_id)
+        waste_collection = WasteCollection.objects.create(
+            booking=booking,
+            collection_status=status_message,  # Store the custom status message
+        )
+
+        # Save the object to the database
+        waste_collection.save()
+
+        # You can also pass the status_message to the template if needed
+        return redirect('bin_booking_list')  # Redirect to bin_booking_list view
+
+    return render(request, 'bin/bin_waste_collecton.html', {'booking_id': booking_id})

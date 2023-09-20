@@ -56,7 +56,7 @@ https://www.tooplate.com/view/2125-artxibition
                             <li><a href="about.html">About Us</a></li>
                             <li><a href="rent-venue.html">Rent Venue</a></li>
                             <li><a href="shows-events.html">Shows & Events</a></li> 
-                            <li><a href="tickets.html" class="active">Tickets</a></li> 
+                            {% comment %} <li><a href="tickets.html" class="active">Tickets</a></li>  {% endcomment %}
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -89,7 +89,16 @@ https://www.tooplate.com/view/2125-artxibition
                         <h2>For Event</h2>
                     </div>
                 </div>
-                
+                <style>
+                    .ticket-item {
+                        transition: transform 0.2s ease-in-out;
+                    }
+            
+                    .ticket-item:hover {
+                        transform: scale(1.05); /* Increase the size of the item on hover */
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow on hover */
+                    }
+                </style>
                   {# Use your base template or change this as needed #}
 {% block content %}
     {% for bin in binss %}

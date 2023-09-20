@@ -43,12 +43,10 @@ from .models import BinBooking
 # Register the BinBooking model
 class BinBookingAdmin(admin.ModelAdmin):
     from .models import BinBooking
+# binbooking
+from .models import BinBooking
 
-class BinBookingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'bin', 'house_number', 'landmark', 'pin_code', 'bin_size', 'bin_capacity', 'collection_period')
-    # You can customize the list display columns as needed
-
-admin.site.register(BinBooking, BinBookingAdmin)
+admin.site.register(BinBooking)
 
 from .models import EventBooking
 
@@ -73,3 +71,6 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'description')
 
 
+from .models import WasteCollection
+
+admin.site.register(WasteCollection)

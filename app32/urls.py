@@ -53,8 +53,14 @@ urlpatterns = [
     path('bins/', views.bin_list, name='bin_list'),
     path('bin_booking_list/', views.bin_booking_list, name='bin_booking_list'),
     # Add the URL pattern for updating bin status
-path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
-path('bin-collection-notification/', views.bin_collection_notification, name='bin_collection_notification'),
-path('booking-chart/', views.booking_chart, name='booking_chart'),
- path('bin_list_forevent/', views.bin_list_forevent, name='bin_list_forevent'),
-]
+    path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
+    path('bin-collection-notification/', views.bin_collection_notification, name='bin_collection_notification'),
+    path('booking-chart/', views.booking_chart, name='booking_chart'),
+    path('bin_list_forevent/', views.bin_list_forevent, name='bin_list_forevent'),
+    path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
+    path('notification/', views.notification_page, name='notification_page'),
+    path('bin_waste_collection/<str:booking_id>/', views.bin_waste_collection, name='bin_waste_collection'),
+
+
+    # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
+]       

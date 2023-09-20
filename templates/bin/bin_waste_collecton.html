@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Details</title>
+</head>
+<body>
+    <h1>Collection Details</h1>
+    <form action="{% url 'bin_waste_collection' booking_id=booking_id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="booking_id" value="{{ booking_id }}">
+        
+        <label for="collected">Waste Collected:</label>
+        <input type="radio" name="collection_status" value="collected" id="collected">
+        
+        <label for="not_collected">Waste Not Collected:</label>
+        <input type="radio" name="collection_status" value="not_collected" id="not_collected">
+        
+        <br>
+        
+        
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
