@@ -339,6 +339,16 @@
                             <span class="hide-menu">Event Booking Details</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'collection_detail' user_id=request.user.id %}" aria-expanded="false">
+                            <i class="mdi mdi-calendar-text"></i>
+                            <span class="hide-menu">Collection Details</span>
+                        </a>
+                    </li>
+                    
+
+                    
+                    
                     {% endif %}
             </ul>
                   
@@ -400,7 +410,8 @@
                                                 <a href="#" class="btn btn-warning">Reschedule Collection Date</a>
                                                 <a href="#" class="btn btn-success">Book Extra Bin</a>
                                                 <a href="#" class="btn btn-primary">Edit Location Details</a>
-                                                <a href="{% url 'update_bin_status' booking_id=booking.booking_id %}" class="btn btn-warning">Update Bin Status</a>
+                                                <a href="{% url 'update_bin_status' booking.booking_id %}" class="btn btn-warning">Update Bin Status</a>
+
                                             </li>
                                         {% endfor %}
                                     {% else %}

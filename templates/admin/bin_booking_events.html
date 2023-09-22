@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bin Booking Events</title>
+</head>
+<body>
+    <h1>Bin Booking Events</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Bin</th>
+                <th>Event Date and Time</th>
+                <th>Event Location</th>
+                <th>Delivery Time</th>
+                <th>Pickup Time</th>
+                <th>Number of Bins Needed</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in bin_booking_events %}
+            <tr>
+                <td>{{ event.booking_id }}</td>
+                <td>{{ event.bin }}</td>
+                <td>{{ event.event_date_time }}</td>
+                <td>{{ event.event_location }}</td>
+                <td>{{ event.delivery_time }}</td>
+                <td>{{ event.pickup_time }}</td>
+                <td>{{ event.number_of_bins_needed }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

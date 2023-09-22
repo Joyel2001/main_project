@@ -31,6 +31,10 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+RAZOR_KEY_ID = 'rzp_test_Ul5agYuKOPazq3'
+RAZOR_KEY_SECRET = 'lhozVEM1VKK2RmUmLIJg0i9C'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,8 +49,9 @@ INSTALLED_APPS = [
     'django.contrib.sites', # must
     'allauth', # must
     'allauth.account', # must
-    'allauth.socialaccount', # must
-    'allauth.socialaccount.providers.google', # new
+    'allauth.socialaccount', # must+
+    'allauth.socialaccount.providers.google', 
+    # new
 ]
     
 

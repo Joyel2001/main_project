@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Bin Status</title>
+</head>
+<body>
+    <h1>Update Bin Status for Booking ID: {{ booking.booking_id }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="fill_level">Fill Level:</label>
+        <select name="fill_level" id="fill_level">
+            <option value="20">20%</option>
+            <option value="40">40%</option>
+            <option value="50">50%</option>
+            <option value="70">70%</option>
+            <option value="90">90%</option>
+        </select>
+        <button type="submit">Update Status</button>
+    </form>
+    
+    <a href="{% url 'bin_details' user_id=booking.user.pk %}" class="btn btn-secondary">Back to Bin Details</a>
+</body>
+</html>

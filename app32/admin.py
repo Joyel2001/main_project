@@ -70,7 +70,29 @@ from .models import Message
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'description')
 
+from django.contrib import admin
+from .models import WasteCollection  # Import the WasteCollection model from your app
 
-from .models import WasteCollection
+# Register the WasteCollection model with the admin site
+@admin.register(WasteCollection)
+class WasteCollectionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'booking', 'collection_status', 'timestamp', 'datestamp')
+    list_filter = ('collection_status', 'timestamp', 'datestamp')
+    search_fields = ('booking__some_field',)  # Replace 'some_field' with an actual field in the related BinBooking model
 
-admin.site.register(WasteCollection)
+    # bin booking for events
+
+from .models import BinBookingEvent
+
+admin.site.register(BinBookingEvent)
+
+
+
+# payment
+
+
+
+from .models import Payments
+
+admin.site.register(Payments)
+

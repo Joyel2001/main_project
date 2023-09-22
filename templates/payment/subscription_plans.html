@@ -17,11 +17,12 @@
           <strong>Unlimited</strong>
           public playlists
         </li>
+        <button class="btn" id="pay-btn" data-amount="200">Subscribe</button>
       </ul>
     </div>
     <div class='package brilliant'>
       <div class='name'>6 Months</div>
-      <div class='price'>€5</div>
+      <div class='price'>400 RS</div>
       <div class='trial'>Free 30 day trial</div>
       <hr>
       <ul>
@@ -44,10 +45,11 @@
           Send files
         </li>
       </ul>
+      <button class="btn" id="pay-btn" data-amount="400">Subscribe</button>
     </div>
     <div class='package'>
       <div class='name'>1 year</div>
-      <div class='price'>€0</div>
+      <div class='price'>600 RS</div>
       <div class='trial'>Totally free</div>
       <hr>
       <ul>
@@ -64,10 +66,47 @@
           public playlists
         </li>
       </ul>
+      <button class="btn" id="pay-btn" data-amount="600">Subscribe</button>
     </div>
   </div>
-  
+  <!-- Razorpay's Javascript code. -->
+<!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  // Enter the Key ID generated from the Dashboard
+  var razorpayMerchantKey = "{{ razorpay_merchant_key }}";
+  var currency = "{{ currency }}";
+  var callbackUrl = "{{ callback_url }}";
 
+  // Your/store name.
+  var storeName = "Dj Razorpay";
+
+  // Add event listener to the payment buttons.
+  var payButtons = document.querySelectorAll(".btn");
+
+  payButtons.forEach(function(button) {
+    button.addEventListener("click", function(e) {
+      // Get the amount from the data-amount attribute of the clicked button
+      var amount = button.getAttribute("data-amount");
+
+      // Create an options object for Razorpay
+      var options = {
+        key: razorpayMerchantKey,
+        amount: amount * 100, // Convert amount to paise (assuming amount is in RS)
+        currency: currency,
+        name: storeName,
+        callback_url: callbackUrl,
+      };
+
+      // Create a new instance of Razorpay with the options
+      var rzp1 = new Razorpay(options);
+
+      // Open the Razorpay payment dialog
+      rzp1.open();
+      e.preventDefault();
+    });
+  });
+</script>
     <style>
         @charset "UTF-8";
         /*

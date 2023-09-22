@@ -768,33 +768,40 @@ def bin_booking_list(request):
 
 # binststus
 # views.py
-from django.shortcuts import render, redirect
+# views.py
+
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import BinBooking, BookedBinStatus
 
 def update_bin_status(request, booking_id):
-    try:
-        booking = BinBooking.objects.get(booking_id=booking_id)
-    except BinBooking.DoesNotExist:
-        booking = None
-
+    booking = get_object_or_404(BinBooking, booking_id=booking_id)
+    
     if request.method == 'POST':
+        # Handle form submission here and update the bin status
         fill_level = request.POST.get('fill_level')
-        if fill_level and booking:
-            # Check if a status entry already exists for this booking
-            existing_status = BookedBinStatus.objects.filter(booking=booking).first()
-            if existing_status:
-                # If a status entry exists, update it
-                existing_status.fill_level = fill_level
-                existing_status.save()
-            else:
-                # If no status entry exists, create a new one
-                BookedBinStatus.objects.create(booking=booking, fill_level=fill_level)
-            # You can also add other logic here, such as updating the bin status
-            # Redirect to bin_details page with the user_id parameter
-            return redirect('bin_details', user_id=booking.user.id)
+        # You can also update other fields in the BookedBinStatus model
+        
+        # Create a new bin status entry
+        booked_bin_status = BookedBinStatus.objects.create(
+            booking=booking,
+            fill_level=fill_level,
+        )
+        booked_bin_status.save()
+        
+        # Redirect to a success page or back to the bin details page
+        return redirect('bin_details', user_id=booking.user.pk)
+    
+    context = {
+        'booking': booking,
+    }
+    
+    return render(request, 'admin/add_status.html', context)
 
-    # Render a template with the form to update the fill level
-    return render(request, 'admin/bin_status.html', {'booking': booking})
+
+
+
+
+
 
 
 
@@ -866,13 +873,6 @@ def bin_list_forevent(request):
     return render(request, 'admin/bin_list_for_events.html', {'bin_list': bin_list})
 
 
-#pay,ent 
-from django.shortcuts import render
-
-def subscription_plans(request):
-    return render(request, 'payment/subscription_plans.html')
-
-
 
 
 
@@ -914,3 +914,226 @@ def bin_waste_collection(request, booking_id):
         return redirect('bin_booking_list')  # Redirect to bin_booking_list view
 
     return render(request, 'bin/bin_waste_collecton.html', {'booking_id': booking_id})
+
+
+
+
+# payment
+from django.db import models
+from django.contrib.auth.models import User
+from django.shortcuts import render
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
+from django.db import transaction  # Import transaction
+from .models import Payments  # Import the Payments model
+
+# Authorize Razorpay client with API Keys
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+@login_required  # Add this decorator to require authentication
+def homepage(request):
+    currency = 'INR'
+    amount = 20000  # Rs. 200
+
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(
+        amount=amount, currency=currency, payment_capture='0'))
+
+    # Order ID of the newly created order
+    razorpay_order_id = razorpay_order['id']
+    callback_url = 'paymenthandler/'
+
+    # We need to pass these details to the frontend
+    context = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+        'razorpay_amount': amount,
+        'currency': currency,
+        'callback_url': callback_url,
+    }
+
+    return render(request, 'payment/subscription_plans.html', context=context)
+
+@csrf_exempt
+@login_required
+def paymenthandler(request):
+
+    # Only accept POST requests
+    if request.method == "POST":
+        try:
+            # Get the required parameters from the POST request
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+
+            # Verify the payment signature
+            result = razorpay_client.utility.verify_payment_signature(
+                params_dict)
+            if result is not None:
+                amount = 20000  # Rs. 200
+                try:
+                    # Capture the payment
+                    with transaction.atomic():
+                        payment = Payments(
+                            user=request.user,  # Get the current user
+                            payment_id=payment_id,
+                            razorpay_order_id=razorpay_order_id,
+                            payment_signature=signature,
+                            payment_amount=amount,
+                            payment_status=True  # Payment is successful
+                        )
+                        payment.save()
+
+                    # Render a success page on successful capture of payment
+                    return render(request, 'bin/orderforhome.html')
+                except:
+                    # If there is an error while capturing payment
+                    return render(request, 'paymentfail.html')
+            else:
+                # If signature verification fails
+                return render(request, 'paymentfail.html')
+        except:
+            # If the required parameters are not found in POST data
+            return HttpResponseBadRequest()
+    else:
+        # If other than POST request is made
+        return HttpResponseBadRequest()
+
+
+
+
+
+# waste_colection_message
+from django.shortcuts import render
+from .models import WasteCollection, BinBooking
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def collection_detail(request, user_id):
+    # Get the WasteCollection records related to the user
+    waste_collections = WasteCollection.objects.filter(booking__user__id=user_id)
+
+    return render(request, 'admin/bin_collection_message.html', {'waste_collections': waste_collections})
+
+
+#pay,ent 
+from django.shortcuts import render
+import razorpay
+from django.conf import settings
+
+# Create a Razorpay client
+razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+def subscription_plans(request):
+    # Set the currency and amount
+    currency = 'INR'
+    amount = 20000  # Rs. 200
+
+    # Create a Razorpay Order
+    razorpay_order = razorpay_client.order.create(dict(
+        amount=amount,
+        currency=currency,
+        payment_capture='0'
+    ))
+
+    # Get the order ID of the newly created order
+    razorpay_order_id = razorpay_order['id']
+    callback_url = 'paymenthandler/'  # Update this URL as needed
+
+    # Prepare context to pass to the frontend
+    context = {
+        'razorpay_order_id': razorpay_order_id,
+        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+        'razorpay_amount': amount,
+        'currency': currency,
+        'callback_url': callback_url,
+    }
+
+    # Render the template with the context
+    return render(request, 'payment/subscription_plans.html', context)
+
+
+# filling_ststus_for _bin
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import BookedBinStatus
+
+@csrf_exempt  # Use this decorator to allow POST requests without CSRF token for demonstration purposes. Secure your view for production.
+def add_status(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            booking_id = data.get('booking')
+            fill_level = data.get('fill_level')
+
+            # Create a new BookedBinStatus instance and save it to the database
+            status = BookedBinStatus(booking_id=booking_id, fill_level=fill_level)
+            status.save()
+
+            return JsonResponse({"message": "Status added successfully"})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+# bin_booking_for_events
+from django.shortcuts import render, redirect
+from .models import BinEvent, BinBookingEvent
+
+def save_bin_booking_event(request):
+    bins = BinEvent.objects.all()
+
+    if request.method == 'POST':
+        event_date_time = request.POST.get('event_date_time')
+        event_location = request.POST.get('event_location')
+        delivery_time = request.POST.get('delivery_time')
+        pickup_time = request.POST.get('pickup_time')
+        number_of_bins_needed = request.POST.get('number_of_bins_needed')
+        selected_bin_id = request.POST.get('bin')  # Get the selected bin_id
+
+        # Query the selected BinEvent based on the selected_bin_id
+        selected_bin_event = BinEvent.objects.get(bin_id=selected_bin_id)
+
+        # Create and save a BinBookingEvent instance with the selected BinEvent
+        bin_booking_event = BinBookingEvent(
+            event_date_time=event_date_time,
+            event_location=event_location,
+            delivery_time=delivery_time,
+            pickup_time=pickup_time,
+            number_of_bins_needed=number_of_bins_needed,
+            bin=selected_bin_event,  # Assign the selected BinEvent
+            # Add other fields as needed
+        )
+        bin_booking_event.save()
+
+        return redirect('bin_order_event')  # Redirect to a success page or another appropriate URL
+
+    return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
+
+
+
+# admin/bin_booking_events.html
+
+from django.shortcuts import render
+from .models import BinBookingEvent
+
+def display_bin_booking_events(request):
+    # Retrieve all BinBookingEvent objects from the database
+    bin_booking_events = BinBookingEvent.objects.all()
+
+    # Pass the data to the template for rendering
+    context = {'bin_booking_events': bin_booking_events}
+    return render(request, 'admin/bin_booking_events.html', context)
+

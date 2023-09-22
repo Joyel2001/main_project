@@ -53,14 +53,21 @@ urlpatterns = [
     path('bins/', views.bin_list, name='bin_list'),
     path('bin_booking_list/', views.bin_booking_list, name='bin_booking_list'),
     # Add the URL pattern for updating bin status
-    path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
     path('bin-collection-notification/', views.bin_collection_notification, name='bin_collection_notification'),
     path('booking-chart/', views.booking_chart, name='booking_chart'),
     path('bin_list_forevent/', views.bin_list_forevent, name='bin_list_forevent'),
     path('subscription-plans/', views.subscription_plans, name='subscription_plans'),
     path('notification/', views.notification_page, name='notification_page'),
     path('bin_waste_collection/<str:booking_id>/', views.bin_waste_collection, name='bin_waste_collection'),
+    path('collection/<int:user_id>/', views.collection_detail, name='collection_detail'),
+    path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
 
+
+    path('hello', views.homepage, name='index1'),
+    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+    path('api/add_status/', views.add_status, name='add_status'),
+    path('save_bin_booking_event/', views.save_bin_booking_event, name='save_bin_booking_event'),
+]
 
     # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
-]       
+    

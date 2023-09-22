@@ -116,15 +116,20 @@ class EventBooking(models.Model):
     
 
     # bookingststus
+from django.db import models
+from django.contrib.auth.models import User
+from app32.models import Bin  # Assuming you have a 'Bin' model defined in your 'app32' app
+
 class BookedBinStatus(models.Model):
-    status_id = models.AutoField(primary_key=True,default=None)
-    booking = models.ForeignKey(BinBooking, on_delete=models.CASCADE, related_name='statuses')
+    status_id = models.AutoField(primary_key=True)
+    booking = models.ForeignKey('BinBooking', on_delete=models.CASCADE, related_name='statuses')
     fill_level = models.PositiveIntegerField(choices=[(20, '20%'), (40, '40%'), (50, '50%'), (70, '70%'), (90, '90%')])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.status_id)  # Convert status_id to a string and return it
+        return str(self.status_id)
+  # Convert status_id to a string and return it
 
 
 # notification
@@ -155,4 +160,34 @@ class WasteCollection(models.Model):
 
 
     
+# model for bin booking for home
+class BinBookingEvent(models.Model):
+    booking_id = models.AutoField(primary_key=True)  # Primary key for the booking
+    bin = models.ForeignKey(BinEvent, on_delete=models.CASCADE)  # ForeignKey to link to a Bin
+    event_date_time = models.DateTimeField()
+    event_location = models.CharField(max_length=255)
+    delivery_time = models.DateTimeField()
+    pickup_time = models.DateTimeField()
+    number_of_bins_needed = models.PositiveIntegerField()  # New field for the number of bins needed
 
+    def __str__(self):
+        return str(self.booking_id) 
+    
+
+
+# payment
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class Payments(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_id = models.CharField(max_length=100)
+    razorpay_order_id = models.CharField(max_length=100)
+    payment_signature = models.CharField(max_length=100)
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_status = models.BooleanField(default=False)
+    payment_capture_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Payment ID: {self.payment_id}"

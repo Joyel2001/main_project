@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+            color: #333;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Collection Details</h1>
+    <ul>
+        {% for waste_collection in waste_collections %}
+            <li>
+                <strong>Bin Name:</strong> {{ waste_collection.booking.booking_id }}
+            </li>
+            <li>
+                <strong>Collection Status:</strong> {{ waste_collection.collection_status }}
+            </li>
+            <li>
+                <strong>Collection Date and Time:</strong> {{ waste_collection.timestamp }}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'bin_details' user.id %}">Back to Home</a>
+</body>
+</html>
