@@ -67,6 +67,8 @@ urlpatterns = [
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('api/add_status/', views.add_status, name='add_status'),
     path('save_bin_booking_event/', views.save_bin_booking_event, name='save_bin_booking_event'),
+    path('bin-booking-events/', views.display_bin_booking_events, name='display_bin_booking_events'),
+    path('bins_low_fill_level/', views.bins_with_low_fill_level, name='bins_low_fill_level'),
 ]
 
     # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),

@@ -43,10 +43,27 @@
             font-size: 16px;
         }
 
-        select {
-            height: 35px;
+        /* Style the select container */
+        .custom-select {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
-
+        
+        /* Style the select options */
+        .custom-select option {
+            color: #495057;
+            background-color: #fff;
+        }
+        
         button {
             background-color: #007bff;
             color: #fff;
@@ -61,33 +78,163 @@
 </head>
 <body>
     <h1>Bin Booking Event Form</h1>
-    <form method="post" action="{% url 'save_bin_booking_event' %}">
-        {% csrf_token %}
 
-        <label for="bin">Select a Bin:</label>
-        <label for="bin">Select a Bin:</label>
-<select name="bin" required>
-    {% for bin in bins %}
-        <option value="{{ bin.bin_id }}">Size: {{ bin.size }}, Capacity: {{ bin.capacity }}</option>
-    {% endfor %}
-</select>
+    <form method="post" action="{% url 'save_bin_booking_event' %}" onsubmit="return validateForm()">        {% csrf_token %}
+       
+        <label for="binDetails">Select Bin Size and Capacity:</label>
+        <select name="bin" id="binSelect" class="custom-select" onblur="validateBin()">
+            <option value="" disabled selected>Select Bin Size and Capacity</option>
+            {% for bin in bins %}
+            <option value="{{ bin.bin_id }}">Size: {{ bin.size }}, Capacity: {{ bin.capacity }}</option>
+            {% endfor %}
+        </select>
+        
+        <!-- Error message placeholder -->
+        <p id="binError" style="color: red;"></p>
 
         <label for="event_date_time">Event Date and Time:</label>
-        <input type="datetime-local" name="event_date_time" required>
+        <input type="datetime-local" name="event_date_time" id="eventDateTime" onblur="validateEventDateTime()">
+        <p id="eventDateTimeError" style="color: red;"></p>
 
         <label for="event_location">Event Location:</label>
-        <input type="text" name="event_location" required>
+        <input type="text" name="event_location" id="eventLocation" onblur="validateEventLocation()">
+        <p id="eventLocationError" style="color: red;"></p>
 
         <label for="delivery_time">Delivery Time:</label>
-        <input type="datetime-local" name="delivery_time" required>
+        <input type="datetime-local" name="delivery_time" id="deliveryTime" onblur="validateDeliveryTime()">
+        <p id="deliveryTimeError" style="color: red;"></p>
 
         <label for="pickup_time">Pickup Time:</label>
-        <input type="datetime-local" name="pickup_time" required>
+        <input type="datetime-local" name="pickup_time" id="pickupTime" onblur="validatePickupTime()">
+        <p id="pickupTimeError" style="color: red;"></p>
 
         <label for="number_of_bins_needed">Number of Bins Needed:</label>
-        <input type="number" name="number_of_bins_needed" required>
+        <input type="number" name="number_of_bins_needed" id="numBins" onblur="validateNumBins()">
+        <p id="numBinsError" style="color: red;"></p>
 
         <button type="submit">Save</button>
     </form>
+
+    <script>
+        function validateBin() {
+            var binSelect = document.getElementById("binSelect");
+            var binError = document.getElementById("binError");
+
+            if (binSelect.value === "") {
+                binError.textContent = "Please select a bin size and capacity.";
+            } else {
+                binError.textContent = "";
+            }
+        }
+
+        function validateEventDateTime() {
+            // Add validation logic for Event Date and Time field
+            var eventDateTime = document.getElementById("eventDateTime");
+            var eventDateTimeError = document.getElementById("eventDateTimeError");
+
+            if (eventDateTime.value === "") {
+                eventDateTimeError.textContent = "Please enter an event date and time.";
+            } else {
+                eventDateTimeError.textContent = "";
+            }
+        }
+
+        function validateEventLocation() {
+            // Add validation logic for Event Location field
+            var eventLocation = document.getElementById("eventLocation");
+            var eventLocationError = document.getElementById("eventLocationError");
+
+            if (eventLocation.value === "") {
+                eventLocationError.textContent = "Please enter an event location.";
+            } else {
+                eventLocationError.textContent = "";
+            }
+        }
+        function validateDeliveryTime() {
+            var deliveryTime = document.getElementById("deliveryTime");
+            var deliveryTimeError = document.getElementById("deliveryTimeError");
+    
+            if (deliveryTime.value === "") {
+                deliveryTimeError.textContent = "Please enter a delivery time.";
+            } else {
+                deliveryTimeError.textContent = "";
+            }
+        }
+    
+        function validatePickupTime() {
+            var pickupTime = document.getElementById("pickupTime");
+            var pickupTimeError = document.getElementById("pickupTimeError");
+    
+            if (pickupTime.value === "") {
+                pickupTimeError.textContent = "Please enter a pickup time.";
+            } else {
+                pickupTimeError.textContent = "";
+            }
+        }
+    
+        function validateNumBins() {
+            var numBins = document.getElementById("numBins");
+            var numBinsError = document.getElementById("numBinsError");
+    
+            if (numBins.value === "") {
+                numBinsError.textContent = "Please enter the number of bins needed.";
+            } else {
+                numBinsError.textContent = "";
+            }
+        }
+        function validateForm() {
+            // Perform validation checks for all fields here
+            var binSelect = document.getElementById("binSelect");
+            var eventDateTime = document.getElementById("eventDateTime");
+            var eventLocation = document.getElementById("eventLocation");
+            var deliveryTime = document.getElementById("deliveryTime");
+            var pickupTime = document.getElementById("pickupTime");
+            var numBins = document.getElementById("numBins");
+    
+            // Reset previous validation messages
+            document.getElementById("binError").textContent = "";
+            document.getElementById("eventDateTimeError").textContent = "";
+            document.getElementById("eventLocationError").textContent = "";
+            document.getElementById("deliveryTimeError").textContent = "";
+            document.getElementById("pickupTimeError").textContent = "";
+            document.getElementById("numBinsError").textContent = "";
+    
+            // Add validations for each field here
+            if (binSelect.value === "") {
+                document.getElementById("binError").textContent = "Please select a bin size and capacity.";
+                return false;
+            }
+    
+            if (eventDateTime.value === "") {
+                document.getElementById("eventDateTimeError").textContent = "Please enter an event date and time.";
+                return false;
+            }
+    
+            if (eventLocation.value === "") {
+                document.getElementById("eventLocationError").textContent = "Please enter an event location.";
+                return false;
+            }
+    
+            // Add validations for other fields here
+    
+            // Check if any validation failed
+            if (
+                binSelect.value === "" ||
+                eventDateTime.value === "" ||
+                eventLocation.value === "" ||
+                deliveryTime.value === "" ||
+                pickupTime.value === "" ||
+                numBins.value === ""
+                // Add conditions for other fields here
+            ) {
+                return false; // Prevent form submission
+            }
+    
+            // All validations passed
+            return true; // Allow form submission
+        }
+    </script>
+ 
+
 </body>
 </html>

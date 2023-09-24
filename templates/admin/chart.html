@@ -321,34 +321,33 @@
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
-    <!-- First submenu for staff and superuser -->
     <li class="sidebar-item">
-        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleMenu('binDetailsSubMenu')">
-            <i class="mdi mdi-file"></i>
-            <span class="hide-menu">Bin Details</span>
-        </a>
-    </li>
-    <div id="binDetailsSubMenu" class="sidebar-submenu">
-        <ul class="submenu-list">
-            <li><a href="{% url 'bin_list' %}"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="{% url 'bin_list_forevent' %}"><i class="fas fa-calendar-alt"></i> Events</a></li>
-        </ul>
-    </div>
-
-    <!-- Second submenu for staff and superuser -->
-    <li class="sidebar-item">
-        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleMenu('binBookingSubMenu')">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('binBookingSubMenu')">
             <i class="mdi mdi-alert-outline"></i>
             <span class="hide-menu">Bin Booking Details</span>
         </a>
     </li>
     <div id="binBookingSubMenu" class="sidebar-submenu">
         <ul class="submenu-list">
-            <li><a href="{% url 'bin_booking_list' %}"><i class="fas fa-home"></i> Bin Booking Home</a></li>
-            <!-- Add more links for bin booking submenu as needed -->
+            <li><a href="{% url "bin_booking_list" %}"><i class="fas fa-home"></i> Bin Booking for Home</a></li>
+            <li><a href="{% url "display_bin_booking_events" %}"><i class="fas fa-calendar-alt"></i> Bin Booking for Events</a></li>
         </ul>
     </div>
+
+    <script>
+        function toggleSubMenu(submenuId) {
+            var submenu = document.getElementById(submenuId);
+            if (submenu.style.display === 'block') {
+                submenu.style.display = 'none';
+            } else {
+                submenu.style.display = 'block';
+            }
+        }
+    </script>
 {% else %}
+    <!-- Your other content for non-staff/superuser users -->
+
+
                     <!-- Booked Bin - Visible for customers -->
                     <li class="sidebar-item">
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">

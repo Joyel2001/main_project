@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bins with Low Fill Level</title>
+</head>
+<body>
+    <h1>Bins with Low Fill Level</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Username</th>
+                <th>Address</th>
+                <th>Mobile Number</th>
+                <th>Fill Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bin in bin_details %}
+            <tr>
+                <td>{{ bin.booking_id }}</td>
+                <td>{{ bin.username }}</td>
+                <td>{{ bin.address }}</td>
+                <td>{{ bin.mobile_number }}</td>
+                <td>{{ bin.fill_level }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

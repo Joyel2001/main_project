@@ -1137,3 +1137,32 @@ def display_bin_booking_events(request):
     context = {'bin_booking_events': bin_booking_events}
     return render(request, 'admin/bin_booking_events.html', context)
 
+
+
+
+
+
+
+from django.shortcuts import render
+from .models import BookedBinStatus
+
+def bins_with_low_fill_level(request):
+    # Query for bins with fill level less than or equal to 40
+    low_fill_bins = BookedBinStatus.objects.filter(fill_level__lte=40)
+
+    # Extract user information for these bins
+    bin_details = []
+    for status in low_fill_bins:
+        bin = status.booking.bin
+        user_profile = status.booking.user.userprofile
+        bin_details.append({
+            'booking_id': status.booking.booking_id,
+            'username': user_profile.user.username,
+            'address': user_profile.address,
+            'mobile_number': user_profile.mobile_number,
+            'fill_level': status.fill_level,
+        })
+
+    context = {'bin_details': bin_details}
+    return render(request, 'admin/bins_low_fill_level.html', context)
+
