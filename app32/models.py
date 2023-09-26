@@ -117,18 +117,18 @@ class EventBooking(models.Model):
 
     # bookingststus
 from django.db import models
-from django.contrib.auth.models import User
 from app32.models import Bin  # Assuming you have a 'Bin' model defined in your 'app32' app
 
 class BookedBinStatus(models.Model):
     status_id = models.AutoField(primary_key=True)
     booking = models.ForeignKey('BinBooking', on_delete=models.CASCADE, related_name='statuses')
-    fill_level = models.PositiveIntegerField(choices=[(20, '20%'), (40, '40%'), (50, '50%'), (70, '70%'), (90, '90%')])
+    fill_level = models.PositiveIntegerField(choices=[(20, '20%'), (40, '40%'), (50, '50%'), (70, '70%'), (90, '90%')], null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.status_id)
+
   # Convert status_id to a string and return it
 
 

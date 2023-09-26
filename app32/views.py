@@ -779,14 +779,14 @@ def update_bin_status(request, booking_id):
     if request.method == 'POST':
         # Handle form submission here and update the bin status
         fill_level = request.POST.get('fill_level')
-        # You can also update other fields in the BookedBinStatus model
         
-        # Create a new bin status entry
-        booked_bin_status = BookedBinStatus.objects.create(
-            booking=booking,
-            fill_level=fill_level,
-        )
-        booked_bin_status.save()
+        # Check if a status entry for the same bin already exists
+        booked_bin_status, created = BookedBinStatus.objects.get_or_create(booking=booking)
+        
+        # Update the fill_level only if it's provided in the form
+        if fill_level is not None:
+            booked_bin_status.fill_level = fill_level
+            booked_bin_status.save()
         
         # Redirect to a success page or back to the bin details page
         return redirect('bin_details', user_id=booking.user.pk)
@@ -796,6 +796,7 @@ def update_bin_status(request, booking_id):
     }
     
     return render(request, 'admin/add_status.html', context)
+
 
 
 
@@ -914,6 +915,19 @@ def bin_waste_collection(request, booking_id):
         return redirect('bin_booking_list')  # Redirect to bin_booking_list view
 
     return render(request, 'bin/bin_waste_collecton.html', {'booking_id': booking_id})
+
+
+# delete_bin_message 
+from django.shortcuts import redirect
+
+def delete_waste_collection(request, waste_collection_id):
+    waste_collection = get_object_or_404(WasteCollection, id=waste_collection_id)
+
+    if request.method == 'POST':
+        waste_collection.delete()
+        return redirect('collection_detail', user_id=waste_collection.booking.user.id)
+
+    return HttpResponse(status=405)
 
 
 
@@ -1069,7 +1083,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import BookedBinStatus
 
-@csrf_exempt  # Use this decorator to allow POST requests without CSRF token for demonstration purposes. Secure your view for production.
+@csrf_exempt
 def add_status(request):
     if request.method == 'POST':
         try:
@@ -1077,15 +1091,25 @@ def add_status(request):
             booking_id = data.get('booking')
             fill_level = data.get('fill_level')
 
-            # Create a new BookedBinStatus instance and save it to the database
-            status = BookedBinStatus(booking_id=booking_id, fill_level=fill_level)
-            status.save()
+            # Check if a status entry with the same booking_id already exists
+            existing_status = BookedBinStatus.objects.filter(booking_id=booking_id).first()
 
-            return JsonResponse({"message": "Status added successfully"})
+            if existing_status:
+                # If it exists, update the fill_level
+                existing_status.fill_level = fill_level
+                existing_status.save()
+            else:
+                # If it doesn't exist, create a new BookedBinStatus instance and save it to the database
+                status = BookedBinStatus(booking_id=booking_id, fill_level=fill_level)
+                status.save()
+
+            return JsonResponse({"message": "Status added or updated successfully"})
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
 
 
 # bin_booking_for_events

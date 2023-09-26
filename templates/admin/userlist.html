@@ -280,36 +280,60 @@
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('binBookingSubMenu')">
                             <i class="mdi mdi-alert-outline"></i>
                             <span class="hide-menu">Bin Booking Details</span>
                         </a>
                     </li>
-                    {% else %}
-                    <!-- Booked Bin - Visible for customers -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
-                            <i class="mdi mdi-delete"></i>
-                            <span class="hide-menu">Booked Bin</span>
-                        </a>
-                    </li>
-                    <!-- Event Booking Details - Visible for customers -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
-                            <i class="mdi mdi-calendar-text"></i>
-                            <span class="hide-menu">Event Booking Details</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                      <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
-                          <i class="mdi mdi-calendar-text"></i>
-                          <span class="hide-menu">bin collection details</span>
-                      </a>
-                  </li>
-
-
-                    {% endif %}
-            </ul>
+                    <div id="binBookingSubMenu" class="sidebar-submenu">
+                        <ul class="submenu-list">
+                            <li><a href="{% url "bin_booking_list" %}"><i class="fas fa-home"></i> Bin Booking for Home</a></li>
+                            <li><a href="{% url "display_bin_booking_events" %}"><i class="fas fa-calendar-alt"></i> Bin Booking for Events</a></li>
+                        </ul>
+                    </div>
+                
+                    <script>
+                        function toggleSubMenu(submenuId) {
+                            var submenu = document.getElementById(submenuId);
+                            if (submenu.style.display === 'block') {
+                                submenu.style.display = 'none';
+                            } else {
+                                submenu.style.display = 'block';
+                            }
+                        }
+                    </script>
+                {% else %}
+                    <!-- Your other content for non-staff/superuser users -->
+                
+                
+                                    <!-- Booked Bin - Visible for customers -->
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
+                                            <i class="mdi mdi-delete"></i>
+                                            <span class="hide-menu">Booked Bin</span>
+                                        </a>
+                                    </li>
+                                    <!-- Event Booking Details - Visible for customers -->
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
+                                            <i class="mdi mdi-calendar-text"></i>
+                                            <span class="hide-menu">Event Booking Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'collection_detail' user_id=request.user.id %}" aria-expanded="false">
+                                            <i class="mdi mdi-calendar-text"></i>
+                                            <span class="hide-menu">Collection Details</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "bins_low_fill_level" %}" aria-expanded="false">
+                                            <i class="mdi mdi-calendar-text"></i>
+                                            <span class="hide-menu">Bins Near you For exchange</span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                            </ul>
                   
                 </nav>
                 <!-- End Sidebar navigation -->
