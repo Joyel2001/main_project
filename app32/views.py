@@ -426,39 +426,44 @@ def orderforhome(request):
         except Bin.DoesNotExist:
             bin = None
 
-        # Get the count of existing bookings for the given bin size
-        count = BinBooking.objects.filter(bin_size=bin_size).count()
-        
-        # Map bin size to its corresponding code
-        bin_size_to_code = {
-            'Large Size': 'l',
-            'Small Size': 's',
-            'Medium Size': 'm',
-            # Add more mappings as needed
-        }
-        
-        # Generate the booking ID
-        code = bin_size_to_code.get(bin_size, 'u')
-        booking_id = f"{code}{count + 1}"
+        if bin:
+            # Deduct 1 bin from the selected bin
+            bin.number_of_bins -= 1
+            bin.save()
 
-        # Create and save the BinBooking instance with the logged-in user
-        booking = BinBooking(
-            user=user,
-            bin=bin,
-            house_number=house_number,
-            landmark=landmark,  # Added landmark field
-            pin_code=pin_code,
-            bin_size=bin_size,
-            bin_capacity=bin_capacity,
-            collection_period=collection_period,  # Added collection_period field
-            booking_id=booking_id  # Set the generated booking ID
-        )
-        booking.save()
+            # Get the count of existing bookings for the given bin size
+            count = BinBooking.objects.filter(bin_size=bin_size).count()
 
-        messages.success(request, 'Booking saved successfully.', extra_tags='bin message')
+            # Map bin size to its corresponding code
+            bin_size_to_code = {
+                'Large Size': 'l',
+                'Small Size': 's',
+                'Medium Size': 'm',
+                # Add more mappings as needed
+            }
 
-        # Redirect to a different URL or view (you can specify your profile page here)
-        return redirect('subscription_plans')
+            # Generate the booking ID
+            code = bin_size_to_code.get(bin_size, 'u')
+            booking_id = f"{code}{count + 1}"
+
+            # Create and save the BinBooking instance with the logged-in user
+            booking = BinBooking(
+                user=user,
+                bin=bin,
+                house_number=house_number,
+                landmark=landmark,  # Added landmark field
+                pin_code=pin_code,
+                bin_size=bin_size,
+                bin_capacity=bin_capacity,
+                collection_period=collection_period,  # Added collection_period field
+                booking_id=booking_id  # Set the generated booking ID
+            )
+            booking.save()
+
+            messages.success(request, 'Booking saved successfully.', extra_tags='bin message')
+
+            # Redirect to a different URL or view (you can specify your profile page here)
+            return redirect('subscription_plans')
 
     bins = Bin.objects.all()
 
@@ -467,6 +472,7 @@ def orderforhome(request):
     }
 
     return render(request, 'bin/orderforhome.html', context)
+
  
 
 
@@ -959,7 +965,7 @@ def homepage(request):
 
     # Order ID of the newly created order
     razorpay_order_id = razorpay_order['id']
-    callback_url = 'paymenthandler/'
+    callback_url = '/paymenthandler/'
 
     # We need to pass these details to the frontend
     context = {
@@ -1124,27 +1130,39 @@ def save_bin_booking_event(request):
         event_location = request.POST.get('event_location')
         delivery_time = request.POST.get('delivery_time')
         pickup_time = request.POST.get('pickup_time')
-        number_of_bins_needed = request.POST.get('number_of_bins_needed')
+        number_of_bins_needed = int(request.POST.get('number_of_bins_needed'))  # Convert to int
         selected_bin_id = request.POST.get('bin')  # Get the selected bin_id
 
         # Query the selected BinEvent based on the selected_bin_id
         selected_bin_event = BinEvent.objects.get(bin_id=selected_bin_id)
 
-        # Create and save a BinBookingEvent instance with the selected BinEvent
-        bin_booking_event = BinBookingEvent(
-            event_date_time=event_date_time,
-            event_location=event_location,
-            delivery_time=delivery_time,
-            pickup_time=pickup_time,
-            number_of_bins_needed=number_of_bins_needed,
-            bin=selected_bin_event,  # Assign the selected BinEvent
-            # Add other fields as needed
-        )
-        bin_booking_event.save()
+        # Check if there are enough bins available for booking
+        if selected_bin_event.number_of_bins >= number_of_bins_needed:
+            # Create and save a BinBookingEvent instance with the selected BinEvent
+            bin_booking_event = BinBookingEvent(
+                event_date_time=event_date_time,
+                event_location=event_location,
+                delivery_time=delivery_time,
+                pickup_time=pickup_time,
+                number_of_bins_needed=number_of_bins_needed,
+                bin=selected_bin_event,  # Assign the selected BinEvent
+                # Add other fields as needed
+            )
+            bin_booking_event.save()
 
-        return redirect('bin_order_event')  # Redirect to a success page or another appropriate URL
+            # Update the number of bins for the selected BinEvent
+            selected_bin_event.number_of_bins -= number_of_bins_needed
+            selected_bin_event.save()
+
+            return redirect('bin_order_event')  # Redirect to a success page or another appropriate URL
+        else:
+            # Handle the case when there are not enough bins available
+            # You can display an error message or take appropriate action
+            error_message = "Not enough bins available for booking."
+            return render(request, 'bin/bin_booking_event_form.html', {'bins': bins, 'error_message': error_message})
 
     return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
+
 
 
 
@@ -1190,3 +1208,43 @@ def bins_with_low_fill_level(request):
     context = {'bin_details': bin_details}
     return render(request, 'admin/bins_low_fill_level.html', context)
 
+
+
+# seminar
+
+
+from django.shortcuts import render
+
+def open_url(request):
+    return render(request, 'admin\seminar\seminar.html')
+
+
+
+
+# feedback
+from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound
+from django.contrib.auth.decorators import login_required
+from .models import Feedback  # Import the Feedback model
+
+@login_required
+def submit_feedback(request, user_id):
+    # Use user_id to identify the user, for example:
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return HttpResponseNotFound("User not found")
+    
+    if request.method == 'POST':
+        star_rating = request.POST.get('star_rating')
+        message = request.POST.get('message')
+        
+        # Create and save the Feedback instance
+        feedback_instance = Feedback(user=user, star_rating=star_rating, message=message)
+        feedback_instance.save()
+        
+        # Redirect to a thank you page or display a success message
+        return redirect('index')
+    
+    return render(request, 'feedback/feedback.html', {'user': user})

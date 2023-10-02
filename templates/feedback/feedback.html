@@ -1,0 +1,113 @@
+{% load static %}
+<html>
+<head>
+    <!-- Add your CSS and other head content here -->
+    <style>
+        /* Add CSS styles for the body with a background image */
+body {
+    background-image: url('{% static "images\orginal\10.jpg" %}'); /* Replace with the URL of your background image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Add CSS styles for the entire form */
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff; /* Text color for the heading */
+}
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Background color with transparency */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Add CSS styles for the star rating */
+.star-rating {
+    font-size: 0;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 30px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.star-rating label::before {
+    content: "\2605"; /* Unicode character for a star (you can use an image instead) */
+    color: #ccc;
+    display: inline-block;
+}
+
+.star-rating input[type="radio"] + label:hover::before,
+.star-rating input[type="radio"]:checked + label::before {
+    color: #FFD700; /* Yellow color for selected stars and stars on hover */
+}
+
+/* Add CSS styles for the feedback textarea and button */
+p {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333; /* Text color for paragraphs */
+}
+
+#message {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #FFD700;
+    color: #000;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #FFA500; /* Orange color on hover */
+}
+
+    </style>
+</head>
+<body>
+    <h1>Feedback Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>Rate Us:</p>
+        <div class="star-rating">
+            <input type="radio" id="star1" name="star_rating" value="1" /><label for="star1"></label>
+            <input type="radio" id="star2" name="star_rating" value="2" /><label for="star2"></label>
+            <input type="radio" id="star3" name="star_rating" value="3" /><label for="star3"></label>
+            <input type="radio" id="star4" name="star_rating" value="4" /><label for="star4"></label>
+            <input type="radio" id="star5" name="star_rating" value="5" /><label for="star5"></label>
+        </div>
+        
+        <p>Your Feedback:</p>
+        <textarea name="message" id="message" rows="4" required></textarea>
+        
+        <br>
+        <br>
+        <button type="submit">Submit Feedback</button>
+    </form>
+</body>
+</html>

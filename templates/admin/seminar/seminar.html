@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open URL</title>
+</head>
+<body>
+    <h1>Open a URL in Django</h1>
+
+    <!-- Button that triggers the URL opening -->
+    <button id="openUrlButton">Open URL</button>
+
+    <script>
+        // JavaScript to open the URL when the button is clicked
+        document.getElementById("openUrlButton").addEventListener("click", function () {
+            // Define the URL to open
+            var urlToOpen = "http://127.0.0.1:5000/";
+
+            // Open the URL in a new window or tab
+            window.open(urlToOpen, "_blank");
+        });
+    </script>
+</body>
+</html>

@@ -1,3 +1,5 @@
+<form method="POST">
+  {% csrf_token %}
 <div class='wrapper'>
     <div class='package'>
       <div class='name'>Monthly</div>
@@ -69,6 +71,7 @@
       <button class="btn" id="pay-btn" data-amount="600">Subscribe</button>
     </div>
   </div>
+</form>
   <!-- Razorpay's Javascript code. -->
 <!-- Razorpay's Javascript code. -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

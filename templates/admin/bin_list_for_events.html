@@ -428,6 +428,7 @@
                 <th>Size</th>
                 <th>Capacity</th>
                 <th>Description</th>
+                <th>available Bins</th>
                 <th>Image</th>
             </tr>
         </thead>
@@ -439,6 +440,7 @@
                     <td>{{ bin.size }}</td>
                     <td>{{ bin.capacity }}</td>
                     <td>{{ bin.description }}</td>
+                    <td>{{ bin.number_of_bins }}</td>
                     <td>
                         {% if bin.image %}
                             <img src="{{ bin.image.url }}" alt="{{ bin.title }}" width="100">

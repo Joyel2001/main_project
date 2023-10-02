@@ -155,7 +155,7 @@ a {
       </div> 
       
       </div>
-      <button onclick="validateLoginForm()">Sign In</button>
+      <button id="btn_login" onclick="validateLoginForm()">Sign In</button>
       <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
       <a href="{% provider_login_url 'google'%}?next=/">Login with Google</a>
       {% for message in messages %}

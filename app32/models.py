@@ -59,20 +59,25 @@ class Bin(models.Model):
     capacity = models.CharField(max_length=50)
     description = models.TextField()
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    number_of_bins = models.PositiveIntegerField(default=0)  
     def __str__(self):
         return self.title
     from django.db import models
 
+from django.db import models
+
 class BinEvent(models.Model):
-    bin_id = models.CharField(max_length=20, primary_key=True)  # Set as primary key
+    bin_id = models.CharField(max_length=20, primary_key=True)
     title = models.CharField(max_length=100)
     size = models.CharField(max_length=50)
     capacity = models.CharField(max_length=50)
     description = models.TextField()
     image = models.ImageField(upload_to='bin_images/', null=True, blank=True)
+    number_of_bins = models.PositiveIntegerField(default=0)  # Add this field
 
     def __str__(self):
         return self.title
+
 
 
 from django.db import models
@@ -191,3 +196,19 @@ class Payments(models.Model):
 
     def __str__(self):
         return f"Payment ID: {self.payment_id}"
+    
+
+
+# Feedback
+from django.db import models
+from django.contrib.auth.models import User  # Import the User model
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Add a foreign key to User
+    star_rating = models.IntegerField()
+    message = models.TextField()
+
+    def __str__(self):
+        return f"Feedback ID: {self.id}"
+
+
