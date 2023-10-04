@@ -3,89 +3,88 @@
 <head>
     <!-- Add your CSS and other head content here -->
     <style>
-        /* Add CSS styles for the body with a background image */
-body {
-    background-image: url('{% static "images\orginal\10.jpg" %}'); /* Replace with the URL of your background image */
-    background-size: cover;
-    background-repeat: no-repeat;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        body {
+            background-image: url('{% static "images\orginal\10.jpg" %}'); /* Replace with the URL of your background image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-/* Add CSS styles for the entire form */
-h1 {
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #fff; /* Text color for the heading */
-}
+        /* Add CSS styles for the entire form */
+        h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff; /* Text color for the heading */
+        }
 
-form {
-    max-width: 500px;
-    margin: 0 auto;
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.8); /* Background color with transparency */
-    padding: 20px;
-    border-radius: 10px;
-}
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Background color with transparency */
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-/* Add CSS styles for the star rating */
-.star-rating {
-    font-size: 0;
-    display: inline-block;
-    margin-bottom: 20px;
-}
+        /* Add CSS styles for the star rating */
+        .star-rating {
+            font-size: 0;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
 
-.star-rating input[type="radio"] {
-    display: none;
-}
+        .star-rating input[type="radio"] {
+            display: none;
+        }
 
-.star-rating label {
-    font-size: 30px;
-    cursor: pointer;
-    padding: 5px;
-}
+        .star-rating label {
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px;
+            color: #ccc; /* Default star color */
+        }
 
-.star-rating label::before {
-    content: "\2605"; /* Unicode character for a star (you can use an image instead) */
-    color: #ccc;
-    display: inline-block;
-}
+        .star-rating label::before {
+            content: "\2605"; /* Unicode character for a star (you can use an image instead) */
+            display: inline-block;
+        }
 
-.star-rating input[type="radio"] + label:hover::before,
-.star-rating input[type="radio"]:checked + label::before {
-    color: #FFD700; /* Yellow color for selected stars and stars on hover */
-}
+        .star-rating input[type="radio"]:checked ~ label,
+        .star-rating input[type="radio"]:hover ~ label {
+            color: #FFD700; /* Yellow color for selected stars and stars on hover */
+        }
 
-/* Add CSS styles for the feedback textarea and button */
-p {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #333; /* Text color for paragraphs */
-}
+        /* Add CSS styles for the feedback textarea and button */
+        p {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333; /* Text color for paragraphs */
+        }
 
-#message {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        #message {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-button {
-    background-color: #FFD700;
-    color: #000;
-    font-size: 20px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        button {
+            background-color: #FFD700;
+            color: #000;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-button:hover {
-    background-color: #FFA500; /* Orange color on hover */
-}
+        button:hover {
+            background-color: #FFA500; /* Orange color on hover */
+        }
 
     </style>
 </head>
@@ -109,5 +108,25 @@ button:hover {
         <br>
         <button type="submit">Submit Feedback</button>
     </form>
-</body>
+
+    <!-- JavaScript to handle star rating interactions -->
+    <script>
+        const starRatingInputs = document.querySelectorAll('.star-rating input[type="radio"]');
+        starRatingInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                // Get the index of the selected star
+                const selectedIndex = Array.from(starRatingInputs).indexOf(input);
+
+                // Update the color of stars up to the selected star
+                for (let i = 0; i <= selectedIndex; i++) {
+                    starRatingInputs[i].nextElementSibling.style.color = '#FFD700';
+                }
+
+                // Reset the color of stars after the selected star
+                for (let i = selectedIndex + 1; i < starRatingInputs.length; i++) {
+                    starRatingInputs[i].nextElementSibling.style.color = '#ccc';
+                }
+            });
+        });
+    </script>
 </html>

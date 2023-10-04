@@ -938,96 +938,9 @@ def delete_waste_collection(request, waste_collection_id):
 
 
 
-# payment
-from django.db import models
-from django.contrib.auth.models import User
-from django.shortcuts import render
-import razorpay
-from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponseBadRequest
-from django.contrib.auth.decorators import login_required
-from django.db import transaction  # Import transaction
-from .models import Payments  # Import the Payments model
 
-# Authorize Razorpay client with API Keys
-razorpay_client = razorpay.Client(
-    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
-@login_required  # Add this decorator to require authentication
-def homepage(request):
-    currency = 'INR'
-    amount = 20000  # Rs. 200
-
-    # Create a Razorpay Order
-    razorpay_order = razorpay_client.order.create(dict(
-        amount=amount, currency=currency, payment_capture='0'))
-
-    # Order ID of the newly created order
-    razorpay_order_id = razorpay_order['id']
-    callback_url = '/paymenthandler/'
-
-    # We need to pass these details to the frontend
-    context = {
-        'razorpay_order_id': razorpay_order_id,
-        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
-        'razorpay_amount': amount,
-        'currency': currency,
-        'callback_url': callback_url,
-    }
-
-    return render(request, 'payment/subscription_plans.html', context=context)
-
-@csrf_exempt
-@login_required
-def paymenthandler(request):
-
-    # Only accept POST requests
-    if request.method == "POST":
-        try:
-            # Get the required parameters from the POST request
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
-
-            # Verify the payment signature
-            result = razorpay_client.utility.verify_payment_signature(
-                params_dict)
-            if result is not None:
-                amount = 20000  # Rs. 200
-                try:
-                    # Capture the payment
-                    with transaction.atomic():
-                        payment = Payments(
-                            user=request.user,  # Get the current user
-                            payment_id=payment_id,
-                            razorpay_order_id=razorpay_order_id,
-                            payment_signature=signature,
-                            payment_amount=amount,
-                            payment_status=True  # Payment is successful
-                        )
-                        payment.save()
-
-                    # Render a success page on successful capture of payment
-                    return render(request, 'bin/orderforhome.html')
-                except:
-                    # If there is an error while capturing payment
-                    return render(request, 'paymentfail.html')
-            else:
-                # If signature verification fails
-                return render(request, 'paymentfail.html')
-        except:
-            # If the required parameters are not found in POST data
-            return HttpResponseBadRequest()
-    else:
-        # If other than POST request is made
-        return HttpResponseBadRequest()
-
+    
 
 
 
@@ -1046,40 +959,19 @@ def collection_detail(request, user_id):
 
 
 #pay,ent 
-from django.shortcuts import render
-import razorpay
+from django.shortcuts import render, redirect  # Import the redirect function
 from django.conf import settings
+from django.urls import reverse
 
 # Create a Razorpay client
-razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
 def subscription_plans(request):
-    # Set the currency and amount
-    currency = 'INR'
-    amount = 20000  # Rs. 200
-
-    # Create a Razorpay Order
-    razorpay_order = razorpay_client.order.create(dict(
-        amount=amount,
-        currency=currency,
-        payment_capture='0'
-    ))
-
-    # Get the order ID of the newly created order
-    razorpay_order_id = razorpay_order['id']
-    callback_url = 'paymenthandler/'  # Update this URL as needed
-
-    # Prepare context to pass to the frontend
-    context = {
-        'razorpay_order_id': razorpay_order_id,
-        'razorpay_merchant_key': settings.RAZOR_KEY_ID,
-        'razorpay_amount': amount,
-        'currency': currency,
-        'callback_url': callback_url,
-    }
+    
+      
 
     # Render the template with the context
-    return render(request, 'payment/subscription_plans.html', context)
+    return render(request, 'payment/subscription_plans.html')
+
 
 
 # filling_ststus_for _bin
@@ -1121,45 +1013,54 @@ def add_status(request):
 # bin_booking_for_events
 from django.shortcuts import render, redirect
 from .models import BinEvent, BinBookingEvent
+from django.http import JsonResponse  # Import JsonResponse for AJAX response
 
 def save_bin_booking_event(request):
     bins = BinEvent.objects.all()
+    small_bin_price = 50
+    medium_bin_price = 75
+    large_bin_price = 100
 
     if request.method == 'POST':
         event_date_time = request.POST.get('event_date_time')
         event_location = request.POST.get('event_location')
         delivery_time = request.POST.get('delivery_time')
         pickup_time = request.POST.get('pickup_time')
-        number_of_bins_needed = int(request.POST.get('number_of_bins_needed'))  # Convert to int
-        selected_bin_id = request.POST.get('bin')  # Get the selected bin_id
+        number_of_bins_needed = int(request.POST.get('number_of_bins_needed'))
+        selected_bin_id = request.POST.get('bin')
 
-        # Query the selected BinEvent based on the selected_bin_id
         selected_bin_event = BinEvent.objects.get(bin_id=selected_bin_id)
 
-        # Check if there are enough bins available for booking
+        if selected_bin_event.size == 'Small':
+            amount_to_pay = number_of_bins_needed * small_bin_price
+        elif selected_bin_event.size == 'Medium':
+            amount_to_pay = number_of_bins_needed * medium_bin_price
+        elif selected_bin_event.size == 'Large':
+            amount_to_pay = number_of_bins_needed * large_bin_price
+        else:
+            amount_to_pay = 0
+
         if selected_bin_event.number_of_bins >= number_of_bins_needed:
-            # Create and save a BinBookingEvent instance with the selected BinEvent
             bin_booking_event = BinBookingEvent(
                 event_date_time=event_date_time,
                 event_location=event_location,
                 delivery_time=delivery_time,
                 pickup_time=pickup_time,
                 number_of_bins_needed=number_of_bins_needed,
-                bin=selected_bin_event,  # Assign the selected BinEvent
-                # Add other fields as needed
+                bin=selected_bin_event,
             )
             bin_booking_event.save()
 
-            # Update the number of bins for the selected BinEvent
             selected_bin_event.number_of_bins -= number_of_bins_needed
             selected_bin_event.save()
 
-            return redirect('bin_order_event')  # Redirect to a success page or another appropriate URL
+            # Return a JSON response indicating success
+            return JsonResponse({'success': True, 'amount_to_pay': amount_to_pay})
+
         else:
-            # Handle the case when there are not enough bins available
-            # You can display an error message or take appropriate action
             error_message = "Not enough bins available for booking."
-            return render(request, 'bin/bin_booking_event_form.html', {'bins': bins, 'error_message': error_message})
+            # Return a JSON response with an error message
+            return JsonResponse({'success': False, 'error_message': error_message})
 
     return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
 
@@ -1227,7 +1128,7 @@ from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .models import Feedback  # Import the Feedback model
 
-@login_required
+@login_required(login_url='loginn')
 def submit_feedback(request, user_id):
     # Use user_id to identify the user, for example:
     try:
@@ -1248,3 +1149,71 @@ def submit_feedback(request, user_id):
         return redirect('index')
     
     return render(request, 'feedback/feedback.html', {'user': user})
+
+
+
+
+
+# payment sucess
+from django.shortcuts import render
+
+def payment_success(request):
+    return render(request, 'paymentsuccess.html')
+
+
+
+#payment for home bin booking 
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest
+import razorpay
+
+razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+def paymentform(request: HttpRequest):
+    currency = 'INR'
+    amount = int(request.GET.get("amount")) * 100  # Rs. 200
+
+    razorpay_order = razorpay_client.order.create(dict(amount=amount, currency=currency, payment_capture='0'))
+    razorpay_order_id = razorpay_order['id']
+    callback_url = '/paymenthandler/'
+    context = {}
+    context['razorpay_order_id'] = razorpay_order_id
+    context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['razorpay_amount'] = amount / 100
+    context['currency'] = currency
+    context['callback_url'] = callback_url
+
+    return render(request, 'payment/payment_form.html', context=context)
+
+from django.conf import settings
+@csrf_exempt
+@login_required  
+def paymenthandler(request):
+    if request.method == "POST":
+        try:
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+            if result is not None:
+                amount = 20000 
+                authenticated_user = request.user
+                user_profile = UserProfile.objects.get(user=authenticated_user)
+                user_profile.subscribed = True
+                user_profile.save()
+                
+                
+                return render(request, 'paymentsuccess.html')
+            else:
+                return render(request, 'PremiumUserPage/errorpage.html')
+        except:
+            return render(request, 'PremiumUserPage/errorpage.html') 
+    else:
+        return render(request, 'PremiumUserPage/errorpage.html')

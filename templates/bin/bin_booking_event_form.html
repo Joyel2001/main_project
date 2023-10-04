@@ -64,22 +64,51 @@
             background-color: #fff;
         }
         
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
+       
+        /* Add your CSS styles here */
+        .number-input {
+            display: flex;
+            align-items: center;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .number-input input[type="number"] {
+            width: 50px;
+            text-align: center;
+        }
+
+        .number-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .number-input input[type="number"] {
+            width: 50px;
+            text-align: center;
+        }
+
+        .number-input button {
+            color: #fff;
+            background-color: transparent; /* Transparent background for the buttons */
+            border: none;
+            cursor: pointer;
+            padding: 0; /* Remove padding to reduce button size */
+            font-size: 24px; /* Increase font size for icons */
+        }
+
+        .number-input #plus-button {
+            color: #007bff; /* Blue color for the plus icon */
+        }
+
+        .number-input #minus-button {
+            color: #000; /* Black color for the minus icon */
         }
     </style>
 </head>
 <body>
     <h1>Bin Booking Event Form</h1>
 
-    <form method="post" action="{% url 'save_bin_booking_event' %}" onsubmit="return validateForm()">        {% csrf_token %}
+    <form method="post" action="{% url 'save_bin_booking_event' %}" onsubmit="return submitForm(event)">
+        {% csrf_token %}
        
         <label for="binDetails">Select Bin Size and Capacity:</label>
         <select name="bin" id="binSelect" class="custom-select" onblur="validateBin()">
@@ -92,9 +121,11 @@
         <!-- Error message placeholder -->
         <p id="binError" style="color: red;"></p>
 
-        <label for="event_date_time">Event Date and Time:</label>
-        <input type="datetime-local" name="event_date_time" id="eventDateTime" onblur="validateEventDateTime()">
+        <label for="event_date_time" style="font-weight: bold; font-size: 18px; color: #333;">Event Date:</label>
+        <input type="date" name="event_date_time" id="eventDateTime" onblur="validateEventDateTime()" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
         <p id="eventDateTimeError" style="color: red;"></p>
+        
+
 
         <label for="event_location">Event Location:</label>
         <input type="text" name="event_location" id="eventLocation" onblur="validateEventLocation()">
@@ -109,13 +140,89 @@
         <p id="pickupTimeError" style="color: red;"></p>
 
         <label for="number_of_bins_needed">Number of Bins Needed:</label>
-        <input type="number" name="number_of_bins_needed" id="numBins" onblur="validateNumBins()">
+        <div class="number-input">
+            <button type="button" id="minus-button">-</button>
+            <input type="number" name="number_of_bins_needed" id="numBins" value="0">
+            <button type="button" id="plus-button">+</button>
+        </div>
         <p id="numBinsError" style="color: red;"></p>
-
-        <button type="submit">Save</button>
+        <div id="amount-to-pay-section">
+            <p>Amount to Pay: <span id="amount-to-pay">{{ amount_to_pay }}</span></p>
+        </div>
+        <div id="success-message" style="color: green;"></div> <!-- Success message container -->
+        
+        <button type="submit">Save </button>
+        
     </form>
 
     <script>
+        var small_bin_price = 50;
+    var medium_bin_price = 75;
+    var large_bin_price = 100;
+    
+    // Function to calculate the amount based on the number of bins
+    function calculateAmount(numBins) {
+        var selectedBinId = document.getElementById("binSelect").value;
+        var selectedBin = binsData.find(bin => bin.bin_id == selectedBinId);
+    
+        if (!selectedBin) {
+            return 0;
+        }
+    
+        var amountToPay = 0;
+        if (selectedBin.size == 'Small') {
+            amountToPay = numBins * small_bin_price;
+        } else if (selectedBin.size == 'Medium') {
+            amountToPay = numBins * medium_bin_price;
+        } else if (selectedBin.size == 'Large') {
+            amountToPay = numBins * large_bin_price;
+        }
+    
+        return amountToPay;
+    }
+        
+          // JavaScript functions to increase and decrease the number of bins
+            // JavaScript functions to increase and decrease the number of bins
+            function updateAmount() {
+                var numBinsInput = document.getElementById("numBins");
+                var numBins = parseInt(numBinsInput.value);
+                var amountToPay = calculateAmount(numBins);
+            
+                var amountToPaySpan = document.getElementById("amount-to-pay");
+                amountToPaySpan.textContent = "₹" + amountToPay;
+            }
+            
+            // Add event listeners to increase and decrease the number of bins
+            document.getElementById("minus-button").addEventListener("click", function () {
+                var numBinsInput = document.getElementById("numBins");
+                var numBins = parseInt(numBinsInput.value);
+                if (numBins > 0) {
+                    numBinsInput.value = numBins - 1;
+                    updateAmount(); // Update the amount immediately
+                }
+            });
+            
+            document.getElementById("plus-button").addEventListener("click", function () {
+                var numBinsInput = document.getElementById("numBins");
+                var numBins = parseInt(numBinsInput.value) + 1;
+                numBinsInput.value = numBins;
+                updateAmount(); // Update the amount immediately
+            });
+            
+            // Initialize the amount to pay to zero when the page loads
+            updateAmount();
+        // Add event listeners to the numBins input field to update the amount immediately
+        var numBinsInput = document.getElementById("numBins");
+        numBinsInput.addEventListener("input", updateAmountToPay);
+
+        // Initialize the amount to pay to zero when the page loads
+        updateAmountToPay();
+        // Add event listeners to the numBins input field to update the amount immediately
+        var numBinsInput = document.getElementById("numBins");
+        numBinsInput.addEventListener("input", updateAmountToPay);
+    
+        // Initialize the amount to pay when the page loads
+        updateAmountToPay();
         function validateBin() {
             var binSelect = document.getElementById("binSelect");
             var binError = document.getElementById("binError");
@@ -133,7 +240,7 @@
             var eventDateTimeError = document.getElementById("eventDateTimeError");
 
             if (eventDateTime.value === "") {
-                eventDateTimeError.textContent = "Please enter an event date and time.";
+                eventDateTimeError.textContent = "Please enter an event date .";
             } else {
                 eventDateTimeError.textContent = "";
             }
@@ -233,8 +340,70 @@
             // All validations passed
             return true; // Allow form submission
         }
+
+
+
+        {% comment %} payment details {% endcomment %}
+
+       function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+
+        // Get the form element
+        var form = event.target;
+
+        // Create a FormData object from the form
+        var formData = new FormData(form);
+
+        // Fetch API to send the form data to the server
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken') // Include the CSRF token in the request header
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update the amount to pay
+                var amountToPay = document.getElementById("amount-to-pay");
+                amountToPay.textContent = "₹" + data.amount_to_pay;
+
+                // Update the success message
+                var successMessage = document.getElementById("success-message");
+                successMessage.textContent = "Your details are saved. Please proceed to payment.";
+
+                // Clear the form fields (optional)
+                form.reset();
+            } else {
+                // Display the error message
+                var successMessage = document.getElementById("success-message");
+                successMessage.style.color = 'red';
+                successMessage.textContent = data.error_message;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+        // Function to get the CSRF token from cookies
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
     </script>
  
-
+    
 </body>
 </html>

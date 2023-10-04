@@ -63,7 +63,7 @@ urlpatterns = [
     path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
 
 
-    path('hello', views.homepage, name='index1'),
+    # path('hello', views.homepage, name='index1'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('api/add_status/', views.add_status, name='add_status'),
     path('save_bin_booking_event/', views.save_bin_booking_event, name='save_bin_booking_event'),
@@ -72,7 +72,10 @@ urlpatterns = [
     path('delete_waste_collection/<int:waste_collection_id>/', views.delete_waste_collection, name='delete_waste_collection'),
     path('open_url/', views.open_url, name='open_url'),
     path('feedback/<int:user_id>/', views.submit_feedback, name='submit_feedback'),
+    path('payment/success/', views.payment_success, name='payment_success'),
+    path('paymentform', views.paymentform, name='paymentform'),
 ]
+
 
     # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
     
