@@ -468,7 +468,10 @@ https://www.tooplate.com/view/2125-artxibition
         <div class="row">
 
             <div class="col-lg-12">
-                <a href="{% url 'submit_feedback' user_id=user.id %}" class="feedback-button"> Feedback</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'submit_feedback' user_id=user.id %}" class="feedback-button">Feedback</a>
+              {% endif %}
+              
 
                 <h6 style="color: black; font-weight:bold">Discover Innovations for a Cleaner Tomorrow</h6>
                 <h2 style="color: black;font-weight:bold">Embrace the Green Revolution</h2>

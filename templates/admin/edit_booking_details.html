@@ -1,0 +1,122 @@
+{% load static %}
+
+<!-- Add a back button to navigate to the previous page -->
+<a href="{% url 'bin_details' user_id=booking.user.id %}" class="btn btn-secondary back-button">
+    <i class="fas fa-arrow-left"></i> Back
+</a>
+<form method="post" action="{% url 'edit_booking_details' booking.booking_id %}" class="edit-booking-form" onsubmit="return validateBookingForm()">
+    {% csrf_token %}
+    
+    <!-- Apply some styling to labels and input fields -->
+    <div class="form-group">
+        <label for="collection_day">Collection Day:</label>
+        <input type="text" id="collection_day" name="collection_day" class="form-control" value="{{ booking.collection_period }}">
+    </div>
+    
+    <div class="form-group">
+        <label for="house_number">House Number:</label>
+        <input type="text" id="house_number" name="house_number" class="form-control" value="{{ booking.house_number }}">
+    </div>
+    
+    <div class="form-group">
+        <label for="landmark">Landmark near:</label>
+        <input type="text" id="landmark" name="landmark" class="form-control" value="{{ booking.landmark }}">
+    </div>
+    
+    <!-- Style the submit button -->
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<!-- JavaScript function for form validation -->
+<script>
+function validateBookingForm() {
+    // Get references to form fields
+    var collectionDayInput = document.getElementById("collection_day");
+    var houseNumberInput = document.getElementById("house_number");
+    var landmarkInput = document.getElementById("landmark");
+
+    // Get references to error message elements
+    var collectionDayError = document.getElementById("collection_day_error");
+    var houseNumberError = document.getElementById("house_number_error");
+    var landmarkError = document.getElementById("landmark_error");
+
+    // Define a flag to track if the form is valid
+    var isValid = true;
+
+    // Clear previous error messages
+    collectionDayError.textContent = "";
+    houseNumberError.textContent = "";
+    landmarkError.textContent = "";
+
+    // Perform validation for each field
+    if (collectionDayInput.value === "") {
+        collectionDayError.textContent = "Please enter a collection day.";
+        isValid = false;
+    }
+
+    if (houseNumberInput.value === "") {
+        houseNumberError.textContent = "Please enter a house number.";
+        isValid = false;
+    }
+
+    if (landmarkInput.value === "") {
+        landmarkError.textContent = "Please enter a landmark.";
+        isValid = false;
+    }
+
+    // Return true if the form is valid, otherwise, prevent form submission
+    return isValid;
+}
+</script>
+
+
+<!-- Apply some custom styles using CSS -->
+<style>
+    /* Style for the edit booking form container */
+    .edit-booking-form {
+        max-width: 400px;
+        margin: 20px auto;
+    }
+
+    /* Style for form labels */
+    .edit-booking-form label {
+        font-weight: bold;
+    }
+
+    /* Style for form input fields */
+    .edit-booking-form .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    /* Style for the submit button */
+    .edit-booking-form button {
+        display: block;
+        margin-top: 10px;
+    }
+    /* Style for the back button */
+.back-button {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: #007BFF;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+.back-button i {
+    margin-right: 5px;
+}
+
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+</style>

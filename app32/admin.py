@@ -92,10 +92,13 @@ admin.site.register(BinBookingEvent)
 # payment
 
 
+# app32/admin.py
 
-from .models import Payments
+from django.contrib import admin
+from .models import Payment
 
-admin.site.register(Payments)
+admin.site.register(Payment)
+
 
 
 

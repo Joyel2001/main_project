@@ -432,9 +432,9 @@
                                                 <strong>Address for Bin Delivery:</strong> {{ request.user.userprofile.address }}<br>
                                                 <strong>Landmark near:</strong> {{ booking.landmark }}<br>
                                     
-                                                <a href="#" class="btn btn-warning">Reschedule Collection Date</a>
-                                                <a href="#" class="btn btn-success">Book Extra Bin</a>
-                                                <a href="#" class="btn btn-primary">Edit Location Details</a>
+                                                
+                                                <a href="{% url "orderforhome" %}" class="btn btn-success">Book Extra Bin</a>
+                                                <a href="{% url 'edit_booking_details' booking.booking_id %}" class="btn btn-primary">Edit Location Details and Collection Date</a>
                                                 <a href="{% url 'update_bin_status' booking.booking_id %}" class="btn btn-warning">Update Bin Status</a>
 
                                             </li>

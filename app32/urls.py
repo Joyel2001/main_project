@@ -61,6 +61,7 @@ urlpatterns = [
     path('bin_waste_collection/<str:booking_id>/', views.bin_waste_collection, name='bin_waste_collection'),
     path('collection/<int:user_id>/', views.collection_detail, name='collection_detail'),
     path('update_bin_status/<str:booking_id>/', views.update_bin_status, name='update_bin_status'),
+    path('edit_booking/<str:booking_id>/', views.edit_booking_details, name='edit_booking_details'),
 
 
     # path('hello', views.homepage, name='index1'),
@@ -74,8 +75,8 @@ urlpatterns = [
     path('feedback/<int:user_id>/', views.submit_feedback, name='submit_feedback'),
     path('payment/success/', views.payment_success, name='payment_success'),
     path('paymentform', views.paymentform, name='paymentform'),
-]
-
-
-    # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
+    path('feedback/', views.feedback_list, name='feedback_list'),
+    path('payment_details/', views.payment_details, name='payment_details'),
+    path('handle_payment/', views.handle_payment, name='handle_payment'),
+    ]    # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
     

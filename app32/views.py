@@ -1054,8 +1054,8 @@ def save_bin_booking_event(request):
             selected_bin_event.number_of_bins -= number_of_bins_needed
             selected_bin_event.save()
 
-            # Return a JSON response indicating success
-            return JsonResponse({'success': True, 'amount_to_pay': amount_to_pay})
+            # Redirect to the payment details page with the amount_to_pay
+            return redirect('payment_details', amount_to_pay=amount_to_pay)
 
         else:
             error_message = "Not enough bins available for booking."
@@ -1063,6 +1063,9 @@ def save_bin_booking_event(request):
             return JsonResponse({'success': False, 'error_message': error_message})
 
     return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
+
+
+
 
 
 
@@ -1217,3 +1220,87 @@ def paymenthandler(request):
             return render(request, 'PremiumUserPage/errorpage.html') 
     else:
         return render(request, 'PremiumUserPage/errorpage.html')
+    
+# payemnt to db
+@csrf_exempt
+def handle_payment(request):
+    if request.method == "POST":
+        try:
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+            if result is not None:
+                # Handle successful payment logic here
+                # For example, update user's subscription status
+                amount = 20000 
+                authenticated_user = request.user
+                user_profile = UserProfile.objects.get(user=authenticated_user)
+                user_profile.subscribed = True
+                user_profile.save()
+                
+                return render(request, 'paymentsuccess.html')
+            else:
+                return render(request, 'PremiumUserPage/errorpage.html')
+        except:
+            return render(request, 'PremiumUserPage/errorpage.html') 
+    else:
+        return render(request, 'PremiumUserPage/errorpage.html')
+    
+
+
+
+
+# feedback_list_html
+# views.py
+
+from django.shortcuts import render
+from .models import Feedback
+
+def feedback_list(request):
+    feedback_entries = Feedback.objects.all()  # Retrieve all feedback entries
+    return render(request, 'admin/feedback_display/feedback_list.html', {'feedback_entries': feedback_entries})
+
+
+
+
+
+# event_ bin _boooking _ payment _details
+def payment_details(request, amount_to_pay):
+    return render(request, 'payment_details.html', {'amount_to_pay': amount_to_pay})
+
+
+
+
+# edit bin details
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import BinBooking
+
+def edit_booking_details(request, booking_id):
+    booking = get_object_or_404(BinBooking, booking_id=booking_id)
+    
+    if request.method == 'POST':
+        # Handle form submission and update the details in the database
+        collection_day = request.POST.get('collection_day')
+        house_number = request.POST.get('house_number')
+        landmark = request.POST.get('landmark')
+        
+        # Update the booking details in the database
+        booking.collection_period = collection_day
+        booking.house_number = house_number
+        booking.landmark = landmark
+        booking.save()
+        
+        # Redirect to a success page or back to the bin details page
+        return redirect('bin_details', user_id=booking.user.pk)
+    
+    context = {
+        'booking': booking,
+    }
+    
+    return render(request, 'admin\edit_booking_details.html', context)

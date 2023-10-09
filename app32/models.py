@@ -186,17 +186,18 @@ class BinBookingEvent(models.Model):
 from django.db import models
 from django.contrib.auth.models import User
 
-class Payments(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment_id = models.CharField(max_length=100)
-    razorpay_order_id = models.CharField(max_length=100)
-    payment_signature = models.CharField(max_length=100)
-    payment_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    payment_status = models.BooleanField(default=False)
-    payment_capture_time = models.DateTimeField(auto_now_add=True)
+class Payment(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    amount_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[("success", "Success"), ("failure", "Failure")])
+    payment_id = models.CharField(max_length=100,default=None)
 
     def __str__(self):
         return f"Payment ID: {self.payment_id}"
+
+
+    
     
 
 
