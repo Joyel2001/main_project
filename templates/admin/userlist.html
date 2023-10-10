@@ -772,16 +772,7 @@ tr:hover {
       modal.find('#editUserForm').attr('action', formAction.replace('0', button.data('id')));
     });
 
-    // Username validation (6-8 characters starting with a letter)
-    $('#edit-username').on('input', function () {
-      var username = $(this).val();
-      var usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,7}$/;
-      if (!usernameRegex.test(username)) {
-        $('#username-error').text('Username must be 6-8 characters and start with a letter.');
-      } else {
-        $('#username-error').text('');
-      }
-    });
+    
 
     // Email validation
 $('#edit-email').on('input', function () {
@@ -801,15 +792,7 @@ $('#edit-email').on('input', function () {
       var email = $('#edit-email').val();
 
       // Username validation (6-8 characters starting with a letter)
-      var usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{5,7}$/;
-      if (!usernameRegex.test(username)) {
-        $('#username-error').text('Username must be 6-8 characters and start with a letter.');
-        event.preventDefault(); // Prevent form submission
-        return;
-      } else {
-        $('#username-error').text('');
-      }
-
+     
       // Email validation
       var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {

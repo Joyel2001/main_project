@@ -62,128 +62,169 @@
 <head>
     <!-- Include your CSS and other header content here -->
 </head>
-<body>
-    <div class="container">
-        <h1>Book a Bin</h1>
-        <form id="bookingForm" method="post">
-            {% csrf_token %}
+<div class="container">
+    <h1>Book a Bin</h1>
+    <form id="bookingForm" method="post" onsubmit="return validateForm()">
+        {% csrf_token %}
 
-            
+        <label for="houseNumber">House Number:</label>
+        <input type="text" id="houseNumber" name="houseNumber" >
+        <div id="houseNumber-error" class="error-message"></div>
 
-            <label for="houseNumber">House Number:</label>
-            <input type="text" id="houseNumber" name="houseNumber" required>
-            <label for="landmark">Nearby Landmark:</label>
-            <input type="text" id="landmark" name="landmark"><br>
+        <label for="landmark">Nearby Landmark:</label>
+        <input type="text" id="landmark" name="landmark" >
+        <div id="landmark-error" class="error-message"></div><br>
 
-            <label for="collectionPeriod">Waste Collection Day:</label>
-                <select id="collectionPeriod" name="collectionPeriod">
-                    <option value="" disabled selected>Select Collection Day</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Saturday">Saturday</option>
-                </select><br>
-            
+        <label for="collectionPeriod">Waste Collection Day:</label>
+        <select id="collectionPeriod" name="collectionPeriod" >
+            <option value="" disabled selected>Select Collection Day</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Saturday">Saturday</option>
+        </select>
+        <div id="collectionPeriod-error" class="error-message"></div><br>
 
-                <label for="pin">Pin Code:</label>
-                <input type="text" id="pin" name="pin" >
-                <div id="pin-error" style="color: red;"></div>
+        <label for="pin">Pin Code:</label>
+        <input type="text" id="pin" name="pin" >
+        <div id="pin-error" class="error-message"></div>
 
-            <div class="down-content">
-                <label for="binDetails">Select Bin Size and Capacity:</label>
-                <select id="binDetails" name="binDetails" required>
-                    <option value="" disabled selected>Select Bin Size and Capacity</option>
-                    {% for bin in bins %}
-                        <option value="{{ bin.size }} - {{ bin.capacity }}">
-                            {{ bin.size }} ({{ bin.capacity }})
-                        </option>
-                    {% endfor %}
-                </select>
+        <div class="down-content">
+            <label for="binDetails">Select Bin Size and Capacity:</label>
+            <select id="binDetails" name="binDetails" >
+                <option value="" disabled selected>Select Bin Size and Capacity</option>
+                {% for bin in bins %}
+                    <option value="{{ bin.size }} - {{ bin.capacity }}">
+                        {{ bin.size }} ({{ bin.capacity }})
+                    </option>
+                {% endfor %}
+            </select>
+            <div id="binDetails-error" class="error-message"></div>
 
-                <div class="main-dark-button">
-                    <button type="submit" id="purchaseBtn">Purchase Bin</button>
-                </div>
+            <div class="main-buttons">
+                <a href="{% url 'bin_order' %}" class="btn btn-secondary back-button">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" id="purchaseBtn" class="btn btn-primary purchase-button">Purchase Bin</button>
             </div>
-            {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-        </form>
-    </div>
+            
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </form>
+</div>
 
- 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const form = document.getElementById('bookingForm');
-                const purchaseBtn = document.getElementById('purchaseBtn');
-        
-                form.addEventListener('submit', function (event) {
-                    // Prevent form submission if validation fails
-                    if (!validateForm()) {
-                        event.preventDefault();
-                    }
-                });
-        
-                function validateForm() {
-                    const email = document.getElementById('email').value;
-                    const phone = document.getElementById('phone').value;
-                    const houseNumber = document.getElementById('houseNumber').value;
-                    const address = document.getElementById('address').value;
-                    const pin = document.getElementById('pin').value;
-                    const binDetails = document.getElementById('binDetails').value;
-        
-                    // Validate email format
-                    if (!validateEmail(email)) {
-                        alert('Please enter a valid email address.');
-                        return false;
-                    }
-        
-                    // Validate 10-digit phone number
-                    var pinInput = document.getElementById('pin');
+<script>
+    // Function to show an error message for a field
+    function showError(fieldId, errorMessage) {
+        var errorElement = document.getElementById(fieldId + "-error");
+        errorElement.textContent = errorMessage;
+    }
 
-      // Get the pin code input element
-      var pinInput = document.getElementById('pin');
+    // Function to clear an error message for a field
+    function clearError(fieldId) {
+        var errorElement = document.getElementById(fieldId + "-error");
+        errorElement.textContent = "";
+    }
 
-      // Get the error message element
-      var pinError = document.getElementById('pin-error');
-  
-      // Add an input event listener to the pin code input
-      pinInput.addEventListener('input', function () {
-          // Check if the input matches the pattern
-          if (!pinInput.checkValidity()) {
-              // Display an error message
-              pinError.textContent = pinInput.validationMessage;
-          } else {
-              // Clear the error message
-              pinError.textContent = '';
-          }
-      });
-        
-                    // Add your validation logic here
-                    // For example: Check if fields are not empty
-                    if (email === '' || phone === '' || houseNumber === '' || address === '' || pin === '' || binDetails === '') {
-                        alert('All fields are required.');
-                        return false;
-                    }
-        
-                    return true; // Form is valid
-                }
-        
-                function validateEmail(email) {
-                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                    return emailPattern.test(email);
-                }
-        
-                function validatePhoneNumber(phone) {
-                    const phonePattern = /^\d{10}$/;
-                    return phonePattern.test(phone);
-                }
-            });
-        </script>
-        
+    // Function to validate the House Number field
+    function validateHouseNumber() {
+        var houseNumber = document.getElementById("houseNumber").value.trim();
+        if (houseNumber === "") {
+            showError("houseNumber", "Please enter a House Number.");
+            return false;
+        } else {
+            clearError("houseNumber");
+            return true;
+        }
+    }
 
-    
-</body>
-</html>
+    // Function to validate the Landmark field
+    function validateLandmark() {
+        var landmark = document.getElementById("landmark").value.trim();
+        if (landmark === "") {
+            showError("landmark", "Please enter a Landmark.");
+            return false;
+        } else {
+            clearError("landmark");
+            return true;
+        }
+    }
 
+    // Function to validate the Waste Collection Day field
+    function validateCollectionDay() {
+        var collectionPeriod = document.getElementById("collectionPeriod").value.trim();
+        if (collectionPeriod === "") {
+            showError("collectionPeriod", "Please select a Collection Day.");
+            return false;
+        } else {
+            clearError("collectionPeriod");
+            return true;
+        }
+    }
+
+    // Function to validate the Pin Code field
+    function validatePinCode() {
+        var pin = document.getElementById("pin").value.trim();
+        if (!/^\d{6}$/.test(pin)) {
+            showError("pin", "Pin Code should be 6 numbers.");
+            return false;
+        } else {
+            clearError("pin");
+            return true;
+        }
+    }
+
+    // Function to validate the Bin Details field
+    function validateBinDetails() {
+        var binDetails = document.getElementById("binDetails").value.trim();
+        if (binDetails === "") {
+            showError("binDetails", "Please select Bin Size and Capacity.");
+            return false;
+        } else {
+            clearError("binDetails");
+            return true;
+        }
+    }
+
+    // Add event listeners to validate fields as they lose focus
+    document.getElementById("houseNumber").addEventListener("blur", validateHouseNumber);
+    document.getElementById("landmark").addEventListener("blur", validateLandmark);
+    document.getElementById("collectionPeriod").addEventListener("blur", validateCollectionDay);
+    document.getElementById("pin").addEventListener("blur", validatePinCode);
+    document.getElementById("binDetails").addEventListener("blur", validateBinDetails);
+
+    // Function to validate the form when submitted
+    function validateForm() {
+        // Validate House Number
+        if (!validateHouseNumber()) {
+            return false;
+        }
+
+        // Validate Landmark
+        if (!validateLandmark()) {
+            return false;
+        }
+
+        // Validate Waste Collection Day
+        if (!validateCollectionDay()) {
+            return false;
+        }
+
+        // Validate Pin Code
+        if (!validatePinCode()) {
+            return false;
+        }
+
+        // Validate Bin Details
+        if (!validateBinDetails()) {
+            return false;
+        }
+
+        // If all validations pass, allow form submission
+        return true;
+    }
+</script>

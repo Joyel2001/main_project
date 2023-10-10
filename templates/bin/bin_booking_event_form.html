@@ -109,300 +109,76 @@
 
     <form method="post" action="{% url 'save_bin_booking_event' %}" onsubmit="return submitForm(event)">
         {% csrf_token %}
-       
+    
         <label for="binDetails">Select Bin Size and Capacity:</label>
-        <select name="bin" id="binSelect" class="custom-select" onblur="validateBin()">
+        <select name="bin" id="binSelect" class="custom-select" onchange="updateAmount()">
             <option value="" disabled selected>Select Bin Size and Capacity</option>
             {% for bin in bins %}
-            <option value="{{ bin.bin_id }}">Size: {{ bin.size }}, Capacity: {{ bin.capacity }}</option>
+            <option value="{{ bin.bin_id }}" data-bin-price="{{ bin.price }}">{{ bin.size }}</option>
             {% endfor %}
         </select>
-        
+    
         <!-- Error message placeholder -->
         <p id="binError" style="color: red;"></p>
-
+    
         <label for="event_date_time" style="font-weight: bold; font-size: 18px; color: #333;">Event Date:</label>
         <input type="date" name="event_date_time" id="eventDateTime" onblur="validateEventDateTime()" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
         <p id="eventDateTimeError" style="color: red;"></p>
-        
-
-
+    
         <label for="event_location">Event Location:</label>
         <input type="text" name="event_location" id="eventLocation" onblur="validateEventLocation()">
         <p id="eventLocationError" style="color: red;"></p>
-
+    
         <label for="delivery_time">Delivery Time:</label>
         <input type="datetime-local" name="delivery_time" id="deliveryTime" onblur="validateDeliveryTime()">
         <p id="deliveryTimeError" style="color: red;"></p>
-
+    
         <label for="pickup_time">Pickup Time:</label>
         <input type="datetime-local" name="pickup_time" id="pickupTime" onblur="validatePickupTime()">
         <p id="pickupTimeError" style="color: red;"></p>
-
+    
         <label for="number_of_bins_needed">Number of Bins Needed:</label>
-        <div class="number-input">
-            <button type="button" id="minus-button">-</button>
-            <input type="number" name="number_of_bins_needed" id="numBins" value="0">
-            <button type="button" id="plus-button">+</button>
-        </div>
+        <input type="number" name="number_of_bins_needed" id="numBins" value="0">
         <p id="numBinsError" style="color: red;"></p>
+    
         <div id="amount-to-pay-section">
+            <p id="amount-to-pay" style="font-weight: bold; font-size: 18px;">Amount to Pay: ₹0</p>
         </div>
-        <div id="success-message" style="color: green;"></div> <!-- Success message container -->
-        
+    
+        <input type="hidden" id="binPrice" name="bin_price" value="0"> <!-- Hidden field to store the bin price -->
+    
         <button type="submit" id="saveButton">Save</button>
-        
     </form>
 
     <script>
-        var small_bin_price = 50;
-    var medium_bin_price = 75;
-    var large_bin_price = 100;
-    
-    // Function to calculate the amount based on the number of bins
-    function calculateAmount(numBins) {
-        var selectedBinId = document.getElementById("binSelect").value;
-        var selectedBin = binsData.find(bin => bin.bin_id == selectedBinId);
-    
-        if (!selectedBin) {
-            return 0;
+        // Function to calculate the amount based on the selected bin size and number of bins
+        function updateAmount() {
+            var binSelect = document.getElementById("binSelect");
+            var numBinsInput = document.getElementById("numBins");
+            var amountToPay = document.getElementById("amount-to-pay");
+            var binPrice = document.getElementById("binPrice");
+
+            // Get the selected option and its data attributes
+            var selectedOption = binSelect.options[binSelect.selectedIndex];
+            var binPriceValue = parseFloat(selectedOption.getAttribute("data-bin-price")); // Parse as a float
+
+            // Update the hidden input field with the bin price
+            binPrice.value = binPriceValue;
+
+            // Calculate the amount based on the selected bin size and number of bins
+            var numBins = parseInt(numBinsInput.value);
+            var totalAmount = numBins * binPriceValue;
+
+            // Update the amount to pay with proper formatting
+            amountToPay.textContent = "Amount to Pay: ₹" + totalAmount.toFixed(2); // Format to two decimal places
         }
-    
-        var amountToPay = 0;
-        if (selectedBin.size == 'Small') {
-            amountToPay = numBins * small_bin_price;
-        } else if (selectedBin.size == 'Medium') {
-            amountToPay = numBins * medium_bin_price;
-        } else if (selectedBin.size == 'Large') {
-            amountToPay = numBins * large_bin_price;
-        }
-    
-        return amountToPay;
-    }
-        
-          // JavaScript functions to increase and decrease the number of bins
-            // JavaScript functions to increase and decrease the number of bins
-            function updateAmount() {
-                var numBinsInput = document.getElementById("numBins");
-                var numBins = parseInt(numBinsInput.value);
-                var amountToPay = calculateAmount(numBins);
-            
-                var amountToPaySpan = document.getElementById("amount-to-pay");
-                amountToPaySpan.textContent = "₹" + amountToPay;
-            }
-            
-            // Add event listeners to increase and decrease the number of bins
-            document.getElementById("minus-button").addEventListener("click", function () {
-                var numBinsInput = document.getElementById("numBins");
-                var numBins = parseInt(numBinsInput.value);
-                if (numBins > 0) {
-                    numBinsInput.value = numBins - 1;
-                    updateAmount(); // Update the amount immediately
-                }
-            });
-            
-            document.getElementById("plus-button").addEventListener("click", function () {
-                var numBinsInput = document.getElementById("numBins");
-                var numBins = parseInt(numBinsInput.value) + 1;
-                numBinsInput.value = numBins;
-                updateAmount(); // Update the amount immediately
-            });
-            
-            // Initialize the amount to pay to zero when the page loads
-            updateAmount();
+
         // Add event listeners to the numBins input field to update the amount immediately
         var numBinsInput = document.getElementById("numBins");
-        numBinsInput.addEventListener("input", updateAmountToPay);
+        numBinsInput.addEventListener("input", updateAmount);
 
-        // Initialize the amount to pay to zero when the page loads
-        updateAmountToPay();
-        // Add event listeners to the numBins input field to update the amount immediately
-        var numBinsInput = document.getElementById("numBins");
-        numBinsInput.addEventListener("input", updateAmountToPay);
-    
-        // Initialize the amount to pay when the page loads
-        updateAmountToPay();
-        function validateBin() {
-            var binSelect = document.getElementById("binSelect");
-            var binError = document.getElementById("binError");
-
-            if (binSelect.value === "") {
-                binError.textContent = "Please select a bin size and capacity.";
-            } else {
-                binError.textContent = "";
-            }
-        }
-
-        function validateEventDateTime() {
-            // Add validation logic for Event Date and Time field
-            var eventDateTime = document.getElementById("eventDateTime");
-            var eventDateTimeError = document.getElementById("eventDateTimeError");
-
-            if (eventDateTime.value === "") {
-                eventDateTimeError.textContent = "Please enter an event date .";
-            } else {
-                eventDateTimeError.textContent = "";
-            }
-        }
-
-        function validateEventLocation() {
-            // Add validation logic for Event Location field
-            var eventLocation = document.getElementById("eventLocation");
-            var eventLocationError = document.getElementById("eventLocationError");
-
-            if (eventLocation.value === "") {
-                eventLocationError.textContent = "Please enter an event location.";
-            } else {
-                eventLocationError.textContent = "";
-            }
-        }
-        function validateDeliveryTime() {
-            var deliveryTime = document.getElementById("deliveryTime");
-            var deliveryTimeError = document.getElementById("deliveryTimeError");
-    
-            if (deliveryTime.value === "") {
-                deliveryTimeError.textContent = "Please enter a delivery time.";
-            } else {
-                deliveryTimeError.textContent = "";
-            }
-        }
-    
-        function validatePickupTime() {
-            var pickupTime = document.getElementById("pickupTime");
-            var pickupTimeError = document.getElementById("pickupTimeError");
-    
-            if (pickupTime.value === "") {
-                pickupTimeError.textContent = "Please enter a pickup time.";
-            } else {
-                pickupTimeError.textContent = "";
-            }
-        }
-    
-        function validateNumBins() {
-            var numBins = document.getElementById("numBins");
-            var numBinsError = document.getElementById("numBinsError");
-    
-            if (numBins.value === "") {
-                numBinsError.textContent = "Please enter the number of bins needed.";
-            } else {
-                numBinsError.textContent = "";
-            }
-        }
-        function validateForm() {
-            // Perform validation checks for all fields here
-            var binSelect = document.getElementById("binSelect");
-            var eventDateTime = document.getElementById("eventDateTime");
-            var eventLocation = document.getElementById("eventLocation");
-            var deliveryTime = document.getElementById("deliveryTime");
-            var pickupTime = document.getElementById("pickupTime");
-            var numBins = document.getElementById("numBins");
-    
-            // Reset previous validation messages
-            document.getElementById("binError").textContent = "";
-            document.getElementById("eventDateTimeError").textContent = "";
-            document.getElementById("eventLocationError").textContent = "";
-            document.getElementById("deliveryTimeError").textContent = "";
-            document.getElementById("pickupTimeError").textContent = "";
-            document.getElementById("numBinsError").textContent = "";
-    
-            // Add validations for each field here
-            if (binSelect.value === "") {
-                document.getElementById("binError").textContent = "Please select a bin size and capacity.";
-                return false;
-            }
-    
-            if (eventDateTime.value === "") {
-                document.getElementById("eventDateTimeError").textContent = "Please enter an event date and time.";
-                return false;
-            }
-    
-            if (eventLocation.value === "") {
-                document.getElementById("eventLocationError").textContent = "Please enter an event location.";
-                return false;
-            }
-    
-            // Add validations for other fields here
-    
-            // Check if any validation failed
-            if (
-                binSelect.value === "" ||
-                eventDateTime.value === "" ||
-                eventLocation.value === "" ||
-                deliveryTime.value === "" ||
-                pickupTime.value === "" ||
-                numBins.value === ""
-                // Add conditions for other fields here
-            ) {
-                return false; // Prevent form submission
-            }
-    
-            // All validations passed
-            return true; // Allow form submission
-        }
-
-
-
-        {% comment %} payment details {% endcomment %}
-
-       function submitForm(event) {
-        event.preventDefault(); // Prevent the default form submission behavior
-
-        // Get the form element
-        var form = event.target;
-
-        // Create a FormData object from the form
-        var formData = new FormData(form);
-
-        // Fetch API to send the form data to the server
-        fetch(form.action, {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken') // Include the CSRF token in the request header
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update the amount to pay
-                var amountToPay = document.getElementById("amount-to-pay");
-                amountToPay.textContent = "₹" + data.amount_to_pay;
-
-                // Update the success message
-                var successMessage = document.getElementById("success-message");
-                successMessage.textContent = "Your details are saved. Please proceed to payment.";
-
-                // Clear the form fields (optional)
-                form.reset();
-            } else {
-                // Display the error message
-                var successMessage = document.getElementById("success-message");
-                successMessage.style.color = 'red';
-                successMessage.textContent = data.error_message;
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-    
-        // Function to get the CSRF token from cookies
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
+        // Initialize the amount calculation when the page loads
+        updateAmount();
     </script>
- 
-    
 </body>
 </html>

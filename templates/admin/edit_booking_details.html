@@ -4,78 +4,98 @@
 <a href="{% url 'bin_details' user_id=booking.user.id %}" class="btn btn-secondary back-button">
     <i class="fas fa-arrow-left"></i> Back
 </a>
-<form method="post" action="{% url 'edit_booking_details' booking.booking_id %}" class="edit-booking-form" onsubmit="return validateBookingForm()">
-    {% csrf_token %}
-    
-    <!-- Apply some styling to labels and input fields -->
-    <div class="form-group">
-        <label for="collection_day">Collection Day:</label>
-        <input type="text" id="collection_day" name="collection_day" class="form-control" value="{{ booking.collection_period }}">
-    </div>
-    
-    <div class="form-group">
-        <label for="house_number">House Number:</label>
-        <input type="text" id="house_number" name="house_number" class="form-control" value="{{ booking.house_number }}">
-    </div>
-    
-    <div class="form-group">
-        <label for="landmark">Landmark near:</label>
-        <input type="text" id="landmark" name="landmark" class="form-control" value="{{ booking.landmark }}">
-    </div>
-    
-    <!-- Style the submit button -->
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-</form>
-
+<div class="container edit-booking-container">
+    <h2>Edit Booking Details</h2>
+    <form method="post" action="{% url 'edit_booking_details' booking.booking_id %}" class="edit-booking-form" onsubmit="return validateBookingForm()">
+        {% csrf_token %}
+        
+        <!-- Apply some styling to labels and input fields -->
+        <div class="form-group">
+            <label for="collection_day">Collection Day:</label>
+            <select id="collection_day" name="collection_day" class="form-control" onchange="validateCollectionDay()">
+                <option value="">Select a Collection Day</option>
+                <option value="Saturday" {% if booking.collection_period == 'Saturday' %}selected{% endif %}>Saturday</option>
+                <option value="Wednesday" {% if booking.collection_period == 'Wednesday' %}selected{% endif %}>Wednesday</option>
+            </select>
+            <p id="collectionDayError" class="text-danger"></p>
+        </div>
+        
+        <div class="form-group">
+            <label for="house_number">House Number:</label>
+            <input type="text" id="house_number" name="house_number" class="form-control" value="{{ booking.house_number }}" onblur="validateHouseNumber()">
+            <p id="houseNumberError" class="text-danger"></p>
+        </div>
+        
+        <div class="form-group">
+            <label for="landmark">Landmark near:</label>
+            <input type="text" id="landmark" name="landmark" class="form-control" value="{{ booking.landmark }}" onblur="validateLandmark()">
+            <p id="landmarkError" class="text-danger"></p>
+        </div>
+        
+        <!-- Style the submit button -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
 <!-- JavaScript function for form validation -->
 <script>
-function validateBookingForm() {
-    // Get references to form fields
-    var collectionDayInput = document.getElementById("collection_day");
-    var houseNumberInput = document.getElementById("house_number");
-    var landmarkInput = document.getElementById("landmark");
-
-    // Get references to error message elements
-    var collectionDayError = document.getElementById("collection_day_error");
-    var houseNumberError = document.getElementById("house_number_error");
-    var landmarkError = document.getElementById("landmark_error");
-
-    // Define a flag to track if the form is valid
-    var isValid = true;
-
-    // Clear previous error messages
-    collectionDayError.textContent = "";
-    houseNumberError.textContent = "";
-    landmarkError.textContent = "";
-
-    // Perform validation for each field
-    if (collectionDayInput.value === "") {
-        collectionDayError.textContent = "Please enter a collection day.";
-        isValid = false;
+    function validateCollectionDay() {
+        var collectionDay = document.getElementById("collection_day").value;
+        var collectionDayError = document.getElementById("collectionDayError");
+        if (collectionDay === "") {
+            collectionDayError.textContent = "Please select a Collection Day.";
+        } else {
+            collectionDayError.textContent = "";
+        }
     }
 
-    if (houseNumberInput.value === "") {
-        houseNumberError.textContent = "Please enter a house number.";
-        isValid = false;
+    function validateHouseNumber() {
+        var houseNumber = document.getElementById("house_number").value;
+        var houseNumberError = document.getElementById("houseNumberError");
+        if (houseNumber === "") {
+            houseNumberError.textContent = "Please enter a House Number.";
+        } else {
+            houseNumberError.textContent = "";
+        }
     }
 
-    if (landmarkInput.value === "") {
-        landmarkError.textContent = "Please enter a landmark.";
-        isValid = false;
+    function validateLandmark() {
+        var landmark = document.getElementById("landmark").value;
+        var landmarkError = document.getElementById("landmarkError");
+        if (landmark === "") {
+            landmarkError.textContent = "Please enter a Landmark.";
+        } else {
+            landmarkError.textContent = "";
+        }
     }
 
-    // Return true if the form is valid, otherwise, prevent form submission
-    return isValid;
-}
+    function validateBookingForm() {
+        validateCollectionDay();
+        validateHouseNumber();
+        validateLandmark();
+        
+        // Check if any validation errors exist
+        var collectionDayError = document.getElementById("collectionDayError").textContent;
+        var houseNumberError = document.getElementById("houseNumberError").textContent;
+        var landmarkError = document.getElementById("landmarkError").textContent;
+        
+        if (collectionDayError || houseNumberError || landmarkError) {
+            return false; // Prevent form submission if there are errors
+        }
+        
+        return true; // Allow form submission if all validations pass
+    }
 </script>
-
-
 <!-- Apply some custom styles using CSS -->
 <style>
-    /* Style for the edit booking form container */
-    .edit-booking-form {
+    /* Style for the edit booking container */
+    .edit-booking-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         max-width: 400px;
         margin: 20px auto;
+        text-align: center;
     }
 
     /* Style for form labels */
@@ -87,7 +107,7 @@ function validateBookingForm() {
     .edit-booking-form .form-control {
         width: 100%;
         padding: 10px;
-        margin-top: 5px;
+        margin-top: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
@@ -96,27 +116,39 @@ function validateBookingForm() {
     /* Style for the submit button */
     .edit-booking-form button {
         display: block;
-        margin-top: 10px;
+        margin-top: 20px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
+
+    .edit-booking-form button:hover {
+        background-color: #0056b3;
+    }
+
     /* Style for the back button */
-.back-button {
-    display: inline-block;
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    text-decoration: none;
-    background-color: #007BFF;
-    color: #fff;
-    transition: background-color 0.3s;
-}
+    .back-button {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        background-color: #007BFF;
+        color: #fff;
+        transition: background-color 0.3s;
+    }
 
-.back-button i {
-    margin-right: 5px;
-}
+    .back-button i {
+        margin-right: 5px;
+    }
 
-.back-button:hover {
-    background-color: #0056b3;
-}
-
+    .back-button:hover {
+        background-color: #0056b3;
+    }
 </style>

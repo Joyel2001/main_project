@@ -1013,13 +1013,10 @@ def add_status(request):
 # bin_booking_for_events
 from django.shortcuts import render, redirect
 from .models import BinEvent, BinBookingEvent
-from django.http import JsonResponse  # Import JsonResponse for AJAX response
+from django.urls import reverse
 
 def save_bin_booking_event(request):
     bins = BinEvent.objects.all()
-    small_bin_price = 50
-    medium_bin_price = 75
-    large_bin_price = 100
 
     if request.method == 'POST':
         event_date_time = request.POST.get('event_date_time')
@@ -1031,38 +1028,44 @@ def save_bin_booking_event(request):
 
         selected_bin_event = BinEvent.objects.get(bin_id=selected_bin_id)
 
-        if selected_bin_event.size == 'Small':
-            amount_to_pay = number_of_bins_needed * small_bin_price
-        elif selected_bin_event.size == 'Medium':
-            amount_to_pay = number_of_bins_needed * medium_bin_price
-        elif selected_bin_event.size == 'Large':
-            amount_to_pay = number_of_bins_needed * large_bin_price
-        else:
-            amount_to_pay = 0
-
         if selected_bin_event.number_of_bins >= number_of_bins_needed:
             bin_booking_event = BinBookingEvent(
+                bin=selected_bin_event,
                 event_date_time=event_date_time,
                 event_location=event_location,
                 delivery_time=delivery_time,
                 pickup_time=pickup_time,
                 number_of_bins_needed=number_of_bins_needed,
-                bin=selected_bin_event,
             )
             bin_booking_event.save()
 
             selected_bin_event.number_of_bins -= number_of_bins_needed
             selected_bin_event.save()
 
-            # Redirect to the payment details page with the amount_to_pay
-            return redirect('payment_details', amount_to_pay=amount_to_pay)
+            # Calculate the amount based on the bin size
+            if selected_bin_event.size == 'small':
+                amount = 160
+            elif selected_bin_event.size == 'medium':
+                amount = 180
+            elif selected_bin_event.size == 'large':
+                amount = 200
+            else:
+                amount = 0  # Handle other cases as needed
+
+            # Make sure the amount is at least 100 (1 INR)
+            if amount < 100:
+                amount = 100  # Set it to 1 INR
+
+            # Redirect to the paymentform view with the amount as a query parameter
+            return redirect(reverse('paymentform') + f'?amount={amount}')
 
         else:
             error_message = "Not enough bins available for booking."
-            # Return a JSON response with an error message
-            return JsonResponse({'success': False, 'error_message': error_message})
+            return render(request, 'bin/error_page.html', {'error_message': error_message})
 
     return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
+
+
 
 
 
@@ -1222,35 +1225,8 @@ def paymenthandler(request):
         return render(request, 'PremiumUserPage/errorpage.html')
     
 # payemnt to db
-@csrf_exempt
-def handle_payment(request):
-    if request.method == "POST":
-        try:
-            payment_id = request.POST.get('razorpay_payment_id', '')
-            razorpay_order_id = request.POST.get('razorpay_order_id', '')
-            signature = request.POST.get('razorpay_signature', '')
-            params_dict = {
-                'razorpay_order_id': razorpay_order_id,
-                'razorpay_payment_id': payment_id,
-                'razorpay_signature': signature
-            }
-            result = razorpay_client.utility.verify_payment_signature(params_dict)
-            if result is not None:
-                # Handle successful payment logic here
-                # For example, update user's subscription status
-                amount = 20000 
-                authenticated_user = request.user
-                user_profile = UserProfile.objects.get(user=authenticated_user)
-                user_profile.subscribed = True
-                user_profile.save()
-                
-                return render(request, 'paymentsuccess.html')
-            else:
-                return render(request, 'PremiumUserPage/errorpage.html')
-        except:
-            return render(request, 'PremiumUserPage/errorpage.html') 
-    else:
-        return render(request, 'PremiumUserPage/errorpage.html')
+
+       
     
 
 

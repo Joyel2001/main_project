@@ -11,8 +11,10 @@
     <div class="container">
         <div class="header">
             <a href="{% url 'index' %}">
-                <img class="logo" src="{% static 'image-asset/icon.png' %}" alt="Company Logo">
-            </a>
+                <p>
+                    <span class="eco">Eco</span>
+                    <span class="recover">Recover</span>
+                </p>            </a>
         </div>
         <div class="payment-container">
             <h1>Payment Amount</h1>
@@ -38,6 +40,18 @@
         };
     </script>
     <style>
+        .eco {
+            color: black; /* Text color is black */
+            font-weight: bold; /* Text is bold */
+            font-size: 24px; /* Adjust font size as needed */
+        }
+
+        /* Style for "Recover" */
+        .recover {
+            color: grey; /* Text color is grey */
+            font-weight: bold; /* Text is bold */
+            font-size: 24px; /* Adjust font size as needed */
+        }
         /* payment_styles.css */
 
 /* Body styles */

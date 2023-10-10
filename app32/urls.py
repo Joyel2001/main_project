@@ -77,6 +77,6 @@ urlpatterns = [
     path('paymentform', views.paymentform, name='paymentform'),
     path('feedback/', views.feedback_list, name='feedback_list'),
     path('payment_details/', views.payment_details, name='payment_details'),
-    path('handle_payment/', views.handle_payment, name='handle_payment'),
+    # path('handle_payment/', views.handle_payment, name='handle_payment'),
     ]    # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
     
