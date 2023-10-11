@@ -391,51 +391,51 @@
                   <div class="card">
                       <div class="card-body">
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
-<!-- user_profile.html -->
-<!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="{% static 'path-to-your-css-file.css' %}">
 </head>
+
 <body>
     <div class="container">
-        <!-- Left Sidebar (unchanged) -->
-        <div class="sidebar">
-            <h2>Actions</h2>
-            <ul class="sidebar-menu">
-                <a href="{% url 'edit_profile' %}">Edit Profile</a>
-                <a href="{% url 'reset_password' %}">Password Reset</a>
-                <a href="{% url 'loggout' %}">Logout</a>
-            </ul>
+        <div class="profile">
+            <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+            <div class="user-image">
+                <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="User Profile Picture">
+            </div>
+            <h1>{{ profile.user.username }}</h1>
         </div>
         
         
-        
-        
-        <!-- Profile Content -->
-        <div class="profile">
-            <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a><br><br>
-            <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="User Profile Picture">
-            <h1>{{ profile.user.username }}</h1>
-        
-        
-        
-        
-        <div class="user-details">
+
+        <div class="section address">
             <h2 class="section-title">Address</h2>
             <p class="user-info">{{ profile.address }}</p>
-        
+        </div>
+
+        <div class="section contact-info">
             <h2 class="section-title">Contact Information</h2>
             <p class="user-info">Email: {{ profile.user.email }}</p>
             <p class="user-info">Phone: {{ user.userprofile.mobile_number }}</p>
+            
+        </div>
+
+        <div class="section subscription">
+            <h2 class="section-title">Subscription Details</h2>
+            <p class="user-info">Subscribed: {% if profile.subscribed %} Yes {% else %} No {% endif %}</p>
+            {% if profile.subscribed %}
+            <p class="user-info">Subscription Expiration: {{ profile.subscription_expiration }}</p>
+            <p class="user-info">Subscription Duration: {{ profile.subscription_duration }} months</p>
+            {% endif %}
             <p class="user-info">Date Joined: {{ user.date_joined }}</p>
             <p class="user-info">Last Login: {{ user.last_login }}</p>
         </div>
+    </div>
+        
         
         <!-- Messages (if any) -->
         {% comment %}
@@ -451,7 +451,24 @@
 </div></div></div>
 <style>
 
+    .section {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
 
+    .section-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .user-info {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #777;
+    }
     /* Custom styles for the sidebar */
     .sidebar {
         background-color: white;;
@@ -503,22 +520,44 @@
     }
     
     /* Profile section */
-    .profile {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    
-    .profile img {
-        max-width: 150px;
-        border-radius: 50%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
-    .profile h1 {
-        font-size: 24px;
-        margin-top: 10px;
-        color: #333;
-    }
+    /* Custom styles for the profile section */
+    /* Custom styles for the profile section */
+.profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile .logo {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #black; /* Blue color for "Eco" */
+}
+
+.profile .logo em {
+    color: #777; /* Grey color for "Recover" */
+}
+
+.user-image {
+    margin-top: 10px;
+}
+
+.user-image img {
+    max-width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile h1 {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #333; /* Dark text color for the username */
+}
+
+
+
+
     
     /* User details section */
     .user-details {

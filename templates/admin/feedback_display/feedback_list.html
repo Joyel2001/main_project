@@ -22,6 +22,8 @@
      <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
      <!-- Custom CSS -->
      <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
+
      <!-- jQuery and Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -236,6 +238,16 @@
                          </a>
                      </li>
                      {% endif %}
+                     <!-- Feedback - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
+                            <span class="hide-menu">Feedback</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
                      
                      <!-- Booked Event Details - Visible for staff and superuser -->
                      {% if user.is_staff or user.is_superuser %}
@@ -264,6 +276,12 @@
      </div>
  {% endif %}
  <style>
+    /* Style for the "Feedback" icon */
+.sidebar-item .mdi.mdi-comment {
+    font-size: 20px; /* Adjust the size as needed */
+    color: #FF5722; /* Choose a color that matches your design */
+}
+
      /* Custom styles for submenu list */
  .submenu-list {
      list-style-type: none;
@@ -400,7 +418,7 @@
                              <nav aria-label="breadcrumb">
                                  <ol class="breadcrumb">
                                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                     <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                     <li class="breadcrumb-item active" aria-current="page">profile</li>
                                  </ol>
                              </nav>
                          </div>

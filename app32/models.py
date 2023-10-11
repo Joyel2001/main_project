@@ -8,6 +8,8 @@ class UserProfile(models.Model):
     address = models.CharField(max_length=255, default=None)
     mobile_number = models.CharField(max_length=20, default="None")
     subscribed=models.BooleanField(default=False)
+    subscription_expiration = models.DateField(null=True, blank=True)
+    subscription_duration = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username

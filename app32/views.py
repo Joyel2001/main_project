@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -25,6 +26,10 @@ def index(request):
 
 def resetpass(request):
     return render(request,'resetpass.html')
+
+# profile new page view
+def profilee(request):
+    return render(request,'profile2.html')
 
 
 # def showevents(request):
@@ -1207,22 +1212,49 @@ def paymenthandler(request):
                 'razorpay_payment_id': payment_id,
                 'razorpay_signature': signature
             }
+            client = razorpay.Client(auth=('rzp_test_Ul5agYuKOPazq3', 'lhozVEM1VKK2RmUmLIJg0i9C'))
+            payment = client.payment.fetch(payment_id)
+            payment_amount = payment['amount']
             result = razorpay_client.utility.verify_payment_signature(params_dict)
+
             if result is not None:
-                amount = 20000 
                 authenticated_user = request.user
                 user_profile = UserProfile.objects.get(user=authenticated_user)
+                
+            
+                amount = 200 if payment_amount == 20000 else (400 if payment_amount == 40000 else 60000)
+
+                # Set the subscription duration based on the plan
+                if amount == 200:
+                    user_profile.subscription_duration = 1  # 1 month
+                elif amount == 400:
+                    user_profile.subscription_duration = 6  # 6 months
+                elif amount == 60000:
+                    user_profile.subscription_duration = 12  # 12 months
+
+
+
+                # Calculate the subscription expiration date
+                current_date = datetime.now().date()
+                expiration_date = current_date + timedelta(days=30 * user_profile.subscription_duration)  # Assuming 30 days per month
+                user_profile.subscription_expiration = expiration_date
+
+                # Set the user as subscribed
                 user_profile.subscribed = True
                 user_profile.save()
+
+                username = authenticated_user.username
+
+                # Your code for sending a successful subscription email
                 
-                
+
                 return render(request, 'paymentsuccess.html')
             else:
-                return render(request, 'PremiumUserPage/errorpage.html')
-        except:
-            return render(request, 'PremiumUserPage/errorpage.html') 
+                return render(request, 'home.html')
+        except Exception as e:
+            return render(request, 'home.html', {'error_message': str(e)})
     else:
-        return render(request, 'PremiumUserPage/errorpage.html')
+        return render(request, 'paymentsuccess.html')
     
 # payemnt to db
 
@@ -1280,3 +1312,9 @@ def edit_booking_details(request, booking_id):
     }
     
     return render(request, 'admin\edit_booking_details.html', context)
+
+
+from django.shortcuts import render
+
+# def user_profile_view(request):
+#     return render(request, 'profile2.html')
