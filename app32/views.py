@@ -1171,6 +1171,7 @@ def submit_feedback(request, user_id):
         # Create and save the Feedback instance
         feedback_instance = Feedback(user=user, star_rating=star_rating, message=message)
         feedback_instance.save()
+        messages.info(request, f'Added to Cart')
         
         # Redirect to a thank you page or display a success message
         return redirect('index')
@@ -1334,3 +1335,12 @@ from django.shortcuts import render
 
 # def user_profile_view(request):
 #     return render(request, 'profile2.html')
+
+
+
+# waste_classifier/views.py
+
+from django.shortcuts import render
+
+def contact_info(request):
+    return render(request, 'contact.html')

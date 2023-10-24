@@ -265,8 +265,8 @@ https://www.tooplate.com/view/2125-artxibition
                                 </ul>
                             </li>
                             <li><a href="{% url 'show_events' %}">campaigns and Seminars</a></li> 
-                            <li><a href="tickets.html">Contact</a></li> 
-                            <li><a href="{% url 'open_url' %}">Disposal Methods</a></li> 
+                            <li><a href="{% url "contact_info" %}">Contact</a></li> 
+                            <li><a href="#" id="classify-waste-link">Disposal Methods</a></li>
                             
                         </ul>        
                         <a class='menu-trigger'>
@@ -278,6 +278,26 @@ https://www.tooplate.com/view/2125-artxibition
             </div>
         </div>
     </header>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get a reference to the "Disposal Methods" link
+            var classifyWasteLink = document.getElementById("classify-waste-link");
+        
+            // Add a click event listener
+            classifyWasteLink.addEventListener("click", function(e) {
+                // Prevent the default link behavior (opening a new tab)
+                e.preventDefault();
+        
+                // Define the URL you want to open
+                var url = "http://127.0.0.1:5000/";
+        
+                // Redirect to the new URL in the same tab
+                window.location.href = url;
+            });
+        });
+        </script>
+        
     <!-- ***** Header Area End ***** -->
 
     <!-- ***** Main Banner Area Start ***** -->

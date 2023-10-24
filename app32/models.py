@@ -219,3 +219,8 @@ class Feedback(models.Model):
         return f"Feedback ID: {self.id}"
 
 
+
+
+# waste_classifier/models.py
+
+

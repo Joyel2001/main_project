@@ -49,21 +49,19 @@
           Waste Collection Throughout a Month
         </li>
         <li>
-          <strong>6</strong>
-          team playlists
+          <strong>One-Time </strong>
+          Bulk Waste Collection
         </li>
-        <li>
-          <strong>Unlimited</strong>
-          public playlists
-        </li>
-        {% if user.is_authenticated %}
-        {% if user.userprofile.subscribed %}
-          <a href="{% url 'index' %}">Subscribed</a>
-        {% else %}
-          <a href="{% url 'paymentform' %}?amount=200">Subscribe Now</a>
-        {% endif %}
+      </ul>
+        
+      {% if user.is_authenticated %}
+      {% if user.userprofile.subscribed %}
+        <a href="{% url 'index' %}" class="subscribe-button">Subscribed</a>
       {% else %}
-        <a href="{% url 'loginn' %}">Subscribe Now</a>
+        <a href="{% url 'paymentform' %}?amount=200" class="subscribe-button">Subscribe Now</a>
+      {% endif %}
+      {% else %}
+        <a href="{% url 'loginn' %}" class="subscribe-button">Subscribe Now</a>
       {% endif %}       </ul>
     </div>
     <div class='package brilliant'>
@@ -73,33 +71,23 @@
       <hr>
       <ul>
         <li>
-          <strong>Unlimited</strong>
-          team members
+          <strong></strong>
+          Waste Collection Throughout 6 Months
         </li>
         <li>
-          <strong>Unlimited</strong>
-          team playlists
-        </li>
-        <li>
-          <strong>Unlimited</strong>
-          public playlists
-        </li>
-        <li>
-          Team analytics
-        </li>
-        <li>
-          Send files
+          <strong>Three-Times </strong>
+          Bulk Waste Collection
         </li>
       </ul>
       {% if user.is_authenticated %}
-      {% if user.userprofile.subscribed %}
-        <a href="{% url 'index' %}">Subscribed</a>
-      {% else %}
-        <a href="{% url 'paymentform' %}?amount=600">Subscribe Now</a>
-      {% endif %}
-    {% else %}
-      <a href="{% url 'loginn' %}">Subscribe Now</a>
-    {% endif %}    </div>
+  {% if user.userprofile.subscribed %}
+    <a href="{% url 'index' %}" class="subscribe-button">Subscribed</a>
+  {% else %}
+    <a href="{% url 'paymentform' %}?amount=400" class="subscribe-button">Subscribe Now</a>
+  {% endif %}
+  {% else %}
+    <a href="{% url 'loginn' %}" class="subscribe-button">Subscribe Now</a>
+  {% endif %} </div>
     <div class='package'>
       <div class='name'>1 year</div>
       <div class='price'>600 RS</div>
@@ -107,33 +95,43 @@
       <hr>
       <ul>
         <li>
-          <strong>5</strong>
-          team members
+          <strong></strong>
+          Waste Collection Throughout a Year
         </li>
         <li>
-          <strong>3</strong>
-          team playlists
-        </li>
-        <li>
-          <strong>Unlimited</strong>
-          public playlists
+          <strong>Ten-Times </strong>
+          Bulk Waste Collection
         </li>
       </ul>
       {% if user.is_authenticated %}
-      {% if user.userprofile.subscribed %}
-        <a href="{% url 'index' %}">Subscribed</a>
-      {% else %}
-        <a href="{% url 'paymentform' %}?amount=400">Subscribe Now</a>
-      {% endif %}
-    {% else %}
-      <a href="{% url 'loginn' %}">Subscribe Now</a>
-    {% endif %}     </div>
+  {% if user.userprofile.subscribed %}
+    <a href="{% url 'index' %}" class="subscribe-button">Subscribed</a>
+  {% else %}
+    <a href="{% url 'paymentform' %}?amount=600" class="subscribe-button">Subscribe Now</a>
+  {% endif %}
+  {% else %}
+    <a href="{% url 'loginn' %}" class="subscribe-button">Subscribe Now</a>
+  {% endif %}     </div>
   </div>
 </form>
   <!-- Razorpay's Javascript code. -->
 <!-- Razorpay's Javascript code. -->
 
     <style>
+      .subscribe-button {
+        background-color: #33c4b6; /* Change to your preferred color */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+    
+      /* On hover, change the background color to a slightly darker shade */
+      .subscribe-button:hover {
+        background-color: #33c4b6; /* Change to your preferred hover color */
+      }
         @charset "UTF-8";
         /*
          * Developer: Alireza Eskandarpour Shoferi
