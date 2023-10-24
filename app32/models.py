@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    address = models.CharField(max_length=255, default=None)
+    address = models.CharField(max_length=255, default="", blank=True)
     mobile_number = models.CharField(max_length=20, default="None")
     subscribed=models.BooleanField(default=False)
     subscription_expiration = models.DateField(null=True, blank=True)

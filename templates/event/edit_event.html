@@ -1,39 +1,65 @@
 {% block content %}
+{% load static %}
+<style>
+  body {
+    background-image: url('{% static "images/orginal/4.jpg" %}'); /* Replace with your background image URL */
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .form-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Add a semi-transparent white background to the form */
+    padding: 30px;
+    border-radius: 50px;
+    max-width: 600px; /* Adjust the max-width to control the container width */
+    margin: 0 auto;
+  }
+
+</style>
+<body>
   <h2 style="text-align: center; color: #333;">Edit Event</h2>
+  <div class="form-container">
   <form method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
     {% csrf_token %}
     <div class="form-group">
-      <label for="name" style="font-weight: bold; color: #555;">Event Name:</label>
-      <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <label for="name" style="font-weight: bold; color: #555;">Event Name:</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ event.name }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        <span id="nameError" style="color: red;"></span>
     </div>
     <div class="form-group">
-      <label for="description" style="font-weight: bold; color: #555;">Description:</label>
-      <textarea class="form-control" id="description" name="description" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">{{ event.description }}</textarea>
+        <label for="description" style="font-weight: bold; color: #555;">Description:</label>
+        <textarea class="form-control" id="description" name="description" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">{{ event.description }}</textarea>
+        <span id="descriptionError" style="color: red;"></span>
     </div>
     <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="date" style="font-weight: bold; color: #555;">Date:</label>
-        <input type="date" class="form-control" id="date" name="date" value="{{ event.date|date:'Y-m-d' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        <span id="dateError" style="color: red;"></span>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="time" style="font-weight: bold; color: #555;">Time:</label>
-        <input type="time" class="form-control" id="time" name="time" value="{{ event.time|time:'H:i' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-        <span id="timeError" style="color: red;"></span>
+        <div class="form-group col-md-6">
+            <label for="date" style="font-weight: bold; color: #555;">Date:</label>
+            <input type="date" class="form-control" id="date" name="date" value="{{ event.date|date:'Y-m-d' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <span id="dateError" style="color: red;"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for "time" style="font-weight: bold; color: #555;">Time:</label>
+            <input type="time" class="form-control" id="time" name="time" value="{{ event.time|time:'H:i' }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            <span id="timeError" style="color: red;"></span>
+        </div>
     </div>
     
-          
-    </div>
     <div class="form-group">
       <label for="location" style="font-weight: bold; color: #555;">Location:</label>
       <input type="text" class="form-control" id="location" name="location" value="{{ event.location }}" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
-    <div class="form-group">
+      <span id="locationError" style="color: red;"></span>
+  </div>
+  
+  <div class="form-group">
       <label for="image" style="font-weight: bold; color: #555;">Event Image:</label>
       <input type="file" class="form-control-file" id="image" name="image" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
-    </div>
+      <span id="imageError" style="color: red;"></span>
+  </div>
     <button type="submit" class="btn btn-primary" style="display: block; margin: 20px auto; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Update Event</button>
+    <a href="{% url 'event_details_view' %}" class="btn btn-secondary" style="display: block; margin: 10px auto; padding: 10px 20px; background-color: #ccc; color: #fff; border: none; border-radius: 4px; text-decoration: none; text-align: center;">Back to Event Details</a>
   </form>
+</div>
+</body>
   <script>
     function validateForm() {
       // Reset previous error messages
@@ -55,11 +81,83 @@
         return false;
       }
   
-      // Add more validation logic for other fields as needed
-  
-      // If all validation passes, the form will be submitted
+     
       return true;
     }
+    document.getElementById('name').addEventListener('blur', function() {
+      const nameInput = this.value.trim();
+      const nameError = document.getElementById('nameError');
+
+      if (nameInput === '') {
+          nameError.textContent = 'Event Name is required.';
+      } else {
+          nameError.textContent = '';
+      }
+  });
+
+  // Description Validation
+  document.getElementById('description').addEventListener('blur', function() {
+      const descriptionInput = this.value.trim();
+      const descriptionError = document.getElementById('descriptionError');
+
+      if (descriptionInput === '') {
+          descriptionError.textContent = 'Description is required.';
+      } else {
+          descriptionError.textContent = '';
+      }
+  });
+
+  // Date Validation
+  document.getElementById('date').addEventListener('blur', function() {
+      const dateInput = this.value.trim();
+      const dateError = document.getElementById('dateError');
+
+      if (dateInput === '') {
+          dateError.textContent = 'Date is required.';
+      } else {
+          dateError.textContent = '';
+      }
+  });
+
+  // Time Validation
+  document.getElementById('time').addEventListener('blur', function() {
+      const timeInput = this.value.trim();
+      const timeError = document.getElementById('timeError');
+      const timePattern = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/; // HH:MM format
+
+      if (timeInput === '') {
+          timeError.textContent = 'Time is required.';
+      } else if (!timePattern.test(timeInput)) {
+          timeError.textContent = 'Invalid time format (HH:MM).';
+      } else {
+          timeError.textContent = '';
+      }
+  });
+  document.getElementById('location').addEventListener('blur', function() {
+    const locationInput = this.value.trim();
+    const locationError = document.getElementById('locationError');
+
+    if (locationInput === '') {
+        locationError.textContent = 'Location is required.';
+    } else {
+        locationError.textContent = '';
+    }
+});
+
+// Event Image Validation
+document.getElementById('image').addEventListener('change', function() {
+    const imageInput = this;
+    const imageError = document.getElementById('imageError');
+    const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+    const fileName = imageInput.value.toLowerCase();
+    const fileExtension = fileName.substring(fileName.lastIndexOf('.'));
+
+    if (!allowedExtensions.includes(fileExtension)) {
+        imageError.textContent = 'Please select a valid image file (JPG, JPEG, or PNG).';
+    } else {
+        imageError.textContent = '';
+    }
+});
   </script>
   
 {% endblock %}

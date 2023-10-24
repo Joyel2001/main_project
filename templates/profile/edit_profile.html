@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +9,8 @@
     <!-- Add your custom CSS here -->
     <style>
         body {
-            background-color: #f4f4f4;
+            background-image: url('{% static "images/orginal/10.jpg" %}'); /* Replace with your background image URL */
+
             font-family: Arial, sans-serif;
         }
         
@@ -59,13 +61,16 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ user.username }}" required class="form-control">
+                <input type="text" id="username" name="username" value="{{ user.username }}" class="form-control">
+                <span id="usernameError" style="color: red;"></span>
             </div>
-
+    
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="{{ user.email }}" required class="form-control">
+                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control">
+                <span id="emailError" style="color: red;"></span>
             </div>
+    
 
             <div class="form-group">
                 <label for="address">Address:</label>
@@ -74,7 +79,8 @@
 
             <div class="form-group">
                 <label for="mobile_number">Mobile Number:</label>
-                <input type="text" id="mobile_number" name="mobile_number" value="{{ user.userprofile.mobile_number }}" required class="form-control">
+                <input type="text" id="mobile_number" name="mobile_number" value="{{ user.userprofile.mobile_number }}" class="form-control">
+                <span id="mobileNumberError" style="color: red;"></span>
             </div>
 
             <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -82,5 +88,62 @@
 
         </form>
     </div>
+    <script>
+        
+        const usernameInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
+        const addressInput = document.getElementById("address");
+        const mobileNumberInput = document.getElementById("mobile_number");
+    
+        const usernameError = document.getElementById("usernameError");
+        const emailError = document.getElementById("emailError");
+        const addressError = document.getElementById("addressError");
+        const mobileNumberError = document.getElementById("mobileNumberError");
+    
+        usernameInput.addEventListener("blur", () => {
+            const username = usernameInput.value.trim();
+            if (username === "") {
+                usernameError.textContent = "Username is required.";
+            } else {
+                usernameError.textContent = "";
+            }
+        });
+    
+        emailInput.addEventListener("blur", () => {
+            const email = emailInput.value.trim();
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (email === "") {
+                emailError.textContent = "Email is required.";
+            } else if (!emailPattern.test(email)) {
+                emailError.textContent = "Invalid email format.";
+            } else {
+                emailError.textContent = "";
+            }
+        });
+    
+        mobileNumberInput.addEventListener("blur", () => {
+            const mobileNumber = mobileNumberInput.value.trim();
+            const phonePattern = /^\d{10}$/; // Adjust the regex pattern as needed
+            if (mobileNumber === "") {
+                mobileNumberError.textContent = "Mobile Number is required.";
+            } else if (!phonePattern.test(mobileNumber)) {
+                mobileNumberError.textContent = "Invalid phone number format.";
+            } else {
+                mobileNumberError.textContent = "";
+            }
+        });
+    
+        function validateForm() {
+            // Check for any remaining validation errors
+            if (
+                usernameError.textContent ||
+                emailError.textContent ||
+                mobileNumberError.textContent
+            ) {
+                return false; // Prevent form submission if there are errors
+            }
+            return true; // Allow form submission if no errors
+        }
+    </script>
 </body>
 </html>

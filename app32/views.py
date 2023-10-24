@@ -559,17 +559,12 @@ def event_booking(request, event_id=None):
 
 
 # editprofile
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from .models import UserProfile
-
 @login_required(login_url='loginn')
 def edit_profile(request):
     if request.method == "POST":
         new_username = request.POST.get('username')
         new_email = request.POST.get('email')
-        new_address = request.POST.get('address')
+        new_address = request.POST.get('address', '')  # Provide a default value
         new_mobile_number = request.POST.get('mobile_number')
 
         if User.objects.filter(username=new_username).exclude(id=request.user.id).exists():
@@ -593,6 +588,7 @@ def edit_profile(request):
             return redirect('user_profile_view')
 
     return render(request, "profile/edit_profile.html")
+
 
 
     
