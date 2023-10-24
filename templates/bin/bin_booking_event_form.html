@@ -1,11 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
     <title>Bin Booking Event Form</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-image: url('{% static "images/orginal/1.jpg" %}'); /* Replace with your background image URL */
+
             margin: 0;
             padding: 0;
         }
@@ -102,6 +104,21 @@
         .number-input #minus-button {
             color: #000; /* Black color for the minus icon */
         }
+        .custom-back-button {
+            background-color: #007BFF; /* Change the background color to a desired color */
+            color: #fff; /* Change the text color to white or another suitable color */
+            padding: 10px 20px; /* Adjust the padding as needed for your design */
+            border: none; /* Remove the button border if necessary */
+            border-radius: 5px; /* Add rounded corners */
+            text-decoration: none; /* Remove underlines for links */
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        
+        .custom-back-button:hover {
+            background-color: #0056b3; /* Change the background color on hover for interactivity */
+            /* You can add more hover effects if desired */
+        }
+        
     </style>
 </head>
 <body>
@@ -111,14 +128,12 @@
         {% csrf_token %}
     
         <label for="binDetails">Select Bin Size and Capacity:</label>
-        <select name="bin" id="binSelect" class="custom-select" onchange="updateAmount()">
+        <select name="bin" id="binSelect" class="custom-select" onchange="validateBinSelection()">
             <option value="" disabled selected>Select Bin Size and Capacity</option>
             {% for bin in bins %}
             <option value="{{ bin.bin_id }}" data-bin-price="{{ bin.price }}">{{ bin.size }}</option>
             {% endfor %}
         </select>
-    
-        <!-- Error message placeholder -->
         <p id="binError" style="color: red;"></p>
     
         <label for="event_date_time" style="font-weight: bold; font-size: 18px; color: #333;">Event Date:</label>
@@ -134,51 +149,96 @@
         <p id="deliveryTimeError" style="color: red;"></p>
     
         <label for="pickup_time">Pickup Time:</label>
-        <input type="datetime-local" name="pickup_time" id="pickupTime" onblur="validatePickupTime()">
+        <input type="datetime-local" name "pickup_time" id="pickupTime" onblur="validatePickupTime()">
         <p id="pickupTimeError" style="color: red;"></p>
     
         <label for="number_of_bins_needed">Number of Bins Needed:</label>
-        <input type="number" name="number_of_bins_needed" id="numBins" value="0">
-        <p id="numBinsError" style="color: red;"></p>
-    
-        <div id="amount-to-pay-section">
-            <p id="amount-to-pay" style="font-weight: bold; font-size: 18px;">Amount to Pay: ₹0</p>
-        </div>
+<input type="number" name="number_of_bins_needed" id="numBins" value="" oninput="validateNumBins()">
+<p id="numBinsError" style="color: red;"></p>
+
+        
     
         <input type="hidden" id="binPrice" name="bin_price" value="0"> <!-- Hidden field to store the bin price -->
     
         <button type="submit" id="saveButton">Save</button>
+        <a href="{% url 'bin_order_event' %}" class="btn btn-secondary custom-back-button">Back</a>
+
     </form>
 
     <script>
-        // Function to calculate the amount based on the selected bin size and number of bins
-        function updateAmount() {
-            var binSelect = document.getElementById("binSelect");
-            var numBinsInput = document.getElementById("numBins");
-            var amountToPay = document.getElementById("amount-to-pay");
-            var binPrice = document.getElementById("binPrice");
-
-            // Get the selected option and its data attributes
-            var selectedOption = binSelect.options[binSelect.selectedIndex];
-            var binPriceValue = parseFloat(selectedOption.getAttribute("data-bin-price")); // Parse as a float
-
-            // Update the hidden input field with the bin price
-            binPrice.value = binPriceValue;
-
-            // Calculate the amount based on the selected bin size and number of bins
-            var numBins = parseInt(numBinsInput.value);
-            var totalAmount = numBins * binPriceValue;
-
-            // Update the amount to pay with proper formatting
-            amountToPay.textContent = "Amount to Pay: ₹" + totalAmount.toFixed(2); // Format to two decimal places
+        function validateBinSelection() {
+            const binSelect = document.getElementById('binSelect');
+            const binError = document.getElementById('binError');
+            if (binSelect.value === "") {
+                binError.textContent = 'Please select a bin size and capacity.';
+            } else {
+                binError.textContent = '';
+            }
         }
-
-        // Add event listeners to the numBins input field to update the amount immediately
-        var numBinsInput = document.getElementById("numBins");
-        numBinsInput.addEventListener("input", updateAmount);
-
-        // Initialize the amount calculation when the page loads
-        updateAmount();
+        
+        function validateEventDateTime() {
+            const eventDateTime = document.getElementById('eventDateTime');
+            const eventDateTimeError = document.getElementById('eventDateTimeError');
+            if (eventDateTime.value === "") {
+                eventDateTimeError.textContent = 'Please enter an event date and time.';
+            } else {
+                eventDateTimeError.textContent = '';
+            }
+        }
+        
+        function validateEventLocation() {
+            const eventLocation = document.getElementById('eventLocation');
+            const eventLocationError = document.getElementById('eventLocationError');
+            if (eventLocation.value.trim() === "") {
+                eventLocationError.textContent = 'Please enter an event location.';
+            } else {
+                eventLocationError.textContent = '';
+            }
+        }
+        
+        function validateDeliveryTime() {
+            const deliveryTime = document.getElementById('deliveryTime');
+            const deliveryTimeError = document.getElementById('deliveryTimeError');
+            if (deliveryTime.value === "") {
+                deliveryTimeError.textContent = 'Please enter a delivery time.';
+            } else {
+                deliveryTimeError.textContent = '';
+            }
+        }
+        
+        function validatePickupTime() {
+            const pickupTime = document.getElementById('pickupTime');
+            const pickupTimeError = document.getElementById('pickupTimeError');
+            if (pickupTime.value === "") {
+                pickupTimeError.textContent = 'Please enter a pickup time.';
+            } else {
+                pickupTimeError.textContent = '';
+            }
+        }
+        
+        function validateNumBins() {
+            const numBinsInput = document.getElementById('numBins');
+            const numBinsError = document.getElementById('numBinsError');
+            const numBinsValue = parseInt(numBinsInput.value, 10);
+        
+            if (isNaN(numBinsValue) || numBinsValue < 0) {
+                numBinsError.textContent = 'Please enter a valid, non-negative number of bins needed.';
+                numBinsInput.value = 0; // Reset the input to 0 if an invalid value is entered.
+            } else {
+                numBinsError.textContent = '';
+            }
+        }
+        
+        function submitForm(event) {
+            // Additional logic to check if the form is ready for submission
+            // For example, you can check if all error messages are empty here.
+            // If everything is valid, return true to submit the form; otherwise, return false.
+        }
+        
+        
+        
+        
+        
     </script>
 </body>
 </html>

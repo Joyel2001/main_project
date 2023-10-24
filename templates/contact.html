@@ -1,3 +1,239 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>EcoRecover</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
+
+    </head>
+    
+    <body>
+        <style>
+            /* Basic reset for margins and padding */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+    
+            /* Styles for the main container */
+            .col-lg-12 {
+                width: 100%;
+                max-width: 1200px; /* Adjust as needed */
+                margin: 0 auto;
+                padding: 20px;
+            }
+    
+            /* Styles for the event items */
+            .event-item {
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+                padding: 20px;
+                display: flex;
+                flex-wrap: wrap;
+            }
+    
+            /* Styles for the left content */
+            .left-content {
+                flex: 1;
+                padding-right: 20px;
+            }
+    
+            /* Styles for the thumbnail */
+            .thumb img {
+                max-width: 100%;
+                height: auto;
+            }
+    
+            /* Styles for the right content */
+            .right-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-end;
+            }
+    
+            /* Styles for the button */
+            .main-dark-button a {
+                display: inline-block;
+                padding: 10px 20px;
+                background-color: #333;
+                color: #fff;
+                text-decoration: none;
+            }
+    
+            /* Media queries for responsiveness */
+            @media screen and (max-width: 992px) {
+                .event-item {
+                    flex-direction: column;
+                }
+    
+                .right-content {
+                    align-items: flex-start;
+                }
+            }
+            
+
+    
+        /* Basic reset for margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles for the main container */
+        .col-lg-12 {
+            width: 100%;
+            max-width: 1200px; /* Adjust as needed */
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Styles for the event items */
+        .event-item {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Styles for the left content */
+        .left-content {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        /* Styles for the thumbnail */
+        .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Styles for the right content */
+        .right-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        /* Styles for the button */
+        .main-dark-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            text-align: center;
+        }
+
+        .main-dark-button a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px; /* Add rounded corners */
+            transition: background-color 0.3s ease; /* Add smooth hover transition */
+        }
+
+        /* Change button background color on hover */
+        .main-dark-button a:hover {
+            background-color: #555;
+        }
+        /* Media queries for responsiveness */
+        @media screen and (max-width: 992px) {
+            .event-item {
+                flex-direction: column;
+            }
+
+            .right-content {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your HTML code here -->
+</body>
+</html>
+
+        </style>
+    
+    <!-- ***** Preloader Start ***** -->
+    {% comment %} <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- ***** Preloader End ***** -->
+    
+    <!-- ***** Pre HEader ***** -->
+    <div class="pre-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-sm-6">
+                    <div class="text-button">
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+
+
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="rent-venue.html">Contact Us</a></li>
+                            <li><a href="{% url 'show_events' %}" class="active">Campigns and Events</a></li> 
+                    
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,18 +293,15 @@
 
 <div class="contact-info">
     <h2>Contact Details</h2>
-    <p><strong>Company Name:</strong> Your Company Name</p>
-    <p><strong>Address:</strong> 123 Main Street, City, State, Zip Code</p>
-    <p><strong>Phone:</strong> (123) 456-7890</p>
-    <p><strong>Email:</strong> info@example.com</p>
+    <p><strong>Company Name:</strong> EcoRecover</p>
+    <p><strong>Address:</strong>5 College St NW,
+        Norcross, GA 30071
+        KOTTAYAM</p>
+    <p><strong>Phone:</strong> +91 8156918380</p>
+    <p><strong>Email:</strong> ecorecover@gmail.com</p>
 </div>
 
-<div class="map">
-    <h2>Location</h2>
-    <!-- You can embed a map or provide a link to an interactive map here -->
-    <!-- Example of embedding a Google Map -->
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12345.6789!2d-72.123456!3d40.987654!4sMap+Location!5e0!3m2!1sen!2sus!4v1234567890123" width="600" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-</div>
+
 
 </body>
 </html>

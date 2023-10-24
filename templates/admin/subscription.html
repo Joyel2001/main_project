@@ -15,7 +15,7 @@
          content="Xtreme Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
      <meta name="robots" content="noindex,nofollow">
      <title>EcoRecover</title>
-     <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
+     {% comment %} <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" /> {% endcomment %}
      <!-- Favicon icon -->
      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
      <!-- Custom CSS -->
@@ -237,14 +237,14 @@
                      </li>
                      {% endif %}
                      {% if user.is_staff or user.is_superuser %}
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_list' %}" aria-expanded="false">
-                            <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
-                            <span class="hide-menu">Feedback</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
+                     <li class="sidebar-item">
+                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_list' %}" aria-expanded="false">
+                             <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
+                             <span class="hide-menu">Feedback</span>
+                         </a>
+                     </li>
+                     {% endif %}
+ 
                      
                      <!-- Booked Event Details - Visible for staff and superuser -->
                      {% if user.is_staff or user.is_superuser %}
@@ -353,10 +353,16 @@
              }
          }
      </script>
- {% else %}
+     {% endif %}
+ {% if user.is_staff or user.is_superuser %}
      <!-- Your other content for non-staff/superuser users -->
- 
- 
+     <li class="sidebar-item">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "user_sub_details" %}" aria-expanded="false">
+            <i class="mdi mdi-calendar-text"></i>
+            <span class="hide-menu">Subscription Details</span>
+        </a>
+    </li>
+    {% else %}
                      <!-- Booked Bin - Visible for customers -->
                      <li class="sidebar-item">
                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
@@ -377,12 +383,8 @@
                              <span class="hide-menu">Collection Details</span>
                          </a>
                      </li>
-                     <li class="sidebar-item">
-                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "bins_low_fill_level" %}" aria-expanded="false">
-                             <i class="mdi mdi-calendar-text"></i>
-                             <span class="hide-menu">Bins Near you For exchange</span>
-                         </a>
-                     </li>
+                     
+                    
                      {% endif %}
              </ul>
                    
@@ -422,63 +424,63 @@
                <div class="col-md-8">
                    <div class="card">
                        <div class="card-body">
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>User Details</title>
+                            <style>
+                                body {
+                                    font-family: Arial, sans-serif;
+                                }
+                                table {
+                                    border-collapse: collapse;
+                                    width: 80%;
+                                    margin: 20px auto;
+                                }
+                                th, td {
+                                    padding: 10px;
+                                    text-align: left;
+                                }
+                                th {
+                                    background-color: #3498db;
+                                    color: white;
+                                }
+                                tr:nth-child(even) {
+                                    background-color: #f2f2f2;
+                                }
+                                tr:hover {
+                                    background-color: #f5f5f5;
+                                }
+                                tr.subscribed {
+                                    background-color: #C6D5B4; /* Green for subscribed users */
+                                }
+                            </style>
+                        </head>
                         <body>
-                            <h1>Bins with Low Fill Level</h1>
-                            {% if bin_details %}
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Booking ID</th>
-                                            <th>Username</th>
-                                            <th>Address</th>
-                                            <th>Mobile Number</th>
-                                            <th>Fill Level</th>
+                            <table>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Subscribed</th>
+                                    <th>Subscription Expiration</th>
+                                    <th>Subscription Duration</th>
+                                </tr>
+                                <tbody>
+                                    {% for user_profile in user_profiles %}
+                                        <tr class="{% if user_profile.subscribed %}subscribed{% endif %}">
+                                            <td>{{ user_profile.user.username }}</td>
+                                            <td>
+                                                {% if user_profile.subscribed %}
+                                                    Subscribed
+                                                {% else %}
+                                                    Not Subscribed
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ user_profile.subscription_expiration }}</td>
+                                            <td>{{ user_profile.subscription_duration }}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for bin in bin_details %}
-                                        <tr>
-                                            <td>{{ bin.booking_id }}</td>
-                                            <td>{{ bin.username }}</td>
-                                            <td>{{ bin.address }}</td>
-                                            <td>{{ bin.mobile_number }}</td>
-                                            <td>{{ bin.fill_level }}%</td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            {% else %}
-                                <p>No bins with low fill levels available for exchange.</p>
-                            {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </body>
+                        </html>
                         
-
-<style>
-    /* userlist/static/userlist/styles.css */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    table, th, td {
-        border: 1px solid #ccc;
-    }
-    
-    th, td {
-        padding: 10px;
-        text-align: left;
-    }
-    
-    thead {
-        background-color: #f2f2f2;
-    }
-    
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-    
-    tr:hover {
-        background-color: #ddd;
-    }  
-</style>
-</html>

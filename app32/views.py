@@ -1031,8 +1031,10 @@ def add_status(request):
 
 # bin_booking_for_events
 from django.shortcuts import render, redirect
-from .models import BinEvent, BinBookingEvent
 from django.urls import reverse
+from .models import BinEvent, BinBookingEvent
+from django.utils import timezone
+from django.http import HttpResponse
 
 def save_bin_booking_event(request):
     bins = BinEvent.objects.all()
@@ -1041,13 +1043,18 @@ def save_bin_booking_event(request):
         event_date_time = request.POST.get('event_date_time')
         event_location = request.POST.get('event_location')
         delivery_time = request.POST.get('delivery_time')
-        pickup_time = request.POST.get('pickup_time')
         number_of_bins_needed = int(request.POST.get('number_of_bins_needed'))
         selected_bin_id = request.POST.get('bin')
 
         selected_bin_event = BinEvent.objects.get(bin_id=selected_bin_id)
 
         if selected_bin_event.number_of_bins >= number_of_bins_needed:
+            pickup_time = request.POST.get('pickup_time')
+            
+            if not pickup_time:
+                # If pickup_time is not provided, set it to the current time
+                pickup_time = timezone.now()
+            
             bin_booking_event = BinBookingEvent(
                 bin=selected_bin_event,
                 event_date_time=event_date_time,
@@ -1083,6 +1090,7 @@ def save_bin_booking_event(request):
             return render(request, 'bin/error_page.html', {'error_message': error_message})
 
     return render(request, 'bin/bin_booking_event_form.html', {'bins': bins})
+
 
 
 
@@ -1344,3 +1352,14 @@ from django.shortcuts import render
 
 def contact_info(request):
     return render(request, 'contact.html')
+
+
+
+# subscrtion_details 
+from django.shortcuts import render
+from .models import UserProfile  # Import your UserProfile model
+
+def user_sub_details(request):
+    user_profiles = UserProfile.objects.all()  # Retrieve all user profiles
+    return render(request, 'admin\subscription.html', {'user_profiles': user_profiles})
+

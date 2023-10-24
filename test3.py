@@ -16,16 +16,13 @@ class Hosttest(TestCase):
     def tearDown(self):
         self.driver.quit()
 
-  
-
     def test_02_login_page(self):
         driver = self.driver
         driver.get(self.live_server_url)
         driver.maximize_window()
-        time.sleep(2)
-        theme=driver.find_element(By.CSS_SELECTOR,"a[href='/loginn']")
-        theme.click()
-        time.sleep(4)
+        dark=driver.find_element(By.CSS_SELECTOR,"a[href='/loginn']")
+        dark.click()
+        time.sleep(1)
         elem = driver.find_element(By.NAME, "username")
         elem.send_keys("Staff1")
         elem = driver.find_element(By.NAME, "password")
@@ -33,24 +30,33 @@ class Hosttest(TestCase):
         submit_button = driver.find_element(By.CSS_SELECTOR, "#btn_login")
         submit_button.click()
         time.sleep(2)
-        driver.execute_script("window.scrollBy(0, 2900);")
-        time.sleep(2)
-        browse=driver.find_element(By.CSS_SELECTOR,"a.sidebar-link[href='/event_details_view/'] span.hide-menu")
+        browse=driver.find_element(By.CSS_SELECTOR,"a[href='/booking-chart/'] > .hide-menu")
         browse.click()
-        time.sleep(2)
-        driver.execute_script("window.scrollBy(0, 2900);")
-        time.sleep(2)
-        view=driver.find_element(By.CSS_SELECTOR,"a[href='/delete_event/h1'].btn-delete")
+        time.sleep(1)
+        driver.execute_script("window.scrollBy(0, 150);")
+        time.sleep(1)
+        view=driver.find_element(By.CSS_SELECTOR,"a[href='/booking_list/'] > .hide-menu")
         view.click()
         time.sleep(1)
-        options = driver.find_element(By.CSS_SELECTOR, "img[src='/static/images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg']")
-        options.click()
+        driver.execute_script("window.scrollBy(0, 600);")
+        time.sleep(1)
+        chaps=driver.find_element(By.CSS_SELECTOR,"option[value='Workshop on Managing Solid Waste']")
+        chaps.click()
+        time.sleep(1)
+        time.sleep(1)
+        chap = driver.find_element(By.CSS_SELECTOR, "button[style*='background-color: #007bff; color: #fff; border: none;']")
+        chap.click()
         time.sleep(3)
-        options = driver.find_element(By.CSS_SELECTOR, "a[href='/loggout']")
+        options = driver.find_element(By.CSS_SELECTOR, "option[value='']")
         options.click()
+        options.click()
+        time.sleep(1)
+        select=driver.find_element(By.CSS_SELECTOR, "button[style*='background-color: #007bff; color: #fff; border: none;']")
+        select.click()
         time.sleep(1)
         
 
+    # Add more test methods as needed
 
 if __name__ == '__main__':
     import unittest

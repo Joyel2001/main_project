@@ -81,6 +81,7 @@ urlpatterns = [
     path('user_profile/', views.user_profile_view, name='user_profile'),
     # path('handle_payment/', views.handle_payment, name='handle_payment'),
     path('contact_info/', views.contact_info, name='contact_info'),
-    ]    # path('waste_collection/', views.waste_collection_details, name='waste_collection_details'),
+    path('user_sub_details/', views.user_sub_details, name='user_sub_details'),
+    ]    
 
     

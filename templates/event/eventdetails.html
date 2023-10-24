@@ -350,7 +350,16 @@
             }
         }
     </script>
-{% else %}
+    {% endif %}
+    {% if user.is_staff or user.is_superuser %}
+        <!-- Your other content for non-staff/superuser users -->
+        <li class="sidebar-item">
+           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "user_sub_details" %}" aria-expanded="false">
+               <i class="mdi mdi-calendar-text"></i>
+               <span class="hide-menu">Subscription Details</span>
+           </a>
+       </li>
+       {% else %}
     <!-- Your other content for non-staff/superuser users -->
 
 
