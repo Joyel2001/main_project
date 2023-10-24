@@ -392,12 +392,32 @@
                       <div class="card-body">
 {% load static %}
 <html lang="en">
-
+    <div class="messages">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if message.tags == 'success edit-profile' %}  <!-- Ensure the custom tag matches here -->
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="{% static 'path-to-your-css-file.css' %}">
+    <div class="user-options">
+        <ul class="user-menu">
+            <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+            <li><a href="{% url 'reset_password' %}">Reset Password</a></li>
+            <li><a href="{% url 'loggout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <!-- Add this code at the top of your profile.html template -->
+
+   
 </head>
 
 <body>
@@ -435,7 +455,9 @@
             <p class="user-info">Last Login: {{ user.last_login }}</p>
         </div>
     </div>
-        
+    <div class="messages">
+   
+    
         
         <!-- Messages (if any) -->
         {% comment %}
@@ -450,7 +472,33 @@
     </div>
 </div></div></div>
 <style>
-
+    .user-options {
+        margin-top: 20px;
+    }
+    
+    .user-menu {
+        list-style: none;
+        padding: 0;
+        display: flex;
+    }
+    
+    .user-menu li {
+        margin-right: 20px; /* Adjust the spacing between menu items */
+    }
+    
+    .user-menu a {
+        text-decoration: none;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .user-menu a:hover {
+        background-color: #2980b9;
+    }
+    
     .section {
         margin-top: 20px;
         padding: 20px;

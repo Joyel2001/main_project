@@ -106,6 +106,8 @@ def check_email_exists(request):
     email = request.GET.get('email')
     data = {'exists': User.objects.filter(email=email).exists()}
     return JsonResponse(data)
+from django.http import JsonResponse
+
 def check_username_exists(request):
     username = request.GET.get('username')
     data = {'exists': User.objects.filter(username=username).exists()}
@@ -129,6 +131,11 @@ def loggout(request):
 from django.shortcuts import render
 from .models import UserProfile
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .models import UserProfile
+
+@login_required(login_url='loginn')
 def user_profile_view(request):
     profile = UserProfile.objects.get(user=request.user)
     
@@ -136,6 +143,8 @@ def user_profile_view(request):
         'profile': profile,
     }
     return render(request, 'profile/profile.html', context)
+
+
 
 
 
@@ -550,8 +559,10 @@ def event_booking(request, event_id=None):
 
 
 # editprofile
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
 
 @login_required(login_url='loginn')
 def edit_profile(request):
@@ -559,30 +570,33 @@ def edit_profile(request):
         new_username = request.POST.get('username')
         new_email = request.POST.get('email')
         new_address = request.POST.get('address')
-        new_mobile_number = request.POST.get('mobile_number')  # Add this line
+        new_mobile_number = request.POST.get('mobile_number')
 
-        # Check if the new username and email already exist (excluding the current user)
         if User.objects.filter(username=new_username).exclude(id=request.user.id).exists():
             messages.error(request, "Username already exists")
         elif User.objects.filter(email=new_email).exclude(id=request.user.id).exists():
             messages.error(request, "Email already exists")
         else:
-            # Update the user's email, username, and phone number
             user = request.user
             user.username = new_username
             user.email = new_email
             user.save()
 
-            # Update the user's address and phone number in the UserProfile
             user_profile, created = UserProfile.objects.get_or_create(user=user)
             user_profile.address = new_address
-            user_profile.mobile_number = new_mobile_number  # Set the mobile number
+            user_profile.mobile_number = new_mobile_number
             user_profile.save()
 
-            messages.success(request, "Profile updated successfully!")
-            return redirect('user_profile_view')  # Change 'user_profile' to your actual profile page URL name
+            messages.success(request, "Profile updated successfully!", extra_tags='edit-profile')
+
+            # Redirect to the user's profile view
+            return redirect('user_profile_view')
 
     return render(request, "profile/edit_profile.html")
+
+
+    
+
 #  profile_password_reset
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -1098,11 +1112,12 @@ def display_bin_booking_events(request):
 
 
 from django.shortcuts import render
+from django.db.models import Q
 from .models import BookedBinStatus
 
 def bins_with_low_fill_level(request):
-    # Query for bins with fill level less than or equal to 40
-    low_fill_bins = BookedBinStatus.objects.filter(fill_level__lte=40)
+    # Query for bins with fill level less than or equal to 20 or fill level is null
+    low_fill_bins = BookedBinStatus.objects.filter(Q(fill_level__lte=0) | Q(fill_level__isnull=True))
 
     # Extract user information for these bins
     bin_details = []
@@ -1119,6 +1134,7 @@ def bins_with_low_fill_level(request):
 
     context = {'bin_details': bin_details}
     return render(request, 'admin/bins_low_fill_level.html', context)
+
 
 
 

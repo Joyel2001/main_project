@@ -271,19 +271,18 @@
                 validateConfirmPassword()
             );
         }
-
-        var usernameInput = document.getElementById('username');
-        usernameInput.addEventListener("blur", validateUsername);
-
         function validateUsername() {
             console.log("Validation function called."); // Add this line
             var usernameInput = document.getElementById('username');
             var usernameError = document.getElementById('username-error');
-            
-            // Updated validation criteria
+            var username = usernameInput.value;
+            console.log('Username:', username); // Add this line
+        
+            // ... your existing code ...
             var usernamePattern = /^[a-zA-Z][a-zA-Z0-9_-]{0,7}$/;
-            
-            if (!usernamePattern.test(usernameInput.value)) {
+
+        
+            if (!usernamePattern.test(username)) {
                 usernameError.textContent = 'Username must start with a letter and contain 8 characters or fewer, consisting of letters, numbers, hyphens, and underscores.';
                 return false;
             } else {
@@ -291,6 +290,7 @@
                 return true;
             }
         }
+        
         
         
         
@@ -327,14 +327,13 @@
 
         <form method="POST"  onsubmit="return validateForm()" name="registration-form">
             {% csrf_token %}
-            <input type="text" id="username" name="username" placeholder="Enter Username" required>
+            <input type="text" id="username" name="username" placeholder="Enter Username" >
             <span class="error-message" id="username-error"></span>
-            {% comment %} <span class="error-message" id="email-error"></span> {% endcomment %}
-            <input type="text" id="email" name="email" placeholder="Enter Email" required onblur="validateEmail()">
+            <input type="text" id="email" name="email" placeholder="Enter Email"  onblur="validateEmail()">
             <span class="error-message" id="email-error"></span>
-            <input type="password" id="password" name="password" placeholder="Enter Password" required onblur="validatePassword()">
+            <input type="password" id="password" name="password" placeholder="Enter Password"  onblur="validatePassword()">
             <span class="error-message" id="password-error"></span>
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required oninput="validateConfirmPassword()">
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password"  oninput="validateConfirmPassword()">
         <span class="error-message" id="confirm-password-error"></span>
         <p>Select User Role:</p>
     <input type="radio" id="customer" name="user_role" value="customer" checked>
