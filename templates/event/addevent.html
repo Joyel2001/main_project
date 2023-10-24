@@ -254,44 +254,55 @@ body {
             {% csrf_token %}
             
             <label for="event-name">Event Name</label>
-            <input type="text" id="event-name" name="name" required>
+            <input type="text" id="event-name" name="name">
+            <span id="name-error" class="error-message" style="color: red;"></span>
             
             <label for="event-category">Category</label>
-            <select id="event-category" name="category" required class="category-select">
+            <select id="event-category" name="category" class="category-select">
                 <option value="category1">Environmental Cleanup Campaign</option>
-                <option value="category2">Waste Management Seminar</option>
-                <option value="category3">Expo</option>
-                <option value="category4">Composting Workshop</option>
-                <option value="category5">Environmental Hackathon</option>
+                <option value="category1">Environmental Cleanup Campaign</option>
+                    <option value="category2">Waste Management Seminar</option>
+                    <option value="category3">Expo</option>
+                    <option value="category4">Composting Workshop</option>
+                    <option value="category5">Environmental Hackathon</option>
+                <select id="event-category" name="category" required class="category-select">
+                    
+                    <!-- Add more category options as needed -->
+                </select>
                 <!-- Add more category options as needed -->
-            </select>
+            
+            <span id="category-error" class="error-message" style="color: red;"></span>
             
             <div class="spacer"></div>
             
             <label for="event-description">Event Description</label>
-            <textarea id="event-description" name="description" rows="4" required></textarea>
+            <textarea id="event-description" name="description" rows="4"></textarea>
+            <span id="description-error" class="error-message" style="color: red;"></span>
             
             <label for="event-image">Event Image</label>
             <input type="file" id="event-image" name="image">
-            <span id="image-error" class="error-message" style="color: red;"></span> <!-- Error message span -->
+            <span id="image-error" class="error-message" style="color: red;"></span>
             
             <label for="event-date">Date</label>
-            <input type="date" id="event-date" name="date" required>
+            <input type="date" id="event-date" name="date">
+            <span id="date-error" class="error-message" style="color: red;"></span>
             
             <label for="event-time">Time</label>
-            <input type="time" id="event-time" name="time" required>
+            <input type="time" id="event-time" name="time">
+            <span id="time-error" class="error-message" style="color: red;"></span>
             
             <label for="event-location">Location</label>
-            <input type="text" id="event-location" name="location" required>
+            <input type="text" id="event-location" name="location">
+            <span id="location-error" class="error-message" style="color: red;"></span>
             
             <label for="event-max-participants">Max Participants</label>
-            <input type="number" id="event-max-participants" name="max_participants" required>
+            <input type="number" id="event-max-participants" name="max_participants">
+            <span id="max-participants-error" class="error-message" style="color: red;"></span>
             
             <div class="button-row">
                 <input type="submit" value="Add Event" class="btn-add-event">
                 <span class="button-separator"></span>
                 <a href="{% url 'event_details_view' %}" class="btn-show-events">Show Events</a>
-                <!-- Remove the image error message here -->
             </div>
         </form>
         
@@ -307,7 +318,91 @@ body {
                     imageError.textContent = 'Please select a valid image file (JPG, JPEG, or PNG).';
                     event.preventDefault();
                 } else {
-                    imageError.textContent = ''; // Clear the error message
+                    imageError.textContent = '';
+                }
+                
+                // Add date and time validation (as shown in the previous response)
+            });
+        
+            // Validation for Event Name
+            document.getElementById('event-name').addEventListener('blur', function() {
+                const nameInput = this.value;
+                const nameError = document.getElementById('name-error');
+        
+                if (nameInput.trim() === '') {
+                    nameError.textContent = 'Event Name is required.';
+                } else {
+                    nameError.textContent = '';
+                }
+            });
+        
+            // Validation for Category (if required)
+            document.getElementById('event-category').addEventListener('change', function() {
+                const categoryValue = this.value;
+                const categoryError = document.getElementById('category-error');
+        
+                if (categoryValue === 'select') { // Change 'select' to the default value
+                    categoryError.textContent = 'Please select a category.';
+                } else {
+                    categoryError.textContent = '';
+                }
+            });
+        
+            // Validation for Event Description (if required)
+            document.getElementById('event-description').addEventListener('blur', function() {
+                const descriptionInput = this.value;
+                const descriptionError = document.getElementById('description-error');
+        
+                if (descriptionInput.trim() === '') {
+                    descriptionError.textContent = 'Event Description is required.';
+                } else {
+                    descriptionError.textContent = '';
+                }
+            });
+            document.getElementById('event-date').addEventListener('blur', function() {
+                const dateInput = this.value.trim();
+                const dateError = document.getElementById('date-error');
+        
+                if (dateInput === '') {
+                    dateError.textContent = 'Date is required.';
+                } else {
+                    dateError.textContent = '';
+                }
+            });
+        
+            // Validation for Time
+            document.getElementById('event-time').addEventListener('blur', function() {
+                const timeInput = this.value.trim();
+                const timeError = document.getElementById('time-error');
+        
+                if (timeInput === '') {
+                    timeError.textContent = 'Time is required.';
+                } else {
+                    timeError.textContent = '';
+                }
+            });
+        
+            // Validation for Location
+            document.getElementById('event-location').addEventListener('blur', function() {
+                const locationInput = this.value.trim();
+                const locationError = document.getElementById('location-error');
+        
+                if (locationInput === '') {
+                    locationError.textContent = 'Location is required.';
+                } else {
+                    locationError.textContent = '';
+                }
+            });
+        
+            // Validation for Max Participants
+            document.getElementById('event-max-participants').addEventListener('blur', function() {
+                const maxParticipantsInput = this.value.trim();
+                const maxParticipantsError = document.getElementById('max-participants-error');
+        
+                if (maxParticipantsInput === '' || isNaN(maxParticipantsInput)) {
+                    maxParticipantsError.textContent = 'Max Participants must be a number.';
+                } else {
+                    maxParticipantsError.textContent = '';
                 }
             });
         
