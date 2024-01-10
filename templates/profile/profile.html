@@ -324,6 +324,14 @@
                             <span class="hide-menu">Bin Booking Details</span>
                         </a>
                     </li>
+                    {% if  user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-account-network"></i>
+                            <span class="hide-menu">User Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
                     {% else %}
                     <!-- Booked Bin - Visible for customers -->
                     <li class="sidebar-item">

@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from .models import Message
+from django.views.decorators.cache import never_cache
 
 
 
@@ -135,6 +136,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import UserProfile
 
+@never_cache
 @login_required(login_url='loginn')
 def user_profile_view(request):
     profile = UserProfile.objects.get(user=request.user)
@@ -154,6 +156,7 @@ from django.shortcuts import render, redirect
 from .models import Event
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+@never_cache
 @login_required(login_url='loginn')
 
 
@@ -220,7 +223,8 @@ from .models import Event  # Import your Event model
 
 from django.shortcuts import render
 from .models import Event
-
+@never_cache
+@login_required(login_url='loginn')
 def show_events(request, category=None):
     if category:
         # Filter events by category if a category is provided
@@ -242,7 +246,8 @@ def show_events(request, category=None):
 
 
 #event_editing_page
-
+@never_cache
+@login_required(login_url='loginn')
 def event_details_view(request):
     events = Event.objects.all()  
     context = {
@@ -259,6 +264,7 @@ from .models import Event
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+@never_cache
 @login_required(login_url='loginn')
 def edit_event(request, event_id):
     event = get_object_or_404(Event, event_id=event_id, user=request.user)
@@ -290,6 +296,7 @@ from django.shortcuts import redirect, get_object_or_404
 from .models import Event
 from django.contrib.auth.decorators import login_required
 
+@never_cache
 @login_required(login_url='loginn')
 def delete_event(request, event_id):
     event = get_object_or_404(Event, event_id=event_id)
@@ -326,7 +333,8 @@ logger = logging.getLogger(__name__)
 # Inside your add_bin view
 from django.db import IntegrityError
 from django.contrib import messages
-
+@never_cache
+@login_required(login_url='loginn')
 def add_bin(request):
     if request.method == 'POST':
         bin_id = request.POST['bin_id']
@@ -359,7 +367,8 @@ def add_bin(request):
 # addbinfor home
 from django.contrib import messages
 from .models import BinEvent
-
+@never_cache
+@login_required(login_url='loginn')
 def add_bin_event(request):
     if request.method == 'POST':
         bin_id = request.POST['bin_id']
@@ -385,6 +394,7 @@ def add_bin_event(request):
     return render(request, 'bin/addbinevent.html')
 
 # showbin
+@never_cache
 @login_required(login_url='loginn')
 def bin_order(request):
     bins = Bin.objects.all()
@@ -393,6 +403,7 @@ def bin_order(request):
 
 
 
+@never_cache
 @login_required(login_url='loginn')
 def bin_order_event(request):
     binss = BinEvent.objects.all()
@@ -418,6 +429,7 @@ from .models import Bin, BinBooking
 from django.contrib import messages
 from django.db.models import Count
 
+@never_cache
 @login_required(login_url='loginn')
 
 
@@ -510,7 +522,8 @@ from django.contrib.messages import constants as messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Event, EventBooking
 import uuid
-
+@never_cache
+@login_required(login_url='loginn')
 def event_booking(request, event_id=None):
     event = None
 
@@ -559,6 +572,7 @@ def event_booking(request, event_id=None):
 
 
 # editprofile
+@never_cache
 @login_required(login_url='loginn')
 def edit_profile(request):
     if request.method == "POST":
@@ -615,6 +629,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 
+@never_cache
 @login_required(login_url='loginn')
 def reset_password(request):
     if request.method == "POST":
@@ -653,7 +668,8 @@ def reset_password(request):
 # user_booked_events_to dispaly
 from django.shortcuts import render
 from .models import EventBooking  
-
+@never_cache
+@login_required(login_url='loginn')
 def user_booked_events(request):
     if not request.user.is_authenticated:
         return render(request, 'auth/login.html')
@@ -669,7 +685,8 @@ def user_booked_events(request):
 
 # bin_details
 # In your app's views.py
-
+@never_cache
+@login_required(login_url='loginn')
 def bin_details(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
@@ -694,7 +711,8 @@ def bin_details(request, user_id):
 # userlist/views.py
 from django.contrib.auth.models import User
 from django.shortcuts import render
-
+@never_cache
+@login_required(login_url='loginn')
 def user_list(request):
     users = User.objects.all()
     return render(request, 'admin/userlist.html', {'users': users})
@@ -705,7 +723,8 @@ def user_list(request):
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-
+@never_cache
+@login_required(login_url='loginn')
 def edit_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
 
@@ -751,7 +770,8 @@ def edit_user(request, user_id):
 # admin_event_details
 from django.shortcuts import render
 from .models import EventBooking, Event
-
+@never_cache
+@login_required(login_url='loginn')
 def booking_list(request):
     event_bookings = EventBooking.objects.all()
     events = Event.objects.all()
@@ -769,7 +789,8 @@ def booking_list(request):
 # admin_bin_details
 from django.shortcuts import render
 from .models import Bin
-
+@never_cache
+@login_required(login_url='loginn')
 def bin_list(request):
     bins = Bin.objects.all()
     context = {'bins': bins}
@@ -779,7 +800,8 @@ def bin_list(request):
 # admin_binbooking_details
 from django.shortcuts import render
 from .models import BinBooking
-
+@never_cache
+@login_required(login_url='loginn')
 def bin_booking_list(request):
     bin_bookings = BinBooking.objects.all()
     context = {'bin_bookings': bin_bookings}
@@ -793,7 +815,8 @@ def bin_booking_list(request):
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import BinBooking, BookedBinStatus
-
+@never_cache
+@login_required(login_url='loginn')
 def update_bin_status(request, booking_id):
     booking = get_object_or_404(BinBooking, booking_id=booking_id)
     
@@ -841,7 +864,8 @@ def bin_collection_notification(request):
 
 from django.shortcuts import render
 from .models import BinBooking, User
-
+@never_cache
+@login_required(login_url='loginn')
 def booking_chart(request):
     # Query the database to get the booking data
     booking_data = BinBooking.objects.all()
@@ -889,7 +913,8 @@ def booking_chart(request):
 
 from django.shortcuts import render
 from .models import BinEvent
-
+@never_cache
+@login_required(login_url='loginn')
 def bin_list_forevent(request):
     bin_list = BinEvent.objects.all()
     return render(request, 'admin/bin_list_for_events.html', {'bin_list': bin_list})
@@ -911,7 +936,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import WasteCollection
 from .models import BinBooking 
-
+@never_cache
+@login_required(login_url='loginn')
 def bin_waste_collection(request, booking_id):
     if request.method == 'POST':
         collection_status = request.POST.get('collection_status')
@@ -940,7 +966,8 @@ def bin_waste_collection(request, booking_id):
 
 # delete_bin_message 
 from django.shortcuts import redirect
-
+@never_cache
+@login_required(login_url='loginn')
 def delete_waste_collection(request, waste_collection_id):
     waste_collection = get_object_or_404(WasteCollection, id=waste_collection_id)
 
@@ -965,7 +992,8 @@ from django.shortcuts import render
 from .models import WasteCollection, BinBooking
 from django.contrib.auth.decorators import login_required
 
-@login_required
+@never_cache
+@login_required(login_url='loginn')
 def collection_detail(request, user_id):
     # Get the WasteCollection records related to the user
     waste_collections = WasteCollection.objects.filter(booking__user__id=user_id)
@@ -1031,7 +1059,8 @@ from django.urls import reverse
 from .models import BinEvent, BinBookingEvent
 from django.utils import timezone
 from django.http import HttpResponse
-
+@never_cache
+@login_required(login_url='loginn')
 def save_bin_booking_event(request):
     bins = BinEvent.objects.all()
 
@@ -1100,7 +1129,8 @@ def save_bin_booking_event(request):
 
 from django.shortcuts import render
 from .models import BinBookingEvent
-
+@never_cache
+@login_required(login_url='loginn')
 def display_bin_booking_events(request):
     # Retrieve all BinBookingEvent objects from the database
     bin_booking_events = BinBookingEvent.objects.all()
@@ -1118,7 +1148,8 @@ def display_bin_booking_events(request):
 from django.shortcuts import render
 from django.db.models import Q
 from .models import BookedBinStatus
-
+@never_cache
+@login_required(login_url='loginn')
 def bins_with_low_fill_level(request):
     # Query for bins with fill level less than or equal to 20 or fill level is null
     low_fill_bins = BookedBinStatus.objects.filter(Q(fill_level__lte=0) | Q(fill_level__isnull=True))
@@ -1159,6 +1190,7 @@ from django.http import HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from .models import Feedback  # Import the Feedback model
 
+@never_cache
 @login_required(login_url='loginn')
 def submit_feedback(request, user_id):
     # Use user_id to identify the user, for example:
@@ -1188,7 +1220,8 @@ def submit_feedback(request, user_id):
 
 # payment sucess
 from django.shortcuts import render
-
+@never_cache
+@login_required(login_url='loginn')
 def payment_success(request):
     return render(request, 'paymentsuccess.html')
 
@@ -1290,7 +1323,8 @@ def paymenthandler(request):
 
 from django.shortcuts import render
 from .models import Feedback
-
+@never_cache
+@login_required(login_url='loginn')
 def feedback_list(request):
     feedback_entries = Feedback.objects.all()  # Retrieve all feedback entries
     return render(request, 'admin/feedback_display/feedback_list.html', {'feedback_entries': feedback_entries})
@@ -1300,6 +1334,8 @@ def feedback_list(request):
 
 
 # event_ bin _boooking _ payment _details
+@never_cache
+@login_required(login_url='loginn')
 def payment_details(request, amount_to_pay):
     return render(request, 'payment_details.html', {'amount_to_pay': amount_to_pay})
 
@@ -1309,7 +1345,8 @@ def payment_details(request, amount_to_pay):
 # edit bin details
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import BinBooking
-
+@never_cache
+@login_required(login_url='loginn')
 def edit_booking_details(request, booking_id):
     booking = get_object_or_404(BinBooking, booking_id=booking_id)
     
@@ -1354,7 +1391,8 @@ def contact_info(request):
 # subscrtion_details 
 from django.shortcuts import render
 from .models import UserProfile  # Import your UserProfile model
-
+@never_cache
+@login_required(login_url='loginn')
 def user_sub_details(request):
     user_profiles = UserProfile.objects.all()  # Retrieve all user profiles
     return render(request, 'admin\subscription.html', {'user_profiles': user_profiles})
