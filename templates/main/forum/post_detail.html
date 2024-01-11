@@ -1,0 +1,77 @@
+<!-- main/forum/all_posts.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Posts</title>
+    <!-- Include Bootstrap CSS (you can replace this with your own styles) -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .post-container {
+            margin-bottom: 40px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-4">All Posts</h1>
+
+        {% for post in posts %}
+        <div class="post-container">
+            <h2>{{ post.title }}</h2>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+            {% endif %}
+            {% comment %} <p>{{ post.content }}</p> {% endcomment %}
+            {% comment %} <p class="text-muted">Created at: {{ post.created_at }}</p> {% endcomment %}
+            <div class="text-center">
+                <a href="{% url 'post_detail' post_id=post.id %}" class="btn btn-primary btn-lg">View Post Details</a>
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+
+    <!-- Include Bootstrap JS (optional, depends on your requirements) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
