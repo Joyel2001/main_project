@@ -1,4 +1,5 @@
 <!-- main/forum/post_detail.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -76,10 +77,123 @@
             <p class="post-meta">Created at: {{ post.created_at }}</p>
 
             <div class="like-comment-icons" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}" data-comments="{{ post.comments.count }}">
-                <i class="far fa-thumbs-up" id="like-icon"></i> <span class="like-count">{{ post.likes.count }}</span>
-                <i class="far fa-comment" id="comment-icon"></i> <span class="comment-count">{{ post.comments.count }}</span>
+            </div>
+            <div class="like-comment-icons" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}" data-comments="{{ post.comments.count }}">
+               <!-- Inside your post-container div -->
+<div class="like-comment-icons" data-post-id="{{ post.id }}" data-likes="{{ post.likes.count }}" data-comments="{{ post.comments.count }}">
+    <a href="#" class="add-comment-link" data-toggle="modal" data-target="#addCommentModal">
+        <i class="far fa-comment" id="comment-icon"></i> Add Comment
+    </a>
+    <span class="comment-count">{{ post.comments.count }}</span>
+</div>
+<br>
+<br>
+<br>
+<!-- Add Comment Modal -->
+<!-- ... your existing HTML code ... -->
+
+<!-- ... your existing HTML code ... -->
+
+<div class="comments-section">
+    <h3>Comments</h3>
+    <ul>
+        {% for comment in comments %}
+            <li class="comment-box">
+                <div class="comment-header">
+                    <img src="{% static 'images/profile/th.jpg' %}" alt="User Icon" class="user-icon">
+                    <strong>{{ comment.user.username }}</strong>
+                </div>
+                <div class="comment-content">
+                    {{ comment.content }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<style>.comment-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    width: 30px; /* Adjust the size as needed */
+    height: 30px; /* Adjust the size as needed */
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    color: black;
+}
+</style>
+
+<!-- ... your existing HTML code ... -->
+
+
+<!-- ... your existing HTML code ... -->
+
+
+<div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="addCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCommentModalLabel">Add Comment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                
+            </div>
+            <div class="modal-body">
+                <form id="addCommentForm" method="post" action="{% url 'post_detail' post.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <div class="form-group">
+                        <label for="commentContent">Comment:</label>
+                        <textarea class="form-control" id="commentContent" name="content" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <!-- ... your existing HTML code ... -->
+
+<div class="modal fade" id="addCommentModal" tabindex="-1" role="dialog" aria-labelledby="addCommentModalLabel" aria-hidden="true">
+    <!-- ... your existing modal code ... -->
+</div>
+
+<!-- Add a placeholder for the success message -->
+<div id="commentSuccessMessage" class="alert alert-success" style="display: none;">
+    Your comment has been saved successfully!
+</div>
+
+<script>
+    $(document).ready(function () {
+        // ... your existing jQuery code ...
+
+        // Show the success message when the modal is closed
+        $("#addCommentModal").on("hidden.bs.modal", function () {
+            $("#commentSuccessMessage").show();
+        });
+    });
+</script>
+
+<!-- ... your existing HTML code ... -->
+
             </div>
         </div>
+    </div>
+</div>
+
+            
+        </div>
+        <!-- Inside your post-container div -->
+
+
 
         <div class="text-center">
             <a href="{% url 'all_posts' %}" class="btn btn-primary btn-lg">Back to All Posts</a>
@@ -89,6 +203,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    
+    
     <script>
         // jQuery code for animating like and comment icons
         $(document).ready(function () {

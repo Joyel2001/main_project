@@ -87,77 +87,9 @@
         <div id="title-error" class="error-message"></div>
 
         <label for="content">Content:</label>
-        <div id="editor"></div>
-        <textarea id="content" name="content" style="display: none;"></textarea>
-        <div id="content-error" class="error-message"></div>
+<textarea id="content" name="content"></textarea>
+<div id="content-error" class="error-message"></div>
 
-        <script>
-            ClassicEditor
-                .create(document.querySelector('#editor'), {
-                    toolbar: {
-                        items: [
-                            'heading',
-                            '|',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strikethrough',
-                            '|',
-                            'fontSize',
-                            'fontColor',
-                            'fontBackgroundColor',
-                            '|',
-                            'alignment',
-                            '|',
-                            'bulletedList',
-                            'numberedList',
-                            '|',
-                            'outdent',
-                            'indent',
-                            '|',
-                            'link',
-                            'insertTable',
-                            'horizontalLine',
-                            '|',
-                            'undo',
-                            'redo'
-                        ]
-                    },
-                    language: 'en',
-                    heading: {
-                        options: [
-                            { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
-                            { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
-                            { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
-                            { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
-                        ]
-                    },
-                    fontSize: {
-                        options: ['default', '8', '10', '12', '14', '18', '24', '36']
-                    },
-                    fontColor: {
-                        colors: [
-                            { color: '#000', label: 'Black' },
-                            { color: '#fff', label: 'White' },
-                            { color: '#ff0000', label: 'Red' },
-                            { color: '#00ff00', label: 'Green' },
-                            { color: '#0000ff', label: 'Blue' }
-                        ]
-                    },
-                    fontBackgroundColor: {
-                        colors: [
-                            { color: '#fff', label: 'White' },
-                            { color: '#ff0000', label: 'Red' },
-                            { color: '#00ff00', label: 'Green' },
-                            { color: '#0000ff', label: 'Blue' }
-                        ]
-                    },
-                    // Your configuration options go here
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        </script>
 
         <label for="image">Image:</label>
         <input type="file" id="image" name="image" accept="image/png, image/jpeg">
@@ -165,45 +97,46 @@
 
         <input type="submit" value="Post">
     </form>
-
-    <script>
-        function validateForm() {
-            var titleInput = document.getElementById('title');
-            var contentInput = CKEditor.instances.editor.getData(); // Access CKEditor content
-            var imageInput = document.getElementById('image');
-
-            var title = titleInput.value.trim();
-            var content = contentInput.trim(); // CKEditor content is accessed differently
-            var image = imageInput.value.trim();
-
-            // Title validation
-            if (title === '') {
-                displayErrorMessage(titleInput, 'Please enter a title.');
-                return false;
-            } else {
-                hideErrorMessage(titleInput);
-            }
-
-            // Content validation
-            if (content === '') {
-                // Adjust the condition for CKEditor content validation
-                displayErrorMessage(document.getElementById('editor'), 'Please enter content.');
-                return false;
-            } else {
-                hideErrorMessage(document.getElementById('editor'));
-            }
-
-            // Image validation
-            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-            if (!allowedExtensions.exec(image)) {
-                displayErrorMessage(imageInput, 'Please upload an image file with a valid extension (.jpg, .jpeg, .png).');
-                return false;
-            } else {
-                hideErrorMessage(imageInput);
-            }
-
-            return true;
+<script>
+    function validateForm() {
+        var titleInput = document.getElementById('title');
+        var contentInput = CKEditor.instances.editor.getData();
+    
+        var title = titleInput.value.trim();
+        var content = contentInput.trim();
+    
+        // Title validation
+        if (title === '') {
+            displayErrorMessage(titleInput, 'Please enter a title.');
+            return false;
+        } else {
+            hideErrorMessage(titleInput);
         }
+    
+        // Content validation within CKEditor
+        if (content === '') {
+            displayErrorMessage(document.getElementById('editor'), 'Please enter content.');
+            return false;
+        } else {
+            hideErrorMessage(document.getElementById('editor'));
+        }
+    
+        // Image validation
+        var imageInput = document.getElementById('image');
+        var image = imageInput.value.trim();
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+    
+        if (!allowedExtensions.exec(image)) {
+            displayErrorMessage(imageInput, 'Please upload an image file with a valid extension (.jpg, .jpeg, .png).');
+            return false;
+        } else {
+            hideErrorMessage(imageInput);
+        }
+    
+        return true;
+    }
+    
+    
 
         function displayErrorMessage(inputElement, message) {
             var errorElement = document.getElementById(inputElement.id + '-error');

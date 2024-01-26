@@ -6,24 +6,28 @@ from django.views.decorators.cache import never_cache
 # main/views.py
 from django.shortcuts import render, redirect
 from .models import Post
+from django.contrib.auth.decorators import login_required
+
 
 def post_content(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         
-        # Retrieve content from CKEditor
+        # Retrieve content from the regular text area
         content = request.POST.get('content')
 
         # Handling the uploaded image
         image = request.FILES.get('image', None)
 
         # Create a new Post instance and save it to the database
-        new_post = Post(title=title, content=content, image=image)
+        new_post = Post(title=title, content=content, image=image, user=request.user)
         new_post.save()
 
         return redirect('forum_home')  # Change 'forum_home' to the appropriate URL
 
     return render(request, 'main/forum/newpost.html')
+
+
 
 
 
@@ -38,45 +42,61 @@ from django.shortcuts import render
 from .models import Post
 
 def all_posts(request):
-    posts = Post.objects.all()
-    return render(request, 'main/forum/post_detail.html', {'posts': posts})
+    # Retrieve all posts and posts shared by the currently logged-in user
+    all_posts = Post.objects.all()
+    
+    if request.user.is_authenticated:
+        user_posts = Post.objects.filter(user=request.user)
+    else:
+        user_posts = None
+
+    return render(request, 'main/forum/post_detail.html', {'all_posts': all_posts, 'user_posts': user_posts})
+
 
 
 # elaborated post details
 # views.py
 # views.py
 
-from django.shortcuts import render, get_object_or_404
-from .models import Post, Like, Comment
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Post, Comment
 
+from .models import Post, Comment
+
+@login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    likes = Like.objects.filter(post=post)
     comments = Comment.objects.filter(post=post)
+
+    if request.method == 'POST':
+        # Assuming you have a form with the id 'addCommentForm'
+        content = request.POST.get('content')
+        user = request.user  # Assuming you have a user associated with the comment
+
+        # Create a new comment instance
+        comment = Comment(post=post, content=content, user=user)
+        comment.save()
+
+        # Add a success message
+        messages.success(request, 'Your comment has been saved successfully!')
+
+        # Redirect to the same page
+        return redirect('post_detail', post_id=post_id)
 
     context = {
         'post': post,
-        'likes': likes,
-        'comments': comments,
+        'comments': comments,  # Pass the comments to the template
     }
 
-    if request.method == 'POST':
-        # Assuming you are sending a POST request when the like button is clicked
-        user = request.user  # Get the current user
-
-        # Check if the user has already liked the post
-        if not Like.objects.filter(post=post, user=user).exists():
-            # If not, create a new Like instance
-            like = Like(post=post, user=user)
-            like.save()
-
-            # You might want to return a JsonResponse to update the like count in the frontend
-            return JsonResponse({'likes_count': post.likes.count()})
-
-        # If the user has already liked the post, you may handle it as needed
-
     return render(request, 'main/forum/elaborated.html', context)
+
+
+
+
+
 
 
 
@@ -84,12 +104,29 @@ def post_detail(request, post_id):
 # post comments
 # views.py
 
-from django.shortcuts import render
-from .models import Comment
+# from django.http import JsonResponse
 
-def post_comments(request, post_id):
-    post_comments = Comment.objects.filter(post_id=post_id)
-    return render(request, 'main/forum/post_comments.html', {'comments': post_comments})
+# def add_comment(request, post_id):
+#     post = get_object_or_404(Post, pk=post_id)
+
+#     if request.method == 'POST' and request.is_ajax():
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.post = post
+#             comment.user = request.user
+#             comment.save()
+
+#             # Assuming you have a template for a single comment (_comment.html)
+#             comment_html = render_to_string('_comment.html', {'comment': comment}, request=request)
+
+#             return JsonResponse({
+#                 'comment_html': comment_html,
+#                 'comments_count': post.comments.count(),
+#             })
+
+#     return JsonResponse({'error': 'Invalid request'}, status=400)
+
 
 
 
@@ -168,3 +205,15 @@ def signup_view(request):
 
     return render(request, 'main/seller/seller_registeration.html')
 
+
+
+
+
+# microproject/main/views.py
+
+from django.shortcuts import render
+from .models import Post  # Import your Post model or adjust accordingly
+
+def forum_index(request):
+    posts = Post.objects.all()  # Adjust this query based on your model structure
+    return render(request, 'main/forum/index.html', {'posts': posts})

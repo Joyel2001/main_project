@@ -1,0 +1,205 @@
+ {% extends "base.html" %} 
+{% block content %} 
+
+{% load static %}
+
+<link href="{% static "assets/css/bootstrap.min.css" %}" rel="stylesheet">
+<!-- Fonts -->
+<link href="{% static "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" %}" rel="stylesheet">
+<link href="{% static "https://fonts.googleapis.com/css?family=Righteous" %}" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="{% static "assets/css/mediumish.css" %}" rel="stylesheet">
+<body>
+
+<!-- Begin Nav
+================================================== -->
+
+<div class="container">
+	<!-- Begin Logo -->
+	</a>
+	<!-- End Logo -->
+	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+		<!-- Begin Menu -->
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item active">
+			<a class="nav-link" href="#">Stories <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="#">Post</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="#">Author</a>
+			</li>
+		</ul>
+		<!-- End Menu -->
+		<!-- Begin Search -->
+		<form class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="text" placeholder="Search">
+			<span class="search-icon"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M20.067 18.933l-4.157-4.157a6 6 0 1 0-.884.884l4.157 4.157a.624.624 0 1 0 .884-.884zM6.5 11c0-2.62 2.13-4.75 4.75-4.75S16 8.38 16 11s-2.13 4.75-4.75 4.75S6.5 13.62 6.5 11z"></path></svg></span>
+		</form>
+		<!-- End Search -->
+	</div>
+</div>
+</nav>
+<!-- End Nav
+================================================== -->
+
+<!-- Begin Site Title
+================================================== -->
+<div class="container">
+	<div class="mainheading">
+		<h1 class="sitetitle">Mediumish</h1>
+		<p class="lead">
+			 Bootstrap theme, medium style, simply perfect for bloggers
+		</p>
+	</div>
+<!-- End Site Title
+================================================== -->
+
+	<!-- Begin Featured
+	================================================== -->
+	<section class="featured-posts">
+	<div class="section-title">
+		<h2><span>Featured</span></h2>
+	</div>
+	{% comment %} <div class="card-columns listfeaturedtag"> {% endcomment %}
+
+		<!-- begin post -->
+		<div class="card">
+			<div class="row">
+				<div class="col-md-5 wrapthumbnail">
+					<a href="post.html">
+						{% comment %} <div class="thumbnail" style="background-image: url('{% static "images/orginal/1.jpg" %}')">						</div> {% endcomment %}
+					</a>
+				</div>
+				<div class="container">
+					<div class="add-post-btn">
+						<a href="{% url 'post_content' %}" class="btn btn-primary" style="background-color: #f8f9fa; color: #000; border: 1px solid #dee2e6; padding: 10px 20px; border-radius: 5px; text-decoration: none; transition: background-color 0.3s ease-in-out;">Add Post</a>
+					</div>
+			
+					<h1 class="mt-4" style="color: black; font-size: 32px;">Explore All Posts</h1>
+			
+					{% for post in posts %}
+					<div class="post-container" style="border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 15px;">
+						<h2 style="color: black; font-size: 18px;">{{ post.title }}</h2>
+						{% if post.image %}
+						<img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width:50%; height: auto; max-height: 200px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+						{% endif %}
+						<p class="post-content" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: #495057; line-height: 1.6; margin-bottom: 0.1em;">{{ post.content }}</p>
+						<a href="{% url 'post_detail' post.id %}" style="color: blue; text-decoration: none; font-size: 14px; margin-top: 0.5em; display: inline-block;">Read more...</a>
+						<p class="text-muted">Created at: {{ post.created_at }}</p>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<!-- end post -->
+
+		<!-- begin post -->
+		
+		<!--end post -->
+
+		<!-- begin post -->
+		
+		<!-- end post -->
+
+		<!-- begin post -->
+		<div class="card">
+			<div class="row">
+				<div class="col-md-5 wrapthumbnail">
+					<a href="post.html">
+						<div class="thumbnail" style="background-image:url(assets/img/demopic/4.jpg);">
+						</div>
+					</a>
+				</div>
+				
+		<!-- end post -->
+
+	</div>
+	</section>
+	<!-- End Featured
+	================================================== -->
+
+	<!-- Begin List Posts
+	================================================== -->
+	<section class="recent-posts">
+	<div class="section-title">
+		<h2><span>All Stories</span></h2>
+	</div>
+	<div class="card-columns listrecent">
+
+		<!-- begin post -->
+		<div class="card">
+			<a href="post.html">
+				<img class="img-fluid" src="assets/img/demopic/5.jpg" alt="">
+			</a>
+			<div class="card-block">
+				<h2 class="card-title"><a href="post.html">Autumn doesn't have to be nostalgic, you know?</a></h2>
+				<h4 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</h4>
+				<div class="metafooter">
+					<div class="wrapfooter">
+						<span class="meta-footer-thumb">
+						<a href="author.html"><img class="author-thumb" src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x" alt="Sal"></a>
+						</span>
+						<span class="author-meta">
+						<span class="post-name"><a href="author.html">Sal</a></span><br/>
+						<span class="post-date">22 July 2017</span><span class="dot"></span><span class="post-read">6 min read</span>
+						</span>
+						<span class="post-read-more"><a href="post.html" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end post -->
+
+		<!-- begin post -->
+		
+		<!-- end post -->
+
+		<!-- begin post -->
+		
+		<!-- end post -->
+
+		<!-- begin post -->
+	
+		<!-- end post -->
+
+		<!-- begin post -->
+		
+		<!-- end post -->
+
+		<!-- begin post -->
+		
+		<!-- end post -->
+
+	</div>
+	</section>
+	<!-- End List Posts
+	================================================== -->
+
+	<!-- Begin Footer
+	================================================== -->
+	<div class="footer">
+		<p class="pull-left">
+			 Copyright &copy; 2017 Your Website Name
+		</p>
+		<p class="pull-right">
+		</p>
+		<div class="clearfix">
+		</div>
+	</div>
+	<!-- End Footer
+	================================================== -->
+</div>
+<!-- /.container -->
+
+<!-- Bootstrap core JavaScript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static "assets/js/jquery.min.js" %}"></script>
+<script src="{% static "https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" %}" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="{% static "assets/js/bootstrap.min.js" %}"></script>
+<script src="{% static "assets/js/ie10-viewport-bug-workaround.js" %}"></script>
+</body>
+
+{% endblock %} 
