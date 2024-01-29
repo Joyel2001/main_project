@@ -79,3 +79,41 @@ class Company(models.Model):
     password = models.CharField(max_length=100)
 
 
+# Tender_Details
+    
+# models.py
+from django.db import models
+
+# models.py
+from django.db import models
+
+class Tender(models.Model):
+    TENDER_TYPE_CHOICES = [
+        ('open', 'Open Tender'),
+        ('closed', 'Closed Tender'),
+        # Add more choices as needed
+    ]
+
+    TENDER_CATEGORY_CHOICES = [
+        ('waste_disposal', 'Waste Disposal'),
+        # Add more choices as needed
+    ]
+
+    PAYMENT_MODE_CHOICES = [
+        ('offline', 'Offline Payment'),
+        ('online', 'Online Payment'),
+        # Add more choices as needed
+    ]
+
+    title = models.CharField(max_length=255)
+    organisation_chain = models.CharField(max_length=50)
+    tender_type = models.CharField(max_length=50, choices=TENDER_TYPE_CHOICES)
+    tender_category = models.CharField(max_length=50, choices=TENDER_CATEGORY_CHOICES)
+    reference_number = models.CharField(max_length=50)
+    closing_date = models.DateField()
+    bid_opening_date = models.DateField()
+    payment_mode = models.CharField(max_length=50, choices=PAYMENT_MODE_CHOICES)
+
+    def __str__(self):
+        return self.title
+

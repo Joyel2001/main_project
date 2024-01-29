@@ -38,3 +38,8 @@ admin.site.register(CompanyRegistration)
 
 from .models import Company
 admin.site.register(Company)
+
+
+# tender 
+from .models import Tender
+admin.site.register(Tender)

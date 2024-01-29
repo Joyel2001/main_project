@@ -217,3 +217,69 @@ from .models import Post  # Import your Post model or adjust accordingly
 def forum_index(request):
     posts = Post.objects.all()  # Adjust this query based on your model structure
     return render(request, 'main/forum/index.html', {'posts': posts})
+
+
+
+
+# company login
+# main/views.py
+
+from django.shortcuts import render
+
+def company_login(request):
+    return render(request, 'main/company/company_login.html')
+
+
+
+
+# tenderapp/views.py
+from django.shortcuts import render, redirect
+from .models import Tender
+from django.http import HttpResponse
+
+def create_tender(request):
+    tmessage = None  # Initialize a variable to store the success message
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        organisation_chain = request.POST.get('organisation_chain')
+        tender_type = request.POST.get('tender_type')
+        tender_category = request.POST.get('tender_category')
+        reference_number = request.POST.get('reference_number')
+        closing_date = request.POST.get('closing_date')
+        bid_opening_date = request.POST.get('bid_opening_date')
+        payment_mode = request.POST.get('payment_mode')
+
+        # Create and save Tender object to the database
+        tender = Tender(
+            title=title,
+            organisation_chain=organisation_chain,
+            tender_type=tender_type,
+            tender_category=tender_category,
+            reference_number=reference_number,
+            closing_date=closing_date,
+            bid_opening_date=bid_opening_date,
+            payment_mode=payment_mode,
+        )
+        tender.save()
+
+        tmessage = "Tender created successfully!"
+
+    return render(request, 'main/company/create_tender.html', {'message': tmessage})
+
+
+# from django.shortcuts import render
+from django.shortcuts import render
+from .models import Tender
+
+def tender_list(request):
+    tenders = Tender.objects.all()
+    return render(request, 'main/company/tender_list.html', {'tenders': tenders})
+
+# tender_elaborated_list
+from django.shortcuts import render, get_object_or_404
+from .models import Tender
+
+def tender_detail(request, tender_id):
+    tender = get_object_or_404(Tender, pk=tender_id)
+    return render(request, 'main/company/full_tender_details.html', {'tender': tender})

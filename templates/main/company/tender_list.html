@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Tender </title>
+    <h2>Welcome to eProcurement System</h2>
+        The eProcurement System enables the Tenderers to download the Tender Schedule free of cost and then submit the bids online through this portal.
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:  #e0ebeb;
+            margin: 20px;
+        }
+
+        h1 {
+            color: black;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        li {
+            background-color: #fff;
+            width: 500px;
+            height: 300px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+            color: #3498db;
+        }
+
+        hr {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Tender </title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color:  #e0ebeb;
+            margin: 20px;
+        }
+
+        h1 {
+            color: black;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        li {
+            background-color: #fff;
+            width: 450px;
+            height: 300px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+            color: green;
+        }
+
+        hr {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .no-tenders {
+            text-align: center;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .view-details {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Latest Tenders</h1>
+
+    {% if tenders %}
+        <ul>
+            {% for tender in tenders %}
+                <li>
+                    <strong>Title:</strong> {{ tender.title }}<br><br>
+                    <strong>Reference Number:</strong> {{ tender.reference_number }}<br><br>
+                    <strong>Closing Date:</strong> {{ tender.closing_date }}<br><br>
+                    <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br><br>
+                    <hr>
+                    <a href="{% url 'tender_detail' tender.id %}" class="view-details">View More Details</a>    
+                            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-tenders">No tenders available at the moment.</p>
+    {% endif %}
+
+</body>
+</html>
+
+</html>
+

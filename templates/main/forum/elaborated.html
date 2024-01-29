@@ -64,7 +64,10 @@
 </head>
 
 <body>
+
      <div class="container">
+        <a href="{% url 'all_posts' %}" class="btn btn-primary btn-lg">Back</a>
+
         <div class="post-container">
             <h1 class="post-title">{{ post.title }}</h1>
 
@@ -196,7 +199,6 @@
 
 
         <div class="text-center">
-            <a href="{% url 'all_posts' %}" class="btn btn-primary btn-lg">Back to All Posts</a>
         </div>
     </div>
 

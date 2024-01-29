@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tender Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #e0ebeb;
+            margin: 20px;
+        }
+
+        h1 {
+            color: black;
+        }
+
+        .tender-details {
+            background-color: #fff;
+            width: 500px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        strong {
+            color: #3498db;
+        }
+
+        hr {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tender Details</h1>
+
+    <div class="tender-details">
+        <strong>Title:</strong> {{ tender.title }}<br>
+        <strong>Organisation Chain:</strong> {{ tender.organisation_chain }}<br>
+        <strong>Tender Type:</strong> {{ tender.get_tender_type_display }}<br>
+        <strong>Tender Category:</strong> {{ tender.get_tender_category_display }}<br>
+        <strong>Reference Number:</strong> {{ tender.reference_number }}<br>
+        <strong>Closing Date:</strong> {{ tender.closing_date }}<br>
+        <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br>
+        <strong>Payment Mode:</strong> {{ tender.get_payment_mode_display }}<br>
+        <!-- Add more fields as needed -->
+        <hr>
+        <p>This is additional information about the tender.</p>
+    </div>
+
+</body>
+</html>

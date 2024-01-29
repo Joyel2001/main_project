@@ -154,10 +154,14 @@
         #confirm_password {
             margin-bottom: 8px;
         }
+        
     </style>
 </head>
 <body>
     <h2>Company Registration Form</h2>
+    {% if message %}
+    <p>{{ message }}</p>
+{% endif %}
 
     <form method="post" action="{% url 'register_company' %}" enctype="multipart/form-data">
         {% csrf_token %}

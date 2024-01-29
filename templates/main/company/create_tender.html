@@ -1,0 +1,219 @@
+<!-- templates/tenderapp/create_tender.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Tender</title>
+    <style>
+        body {
+            background-image: url('{% static 'images/orginal/13.jpg' %}');
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            color: #fff; /* text color */
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff; /* text color */
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7); /* semi-transparent background */
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #fff; /* border color */
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8); /* semi-transparent background */
+            color: #333; /* text color */
+        }
+
+        button {
+            background-color: #4CAF50; /* green color */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049; /* darker green color on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Create Tender</h1>
+    
+    <form method="post" action="{% url 'create_tender' %}" onsubmit="validateForm(); return false;" id="myForm">
+        {% csrf_token %}
+        
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" >
+        <div class="validation-message" id="title-validation">Title cannot be empty</div>
+        
+        <label for="organisation_chain">Organisation Chain:</label>
+        <input type="text" name="organisation_chain" id="organisation_chain" >
+        <div class="validation-message" id="organisation_chain-validation">Organisation Chain cannot be empty</div>
+
+        <label for="tender_type">Tender Type:</label>
+        <select name="tender_type" >
+            <option value="open">Open Tender</option>
+            <option value="closed">Closed Tender</option>
+            {% for choice in Tender.TENDER_TYPE_CHOICES %}
+                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+            {% endfor %}
+        </select>
+        
+
+        <label for="tender_category">Tender Category:</label>
+<select name="tender_category" >
+    <option value="waste_disposal">Waste Disposal</option>
+    {% for choice in Tender.TENDER_CATEGORY_CHOICES %}
+        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+    {% endfor %}
+</select>
+
+
+<label for="reference_number">Reference Number:</label>
+<input type="text" name="reference_number" id="reference_number" >
+<div class="validation-message" id="reference_number-validation">Invalid Reference Number format</div>
+
+        <label for="payment_mode">Payment Mode:</label>
+<select name="payment_mode" >
+    <option value="offline">Offline Payment</option>
+    <option value="online">Online Payment</option>
+    {% for choice in Tender.PAYMENT_MODE_CHOICES %}
+        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+    {% endfor %}
+</select>
+
+
+<label for="closing_date">Closing Date:</label>
+<input type="date" name="closing_date" id="closing_date" >
+<div class="validation-message" id="closing_date-validation">Closing Date cannot be empty</div>
+
+<label for="bid_opening_date">Bid Opening Date:</label>
+<input type="date" name="bid_opening_date" id="bid_opening_date" >
+<div class="validation-message" id="bid_opening_date-validation">Bid Opening Date cannot be empty</div>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <!-- ... (previous HTML code) ... -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Hide all validation messages initially
+        document.querySelectorAll('.validation-message').forEach(function (element) {
+            element.style.display = 'none';
+        });
+
+        // Attach event listeners for input fields
+        document.getElementById('title').addEventListener('focus', function () {
+            document.getElementById('title-validation').style.display = 'block';
+        });
+
+        document.getElementById('title').addEventListener('input', function () {
+            if (this.value.trim() === '') {
+                document.getElementById('title-validation').style.display = 'block';
+            } else {
+                document.getElementById('title-validation').style.display = 'none';
+            }
+        });
+
+        document.getElementById('organisation_chain').addEventListener('focus', function () {
+            document.getElementById('organisation_chain-validation').style.display = 'block';
+        });
+
+        document.getElementById('organisation_chain').addEventListener('input', function () {
+            if (this.value.trim() === '') {
+                document.getElementById('organisation_chain-validation').style.display = 'block';
+            } else {
+                document.getElementById('organisation_chain-validation').style.display = 'none';
+            }
+        });
+
+        // Add validation for the reference number
+        document.getElementById('reference_number').addEventListener('focus', function () {
+            document.getElementById('reference_number-validation').style.display = 'block';
+        });
+
+        document.getElementById('reference_number').addEventListener('input', function () {
+            var referenceNumber = this.value.trim();
+            var referenceNumberPattern = /^([A-Z]{3}\/\d{4}-\d{2}\/\d{2}-\d{2})$/;
+
+            if (referenceNumberPattern.test(referenceNumber)) {
+                document.getElementById('reference_number-validation').style.display = 'none';
+            } else {
+                document.getElementById('reference_number-validation').style.display = 'block';
+            }
+        });
+
+        // Add validation for closing date
+        document.getElementById('closing_date').addEventListener('focus', function () {
+            document.getElementById('closing_date-validation').style.display = 'block';
+        });
+
+        document.getElementById('closing_date').addEventListener('input', function () {
+            if (this.value.trim() === '') {
+                document.getElementById('closing_date-validation').style.display = 'block';
+            } else {
+                document.getElementById('closing_date-validation').style.display = 'none';
+            }
+        });
+
+        // Add validation for bid opening date
+        document.getElementById('bid_opening_date').addEventListener('focus', function () {
+            document.getElementById('bid_opening_date-validation').style.display = 'block';
+        });
+
+        document.getElementById('bid_opening_date').addEventListener('input', function () {
+            if (this.value.trim() === '') {
+                document.getElementById('bid_opening_date-validation').style.display = 'block';
+            } else {
+                document.getElementById('bid_opening_date-validation').style.display = 'none';
+            }
+        });
+
+        // Add similar event listeners for other fields
+    });
+
+    // Function to validate before submission
+    function validateForm() {
+        var isValid = true;
+
+        // Add additional validation checks here if needed
+        // Example: Check other fields and update isValid accordingly
+
+        if (isValid) {
+            // If all validations pass, submit the form
+            document.getElementById('myForm').submit();
+        } else {
+            // If any validation fails, display a message
+            alert('Please correct the highlighted errors before submitting.');
+        }
+    }
+</script>
+
+<!-- ... (rest of the HTML code) ... -->
+
+</body>
+</html>
