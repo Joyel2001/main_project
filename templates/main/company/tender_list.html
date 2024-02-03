@@ -102,6 +102,18 @@
             text-decoration: none;
             font-weight: bold;
         }
+        @keyframes moveLeftToRight {
+            from {
+                margin-left: -100%; /* Move from left of the container */
+            }
+            to {
+                margin-left: 0; /* Move to the original position */
+            }
+        }
+
+        ul li {
+            animation: moveLeftToRight 1s ease-in-out; /* Adjust the animation duration and easing as needed */
+        }
     </style>
 </head>
 <body>
@@ -115,7 +127,8 @@
                     <strong>Reference Number:</strong> {{ tender.reference_number }}<br><br>
                     <strong>Closing Date:</strong> {{ tender.closing_date }}<br><br>
                     <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br><br>
-                    <hr>
+                    <hr><strong>Closing Within:</strong> 6 days<br><br>
+
                     <a href="{% url 'tender_detail' tender.id %}" class="view-details">View More Details</a>    
                             </li>
             {% endfor %}

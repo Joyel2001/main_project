@@ -156,7 +156,7 @@ a {
       
       </div>
       <button id="btn_login" onclick="validateLoginForm()">Sign In</button>
-      <p>Don't have an account? <a href="{% url 'register_company' %}">Register</a></p>
+      <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
       <a href="{% provider_login_url 'google'%}?next=/">
         <img src="{% static "images/orginal/download.png" %}" alt="Login with Google" style="vertical-align: middle; width: 40px; height: 40px;">
 

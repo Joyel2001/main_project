@@ -7,13 +7,76 @@
     <title>Sign Up & Sign In</title>
     <link rel="stylesheet" href="{% static 'css/registration.css' %}">
 
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            
+            background-image: url('{% static "images/orginal/1.jpg" %}');
 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        #signup-container {
+            background-size: cover; /* Adjust the size property as needed */
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+    
+        #signup-form {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    
+        .submitbtn {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    
+        .submitbtn:hover {
+            background-color: #45a049;
+        }
+    
+        label {
+            margin-left: 25px;
+            font-size: 15px;
+        }
+    
+        img {
+            margin-left: 25px;
+            width: 300px;
+            height: 80px;
+        }
+    
+        .error {
+            color: red;
+        }
+    </style>
 
 <body>
     <div class="form-container active" id="signup-container">
-        <img style ="margin-left:25px;"src="{% static 'img/login/logo.png' %}" alt="Logo" width="300px" height="80px">
-    <form id="signup-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-    {% csrf_token %}
+        <img src="{% static '' %}" alt="Logo">
+        <form id="signup-form" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
     <input type="text" id="name" placeholder="Username" name="name" required>
     <span id="nameError" class="error"></span>
     <span id="name2Error" class="error"></span>
@@ -22,7 +85,7 @@
     <span id="emailError" class="error"></span>
     <span id="email2Error" class="error"></span>
 
-    <input type="text" id="company_name" placeholder="Company name" name="company" required>
+    <input type="text" id="company_name" placeholder="Company name" name="company_name" required>
     <span id="companyError" class="error"></span>
 
     <input type="text" id="gstin" placeholder="GSTIN" name="gstin" required>
@@ -43,6 +106,9 @@
     <span id="confirmPasswordError" class="error"></span>
 
     <button class="submitbtn" type="submit" id="submitButton">Sign Up</button>
+    <p>Do you have an account? <a href="{% url 'seller_login_view' %}">Login</a></p>
+
+    
     <!-- <p class="or"> OR</p> -->
 </form>
 

@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
 # models.py
@@ -70,8 +72,8 @@ class CompanyRegistration(models.Model):
     # models.py
 from django.db import models
 
-class Company(models.Model):
-    name = models.CharField(max_length=100)
+class Seller(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,default=0)   
     email = models.EmailField()
     company_name = models.CharField(max_length=100)
     gstin = models.CharField(max_length=15)
@@ -117,3 +119,20 @@ class Tender(models.Model):
     def __str__(self):
         return self.title
 
+def tender_closing_within(self):
+        # Calculate the time remaining for closing
+        now = timezone.now()
+        time_remaining = self.closing_date - now
+
+        # Extract days and seconds from the timedelta object
+        days = time_remaining.days
+        seconds = time_remaining.seconds
+
+        # Calculate hours, minutes, and remaining seconds
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        # Construct the formatted string
+        formatted_time = f"{days} days, {hours} hours, {minutes} minutes"
+
+        return formatted_time

@@ -89,10 +89,12 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-image: url('{% static "orginal/20.jpg" %}'); /* Specify the path to your image */
-            background-size: cover; /* Adjust the background size as needed */
-            background-position: left center; /* Position the background image on the left side */
+            background-image: url('{% static "images/orginal/20.jpg" %}'); /* Corrected the path */
+            background-size: cover;
+            background-position: left center;
+            background-repeat: no-repeat; /* Added to prevent image repetition */
         }
+        
         
         h2 {
             color: #333;
@@ -191,6 +193,8 @@
         <input type="password" id="confirm_password" name="confirm_password" >
 
         <input type="submit" value="Register">
+        <p>Do you have an account? <a href="{% url 'company_login' %}">Login</a></p>
+
     </form>
 </body>
 </html>

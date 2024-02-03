@@ -33,24 +33,35 @@
             border: 0;
             border-top: 1px solid #eee;
         }
+        .register-button {
+            background-color: lightgrey;
+            color: black;
+            padding: 10px 20px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+      
     </style>
 </head>
 <body>
     <h1>Tender Details</h1>
 
     <div class="tender-details">
-        <strong>Title:</strong> {{ tender.title }}<br>
-        <strong>Organisation Chain:</strong> {{ tender.organisation_chain }}<br>
-        <strong>Tender Type:</strong> {{ tender.get_tender_type_display }}<br>
-        <strong>Tender Category:</strong> {{ tender.get_tender_category_display }}<br>
-        <strong>Reference Number:</strong> {{ tender.reference_number }}<br>
-        <strong>Closing Date:</strong> {{ tender.closing_date }}<br>
-        <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br>
-        <strong>Payment Mode:</strong> {{ tender.get_payment_mode_display }}<br>
+        <strong>Title:</strong> {{ tender.title }}<br><br>
+        <strong>Organisation Chain:</strong> {{ tender.organisation_chain }}<br><br>
+        <strong>Tender Type:</strong> {{ tender.get_tender_type_display }}<br><br>
+        <strong>Tender Category:</strong> {{ tender.get_tender_category_display }}<br><br>
+        <strong>Reference Number:</strong> {{ tender.reference_number }}<br><br>
+        <strong>Closing Date:</strong> {{ tender.closing_date }}<br><br>
+        <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br><br>
+        <strong>Payment Mode:</strong> {{ tender.get_payment_mode_display }}<br><br>
         <!-- Add more fields as needed -->
         <hr>
-        <p>This is additional information about the tender.</p>
-    </div>
+        <a href="" class="register-button">Register</a>
 
+    </div>
+</div>
 </body>
 </html>

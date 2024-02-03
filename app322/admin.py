@@ -36,8 +36,8 @@ admin.site.register(CompanyRegistration)
 
 # seller_registertion
 
-from .models import Company
-admin.site.register(Company)
+from .models import Seller
+admin.site.register(Seller)
 
 
 # tender 

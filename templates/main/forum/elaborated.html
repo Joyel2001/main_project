@@ -92,11 +92,6 @@
 <br>
 <br>
 <br>
-<!-- Add Comment Modal -->
-<!-- ... your existing HTML code ... -->
-
-<!-- ... your existing HTML code ... -->
-
 <div class="comments-section">
     <h3>Comments</h3>
     <ul>
@@ -136,6 +131,15 @@
     color: black;
 }
 </style>
+<style>
+    /* Add this to style the like button */
+    .like-btn {
+        margin-left: 10px;
+        color: #777;
+        cursor: pointer;
+    }
+</style>
+
 
 <!-- ... your existing HTML code ... -->
 
@@ -147,7 +151,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addCommentModalLabel">Add Comment</h5>
+                <p class="modal-title" id="addCommentModalLabel">Add Comment</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

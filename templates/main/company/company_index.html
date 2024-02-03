@@ -1,0 +1,929 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>EcoRecover</title>                               
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
+<!--
+ 
+Tooplate 2125 ArtXibition
+
+https://www.tooplate.com/view/2125-artxibition
+
+-->
+<!-- ***** Custom Loader Start ***** -->
+<div id="custom-loader" class="custom-loader">
+    <div class="loader-inner">
+        <div class="loader-ring"></div>
+    </div>
+</div>
+
+
+<!-- ***** Custom Loader End ***** -->
+
+    </head>
+    <!-- ***** Custom Loader Start ***** -->
+
+<!-- ***** Custom Loader End ***** -->
+
+    <body>
+    <!-- ***** Preloader Start ***** -->
+    {% comment %} <div id="js-preloader" class="js-preloader"> {% endcomment %}
+      {% comment %} <div class="preloader-inner"> {% endcomment %}
+          {% comment %} <span></span>
+
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div> {% endcomment %}
+    <!-- ***** Preloader End ***** -->
+    
+    <!-- ***** Pre HEader ***** -->
+<!-- ***** Preloader Start ***** -->
+
+<!-- ***** Preloader End ***** -->
+
+<div class="pre-header"> 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-sm-6">
+                <!-- Add a notification icon here -->
+                
+                
+                
+                
+            </div>
+            <div class="col-lg-6 col-sm-6">
+                {% if user.is_authenticated %}
+                <div class="text-button">
+                    {% if request.user.is_superuser or request.user.is_staff %}
+    <a href="{% url 'booking_chart' %}" class="btn px-0">Welcome, {{ request.user.username }}</a>
+{% else %}
+    <a href="{% url 'user_profile_view' %}" class="btn px-0">Welcome, {{ request.user.username }}</a>
+{% endif %}
+
+    
+</button>
+                </div>
+            {% else %}
+            <div class="text-button">
+                <a href="{% url 'login2_page' %}">Login <i class="fa fa-arrow-right"></i></a>
+            </div>
+            {% endif %}
+            
+        </div>
+        
+    </div>
+</div>
+
+</div>
+
+
+<!-- Add this code at the end of your HTML file, just before the closing </body> tag -->
+<script>
+    // Get the popover and button elements
+    var popover = document.getElementById('popover');
+    var btn = document.getElementById('notificationButton');
+    var span = document.getElementById('closePopover');
+
+    // Function to display the popover
+    function showPopover() {
+        popover.style.display = 'block';
+    }
+
+    // Function to close the popover
+    function closePopover() {
+        popover.style.display = 'none';
+    }
+
+    // Event listener to show the popover when the button is clicked
+    btn.addEventListener('click', showPopover);
+
+    // Event listener to close the popover when the close button is clicked
+    span.addEventListener('click', closePopover);
+
+    // Event listener to close the popover when the user clicks outside of it
+    window.addEventListener('click', function(event) {
+        if (event.target == popover) {
+            closePopover();
+        }
+    }); 
+</script>
+
+
+
+
+
+
+
+
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <header>
+                           
+                            <nav>
+                                <a href="index.html" class="logo">Eco<em>Recover</em></a>
+                                <style>
+                                    .popover {
+                                        display: none;
+                                        position: absolute;
+                                        top: 30px; /* Adjust the top position as needed */
+                                        right: 30px; /* Adjust the right position as needed */
+                                        z-index: 1;
+                                        background-color: #fff;
+                                        border: 1px solid #ccc;
+                                        padding: 10px;
+                                        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                                    }
+                            
+                                    /* Style for the close button */
+                                    .close {
+                                        color: #aaa;
+                                        font-size: 16px;
+                                        font-weight: bold;
+                                        cursor: pointer;
+                                        position: absolute;
+                                        top: 5px;
+                                        right: 5px;
+                                    }
+                            
+                                    /* Style for the close button on hover */
+                                    .close:hover {
+                                        color: black;
+                                    }
+                                    
+                                        
+                                    .custom-loader {
+                                        position: fixed;
+                                        top: 0;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 100%;
+                                        background-color: rgba(0, 0, 0, 0.8);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        z-index: 1000;
+                                    }
+                                    
+                                    .loader-inner {
+                                        text-align: center;
+                                    }
+                                    
+                                    .loader-ring {
+                                        width: 50px;
+                                        height: 50px;
+                                        border: 4px solid transparent;
+                                        border-top: 4px solid #007bff;
+                                        border-radius: 50%;
+                                        animation: spin 1s linear infinite;
+                                    }
+                                    
+                                    @keyframes spin {
+                                        0% { transform: rotate(0deg); }
+                                        100% { transform: rotate(360deg); }
+                                    }
+                                    
+                                    
+
+                                    /* Your other CSS styles */
+                                    @media (max-width: 767px) {
+                                        /* Adjustments for screens smaller than 768px */
+                                        .main-banner {
+                                            height: 300px; /* Example adjustment for banner height */
+                                        }
+                                        /* Add more responsive adjustments as needed */
+                                    }
+                                    /* CSS for the logo within .logo div */
+                                    .logo img {
+                                        width: 150px;
+                                        height: 120px;
+                                        border-radius: 100%;
+                                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+                                        position: relative; 
+                                        top: 2px; 
+                                       left: 20px; 
+                                    }
+                            
+                                    .logo a {
+                                        display: inline-block;
+                                        text-decoration: none;
+                                    }
+                                    /* Add hover effect for venue items */
+.venue-item:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+/* Add a style for clickable elements */
+.venue-item-clickable {
+    cursor: pointer;
+}
+
+                                </style>
+
+                                <!-- Other navigation links here -->
+                            </nav>
+                        </header>
+                        
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle">Bin Booking</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'bin_order' %}">Household </a></li>
+                                    <li><a href="{% url 'bin_order_event' %}">Event</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'show_events' %}">campaigns and Seminars</a></li> 
+                            <li><a href="{% url "contact_info" %}">Contact</a></li> 
+                            <li><a href="#" id="classify-waste-link">Disposal Methods</a></li>
+                            
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get a reference to the "Disposal Methods" link
+            var classifyWasteLink = document.getElementById("classify-waste-link");
+        
+            // Add a click event listener
+            classifyWasteLink.addEventListener("click", function(e) {
+                // Prevent the default link behavior (opening a new tab)
+                e.preventDefault();
+        
+                // Define the URL you want to open
+                var url = "http://127.0.0.1:5000/";
+        
+                // Redirect to the new URL in the same tab
+                window.location.href = url;
+            });
+        });
+        </script>
+        
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <style>
+        
+            .dropdown {
+                position: relative;
+            }
+        
+            .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1;
+                background-color: #ffffff;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                border-radius: 5px;
+            }
+        
+            .dropdown:hover .dropdown-menu {
+                display: block;
+            }
+        
+            .dropdown-menu li {
+                padding: 10px;
+            }
+        
+            .dropdown-menu li a {
+                display: block;
+                color: #333333;
+                text-decoration: none;
+            }
+        
+            .dropdown-menu li a:hover {
+                background-color: #f2f2f2;
+            }
+      
+        
+        .main-banner {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 500px; /* Adjust the height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        .main-banner h6 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        .main-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        /* CSS styles for the map image container */
+        .map-image-container {
+            position: relative; /* Position container relative to its parent */
+            width: 100%;
+            text-align: center; /* Center-align content horizontally */
+        }
+        
+        /* CSS styles for the map image */
+        .map-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* CSS styles for the image text */
+        .image-text {
+            position: absolute; /* Position text absolutely within the container */
+            top: 50%; /* Position text vertically in the middle */
+            left: 50%; /* Position text horizontally in the middle */
+            transform: translate(-50%, -50%); /* Center text using translate */
+            {% comment %} background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */ {% endcomment %}
+            padding: 20px;
+            border-radius: 10px;
+            color: #fff; /* Text color */
+        }
+        
+        .image-text h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .image-text p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .image-text a.btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF; /* Button background color */
+            color: #fff; /* Button text color */
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .image-text a.btn:hover {
+            background-color: #0056b3; /* Hover color */
+        }
+        
+        /* CSS for making the Bin List more attractive */
+
+/* Style the container */
+/* CSS for making the Bin List more attractive */
+
+/* Style the container */
+.venue-tickets {
+    background-color: #f4f4f4;
+    padding: 30px 0;
+}
+
+/* Style the venue items */
+.venue-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* Ensure that all containers have the same height */
+}
+
+/* Style the bin title */
+.venue-item h2 {
+    font-size: 24px;
+    margin: 0;
+    color: #333;
+}
+
+/* Style the bin image */
+.venue-item .thumb img {
+    max-width: 100%;
+    height: 150px; /* Set a fixed height for all images */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style the list of bin details */
+.venue-item ul {
+    list-style: none;
+    padding: 0;
+}
+
+.venue-item ul li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #555;
+}
+
+/* Style the bin description */
+.venue-item .description {
+    font-size: 18px;
+    color: #777;
+}
+.feedback-button {
+    position: absolute;
+    top: 40px; /* Adjust the top position to move it closer to the top edge */
+    right: 1200px; /* Adjust the right position to move it closer to the right edge */
+    background-color: #FFD700;
+    color: #000;
+    font-size: 18px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.feedback-button:hover {
+    background-color: #FFA500; /* Orange color on hover */
+}
+
+
+</style>
+<div class="main-banner" style="background-image: url('{% static 'images/orginal/8.jpg' %}');">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                {% if user.is_authenticated %}
+                <a href="{% url 'submit_feedback' user_id=user.id %}" class="feedback-button">Feedback</a>
+              {% endif %}
+              
+
+                <h6 style="color: black; font-weight:bold">Discover Innovations for a Cleaner Tomorrow</h6>
+                <h2 style="color: black;font-weight:bold">Embrace the Green Revolution</h2>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- *** Owl Carousel Items ***-->
+    <div class="show-events-carousel">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="owl-show-events owl-carousel">
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/9.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/1.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/3.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/4.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/5.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/6.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/7.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/2.jpg' %}" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="event-details.html"><img src="{% static 'images/orginal/8.jpg' %}" alt=""></a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- *** Amazing Venus ***-->
+    <div class="amazing-venues">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="left-content">
+                        <h4>Unite for a Greener, Healthier Planet</h4>
+                        <style>
+                            .para
+                            {
+                                text-align: justify;
+                            }
+                            </style>
+                    
+                        <br>
+                        <p class="para">Waste management plays a crucial role in maintaining environmental sustainability and public health. Proper waste management is necessary to prevent the accumulation of waste materials that can lead to pollution, habitat destruction, and the spread of diseases. Efficient waste management practices reduce the strain on natural resources by promoting recycling, reusing, and proper disposal of waste.
+
+                            By implementing effective waste management, we can minimize the negative impact of waste on ecosystems, water bodies, and air quality. It also contributes to the reduction of greenhouse gas emissions, helping combat climate change. In urban areas, proper waste management enhances the aesthetic appeal of communities and creates a healthier living environment for residents.
+                            
+                            Furthermore, waste management initiatives foster a sense of responsibility among individuals, encouraging them to make mindful choices about consumption, disposal, and recycling. Ultimately, a well-implemented waste management system promotes a cleaner, safer, and more sustainable world for current and future generations.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="right-content">
+                        <h5><i class="fa fa-map-marker"></i> Visit Us</h5>
+                        <span>KNR <br>PALA, 686653<br>KOTTAYAM,KERALA</span>
+                        <div class="text-button"><a href="show-events-details.html">Need Directions? <i class="fa fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- *** Map ***-->
+    <!-- HTML -->
+    <div class="map-image-container">
+        <div class="map-image">
+            <img src="{% static '/images/pic.jpg' %}" alt="Maps of 3 Venues">
+            <div class="image-text">
+                <h2>Explore the Waste Disposal Methods</h2>
+                <!-- <p>Discover amazing places for your events!</p> -->
+                <a href="#" class="btn btn-primary">View Now</a>
+            </div>
+        </div>
+    </div>
+    
+    
+<br>
+<br>
+
+<br>
+
+
+   <!-- *** Venues & Tickets *** -->
+   <div class="venue-tickets">
+    <div class="container">
+        <h1 class="text-center">Bin List</h1>
+        <br>
+        <div class="row">
+            {% for bin in bins %}
+            <div class="col-lg-4 col-md-6">
+                <div class="venue-item venue-item-clickable" onclick="location.href='{% url 'bin_order'  %}'">
+                    <div class="venue-box">
+                        <div class="thumb">
+                            <img src="{{ bin.image.url }}" alt="{{ bin.title }}" class="img-bin">
+                        </div>
+                        <div class="venue-details">
+                            <h2>{{ bin.title }}</h2>
+                            <ul>
+                                <li><strong>Size:</strong> {{ bin.size }}</li>
+                                <li><strong>Capacity:</strong> {{ bin.capacity }}</li>
+                            </ul>
+                            <p class="description">{{ bin.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+    <h2 class="seminarclss">campaigns and Seminars</h2><br><br>
+    <div class="coming-events">
+        <div class="left-button">
+            <div class="main-white-button">
+                <a href="{% url 'show_events' %}">Discover More</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691944579648.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4> Mahadevapura Zone</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Tuesday: 15:30-19:30</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691944981946.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4>Madison Square Garden</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="{% url 'show_events' %}"><img src="{% static 'images/seminar/1691945426035.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="event-details.html"><h4>Royce Hall</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Thursday: 09:00-23:00</li>
+                                <li><i class="fa fa-map-marker"></i> Copacabana Beach, Rio de Janeiro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .seminarclss
+        {
+            Text-align:center;
+        }
+        /* CSS for hover effect */
+.event-item:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
+    transform: scale(1.05); /* Scale up the item on hover */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+        /* Style for venue items */
+        .venue-item {
+            margin-bottom: 30px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    
+        .venue-box {
+            display: flex;
+        }
+    
+        .venue-box .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .right-content {
+            padding: 0 20px;
+        }
+    
+        .venue-title {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    
+        .venue-description {
+            font-size: 14px;
+        }
+    
+        .venue-details {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .venue-details li {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+    
+        .price {
+            margin-top: 10px;
+        }
+    
+        .price span {
+            font-size: 16px;
+        }
+    
+        .main-white-button a {
+            color: #fff;
+        }
+    
+        /* Style for event items */
+        .event-item {
+            margin-bottom: 30px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+    
+        .event-item .thumb img {
+            max-width: 100%;
+            height: auto;
+        }
+    
+        .down-content {
+            padding: 15px;
+        }
+    
+        .event-item h4 {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    
+        .event-item ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .event-item ul li {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    
+        /* Style for "Discover More" button */
+        .left-button {
+            text-align: center;
+            margin-top: 30px;
+        }
+    
+        .left-button a {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+    
+
+    <!-- *** Subscribe *** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Subscribe Our Newsletter:</h4>
+                </div>
+                <div class="col-lg-8">
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** Footer *** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="address">
+                        <h4>EcoRecover Address</h4>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>KOTTAYAM</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Bin Booking</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">campaigns and Semiinars</a></li>
+                            <li><a href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hours">
+                        <h4>Open Hours</h4>
+                        <ul>
+                            <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
+                            <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
+                            <li>Holidays: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <p class="copyright">Copyright 2021 EcoRecover Company 
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="logo"><span>Eco<em>Recover</em></span></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="menu">
+                                    
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="social-links">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="{% static '/js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static '/js/popper.js' %}"></script>
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static '/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static '/js/waypoints.min.js' %}"></script>
+    <script src="{% static '/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static '/js/imgfix.min.js' %}"></script> 
+    <script src="{% static '/js/mixitup.js' %}"></script> 
+    <script src="{% static '/js/accordions.js' %}"></script>
+    <script src="{% static '/js/owl-carousel.js' %}"></script>
+    
+    <!-- Global Init -->
+    <script src="{% static '/js/custom.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Simulate a 2-second delay for demonstration purposes
+            setTimeout(function() {
+                // Hide the custom loader
+                document.getElementById("custom-loader").style.display = "none";
+        
+                // Show the main content
+                document.body.style.overflow = "visible"; // Show overflow
+            }, 1000); // 2 seconds
+        });
+        </script>
+        
+
+  </body>
+</html>
