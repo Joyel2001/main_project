@@ -1,4 +1,4 @@
- <!-- userlist/user_list.html -->
+<!-- userlist/user_list.html -->
 
 {% load static %}
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
         content="Xtreme Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
     <title>EcoRecover</title>
-    {% comment %} <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" /> {% endcomment %}
+    <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
     <!-- Custom CSS -->
@@ -23,7 +23,7 @@
     <!-- Custom CSS -->
     <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
     <!-- jQuery and Bootstrap JS -->
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="utf-8">
@@ -214,17 +214,10 @@
                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
                             <i class="mdi mdi-view-dashboard"></i>
                             <span class="hide-menu">Dashboard</span>
-                            
                         </a>
                     </li>
-                    
-                    
-                    
-                    
                     {% endif %}
-                    <!-- Assuming you are inside a loop over posts -->
-
-
+                    
                     <!-- User Details - Always visible for all users -->
                     {% if  user.is_superuser %}
                     <li class="sidebar-item">
@@ -243,15 +236,6 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% if user.is_staff or user.is_superuser %}
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_list' %}" aria-expanded="false">
-                            <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
-                            <span class="hide-menu">Feedback</span>
-                        </a>
-                    </li>
-                    {% endif %}
-
                     
                     <!-- Booked Event Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
@@ -265,193 +249,95 @@
                     
                     <!-- Bin Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
-    <li class="sidebar-item">
-        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleMenu()">
-            <i class="mdi mdi-file"></i>
-            <span class="hide-menu">Bin Details</span>
-        </a>
-    </li>
-    <div id="binDetailsSubMenu" class="sidebar-submenu">
-        <ul class="submenu-list">
-            <li><a href="{% url 'bin_list' %}"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="{% url 'bin_list_forevent' %}"><i class="fas fa-calendar-alt"></i> Events</a></li>
-        </ul>
-        
-    </div>
-{% endif %}
-<style>
-    /* Custom styles for submenu list */
-.submenu-list {
-    list-style-type: none;
-    padding: 0;
-}
-
-.submenu-list li {
-    margin-bottom: 10px;
-}
-
-/* Style for icon elements */
-.submenu-list a {
-    color: grey; /* Set the default text color */
-    text-decoration: none; /* Remove underline from links */
-    transition: color 0.3s; /* Smooth transition for text color */
-}
-
-/* Hover effect: change text color to black */
-.submenu-list a:hover {
-    color: #000;
-}
-
-    .sidebar-submenu {
-        display: none;
-        margin-left: 30px; /* Adjust the margin as needed */
-    }
-    
-    .sidebar-submenu ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    
-    .sidebar-submenu ul li {
-        margin-bottom: 10px; /* Adjust the spacing between menu items */
-    }
-    
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-<script>
-    function toggleMenu() {
-        var submenu = document.getElementById('binDetailsSubMenu');
-        if (submenu.style.display === 'block') {
-            submenu.style.display = 'none';
-        } else {
-            submenu.style.display = 'block';
-        }
-    }
-    
-</script>
-
-
-
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleMenu()">
+                            <i class="mdi mdi-file"></i>
+                            <span class="hide-menu">Bin Details</span>
+                        </a>
+                    </li>
+                    <div id="binDetailsSubMenu" class="sidebar-submenu">
+                        <ul class="submenu-list">
+                            <li><a href="{% url 'bin_list' %}"><i class="fas fa-home"></i> Home</a></li>
+                            <li><a href="{% url 'bin_list_forevent' %}"><i class="fas fa-calendar-alt"></i> Events</a></li>
+                        </ul>
+                        
+                    </div>
+                {% endif %}
+                <style>
+                    /* Custom styles for submenu list */
+                .submenu-list {
+                    list-style-type: none;
+                    padding: 0;
+                }
+                
+                .submenu-list li {
+                    margin-bottom: 10px;
+                }
+                
+                /* Style for icon elements */
+                .submenu-list a {
+                    color: grey; /* Set the default text color */
+                    text-decoration: none; /* Remove underline from links */
+                    transition: color 0.3s; /* Smooth transition for text color */
+                }
+                
+                /* Hover effect: change text color to black */
+                .submenu-list a:hover {
+                    color: #000;
+                }
+                
+                    .sidebar-submenu {
+                        display: none;
+                        margin-left: 30px; /* Adjust the margin as needed */
+                    }
+                    
+                    .sidebar-submenu ul {
+                        list-style-type: none;
+                        padding: 0;
+                    }
+                    
+                    .sidebar-submenu ul li {
+                        margin-bottom: 10px; /* Adjust the spacing between menu items */
+                    }
+                    
+                </style>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+                
+                <script>
+                    function toggleMenu() {
+                        var submenu = document.getElementById('binDetailsSubMenu');
+                        if (submenu.style.display === 'block') {
+                            submenu.style.display = 'none';
+                        } else {
+                            submenu.style.display = 'block';
+                        }
+                    }
+                    
+                </script>
                     
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     <!-- Bin Booking Details - Visible for staff and superuser -->
                     {% if user.is_staff or user.is_superuser %}
-    <li class="sidebar-item">
-        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('binBookingSubMenu')">
-            <i class="mdi mdi-alert-outline"></i>
-            <span class="hide-menu">Bin Booking Details</span>
-        </a>
-    </li>
-    <div id="binBookingSubMenu" class="sidebar-submenu">
-        <ul class="submenu-list">
-            <li><a href="{% url "bin_booking_list" %}"><i class="fas fa-home"></i> Bin Booking for Home</a></li>
-            <li><a href="{% url "display_bin_booking_events" %}"><i class="fas fa-calendar-alt"></i> Bin Booking for Events</a></li>
-        </ul>
-    </div>
-
-    <script>
-        function toggleSubMenu(submenuId) {
-            var submenu = document.getElementById(submenuId);
-            if (submenu.style.display === 'block') {
-                submenu.style.display = 'none';
-            } else {
-                submenu.style.display = 'block';
-            }
-        }
-    </script>
-    {% endif %}
-    {% if user.is_staff or user.is_superuser %}
-        <!-- Your other content for non-staff/superuser users -->
-        <li class="sidebar-item">
-           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "user_sub_details" %}" aria-expanded="false">
-               <i class="mdi mdi-calendar-text"></i>
-               <span class="hide-menu">Subscription Details</span>
-           </a>
-       </li>
-       <li class="sidebar-item">
-        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'all_posts' %}" aria-expanded="false">
-            <i class="mdi mdi-message"></i>
-            <span class="hide-menu">Community</span>
-        </a>
-    </li>
-   <!-- Assuming you're using Bootstrap for styling -->
-
-<!-- Assuming you're using Bootstrap for styling and jQuery -->
-
-<!-- Assuming you're using Bootstrap for styling and jQuery -->
-
-<li class="sidebar-item">
-    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" id="toggleTenderMenu" aria-expanded="false">
-        <i class="mdi mdi-file-document"></i>
-        <span class="hide-menu">Tender Application</span>
-    </a>
-    
-    <ul class="nav-second-level" id="tenderMenu" style="display: none;">
-        <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark" href="{% url 'tender_list' %}">
-                <i class="mdi mdi-format-list-bulleted"></i>
-                <span class="hide-menu">Tender List</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark" href="{% url 'company_apply_details' %}">
-                <i class="mdi mdi-arrow-right"></i>
-                <span class="hide-menu">Tender Request</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark" href="">
-                <i class="mdi mdi-check"></i>
-                <span class="hide-menu">Approved Tender</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark" href="">
-                <i class="mdi mdi-close"></i>
-                <span class="hide-menu">Rejected Tender</span>
-            </a>
-        </li>
-    </ul>
-</li>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#toggleTenderMenu").click(function () {
-            $("#tenderMenu").toggle();
-        });
-    });
-</script>
-
-
-       {% else %}
-    <!-- Your other content for non-staff/superuser users -->
-   
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_booking_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-alert-outline"></i>
+                            <span class="hide-menu">Bin Booking Details</span>
+                        </a>
+                    </li>
+                    {% if  user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_list' %}" aria-expanded="false">
+                            <i class="mdi mdi-account-network"></i>
+                            <span class="hide-menu">User Details</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% else %}
                     <!-- Booked Bin - Visible for customers -->
                     <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
-                            <i class="mdi mdi-delete"></i>
-                            <span class="hide-menu">Booked Bin</span>
-                        </a>
-                    </li>
-                    <!-- Event Booking Details - Visible for customers -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'user_booked_events' %}" aria-expanded="false">
-                            <i class="mdi mdi-calendar-text"></i>
-                            <span class="hide-menu">Event Booking Details</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'collection_detail' user_id=request.user.id %}" aria-expanded="false">
-                            <i class="mdi mdi-calendar-text"></i>
-                            <span class="hide-menu">Collection Details</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "bins_low_fill_level" %}" aria-expanded="false">
-                            <i class="mdi mdi-calendar-text"></i>
-                            <span class="hide-menu">Bins Near you For exchange</span>
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "tender_list" %}" aria-expanded="false">
+                            <i class="mdi mdi-file-document"></i> <!-- You can change the icon as needed -->
+                            <span class="hide-menu">Tender Details</span>
                         </a>
                     </li>
                     {% endif %}
@@ -480,7 +366,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
                                 </ol>
                             </nav>
                         </div>
@@ -493,121 +379,176 @@
               <div class="col-md-8">
                   <div class="card">
                       <div class="card-body">
-<!DOCTYPE html>
-<html>
+{% load static %}
+<html lang="en">
+    <div class="messages">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    {% if message.tags == 'success edit-profile' %}  <!-- Ensure the custom tag matches here -->
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div
 <head>
-    <!-- Include necessary chart.js script -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{% static 'path-to-your-css-file.css' %}">
+    <div class="user-options">
+        <ul class="user-menu">
+            <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+            <li><a href="{% url 'reset_password' %}">Reset Password</a></li>
+            <li><a href="{% url 'loggout' %}">Logout</a></li>
+        </ul>
+    </div>
+    <!-- Add this code at the top of your profile.html template -->
+
+   
 </head>
+
 <body>
-    <h1>Booking Chart</h1>
-    <canvas id="bookingChart" width="1200" height="400"></canvas>
-
-    {% comment %} <h1>User Chart</h1>
-    <canvas id="userChart" width="1000" height="400"></canvas> {% endcomment %}
-
-    <h1>Event Booking Chart</h1>
-<canvas id="eventBookingChart" width="400" height="300"></canvas>
-
-
-    <script>
-        // Get the data passed from the view for the booking chart
-        var bookingLabels = {{ booking_labels|safe }};
-        var bookingData = {{ booking_data|safe }};
-
-        // Create a booking chart using Chart.js
-        var bookingCtx = document.getElementById('bookingChart').getContext('2d');
-        var bookingChart = new Chart(bookingCtx, {
-            type: 'bar',
-            data: {
-                labels: bookingLabels,
-                datasets: [{
-                    label: 'Booking Count',
-                    data: bookingData,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Get the data passed from the view for the user chart
-        {% comment %} var userLabels = {{ user_labels|safe }};
-        var userData = {{ user_data|safe }}; {% endcomment %}
-
-        // Create a user pie chart using Chart.js
-        {% comment %} var userCtx = document.getElementById('userChart').getContext('2d');
-        var userChart = new Chart(userCtx, {
-            type: 'bar',
-            data: {
-                labels: userLabels,
-                datasets: [{
-                    data: userData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,  // Disable responsive mode to maintain fixed dimensions
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                },
-            }
-        }); {% endcomment %}
-        
-        var eventCategories = {{ event_categories|safe }};
-        var eventCounts = {{ event_counts|safe }};
-        
-        // Create an event booking pie chart using Chart.js
-        var eventBookingCtx = document.getElementById('eventBookingChart').getContext('2d');
-        var eventBookingChart = new Chart(eventBookingCtx, {
-            type: 'pie',
-            data: {
-                labels: eventCategories,
-                datasets: [{
-                    label: 'Event Booking Count',
-                    data: eventCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false, // Disable responsive mode to maintain fixed dimensions
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                },
-            }
-        });
+    <div class="container">
+        <div class="profile">
+            <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+            <div class="user-image">
+                <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="User Profile Picture">
+            </div>
+            <h1>{{ profile.user.username }}</h1>
+        </div>
         
         
-    </script>
-</body>
+
+        <div class="section address">
+            <h2 class="section-title">Address</h2>
+            <p class="user-info">{{ profile.address }}</p>
+        </div>
+        
+
+        <div class="section contact-info">
+            <h2 class="section-title">Contact Information</h2>
+            <p class="user-info">Email: {{ profile.user.email }}</p>
+            <p class="user-info">Phone: {{ user.userprofile.mobile_number }}</p>
+            
+        </div>
+
+        <div class="section subscription">
+            <h2 class="section-title">Subscription Details</h2>
+            <p class="user-info">Subscribed: {% if profile.subscribed %} Yes {% else %} No {% endif %}</p>
+            {% if profile.subscribed %}
+            <p class="user-info">Subscription Expiration: {{ profile.subscription_expiration }}</p>
+            <p class="user-info">Subscription Duration: {{ profile.subscription_duration }} months</p>
+            {% endif %}
+            <p class="user-info">Date Joined: {{ user.date_joined }}</p>
+            <p class="user-info">Last Login: {{ user.last_login }}</p>
+        </div>
+    </div>
+    <div class="messages">
+   
+    
+        
+        <!-- Messages (if any) -->
+        {% comment %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <p class="message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</p>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endcomment %}
+    </div>
+</div></div></div>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
+    .user-options {
+        margin-top: 20px;
     }
+    
+    .user-menu {
+        list-style: none;
+        padding: 0;
+        display: flex;
+    }
+    
+    .user-menu li {
+        margin-right: 20px; /* Adjust the spacing between menu items */
+    }
+    
+    .user-menu a {
+        text-decoration: none;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .user-menu a:hover {
+        background-color: #2980b9;
+    }
+    
+    .section {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .section-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    .user-info {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #777;
+    }
+    /* Custom styles for the sidebar */
+    .sidebar {
+        background-color: white;;
+        padding: 5px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+    }
+    
+    .sidebar h2 {
+        font-size: 20px;
+        margin-right: 20px;
+    }
+    
+    /* Sidebar menu items */
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+    }
+    
+    .sidebar-menu li {
+        margin-right: 20px;
+    }
+    
+    .sidebar-menu a {
+        text-decoration: none;
+        color: Black;
+        font-size: 16px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out;
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+    
+    .sidebar-menu a:hover {
+        background-color: #555;
+    }
+    
+
+    /* Overall container styling */
     .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -615,18 +556,86 @@
         background-color: #fff;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    h1 {
-        font-size: 24px;
+    
+    /* Profile section */
+    /* Custom styles for the profile section */
+    /* Custom styles for the profile section */
+.profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile .logo {
+    display: inline-block;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #black; /* Blue color for "Eco" */
+}
+
+.profile .logo em {
+    color: #777; /* Grey color for "Recover" */
+}
+
+.user-image {
+    margin-top: 10px;
+}
+
+.user-image img {
+    max-width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile h1 {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #333; /* Dark text color for the username */
+}
+
+
+
+
+    
+    /* User details section */
+    .user-details {
+        margin-top: 20px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .section-title {
+        font-size: 20px;
         margin-bottom: 10px;
+        color: #555;
     }
-    canvas {
-        max-width: 100%;
-        height: 400px; /* Set a fixed height for all canvas elements */
+    
+    .user-info {
+        font-size: 16px;
+        margin-bottom: 5px;
+        color: #777;
     }
+    
+    /* Messages section (if any) */
+    .messages {
+        margin-top: 20px;
+    }
+    
+    .message {
+        font-size: 16px;
+        margin-bottom: 5px;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    
+    /* Sidebar (unchanged) */
+    .left-sidebar {
+        /* Add your existing sidebar styles here */
+    }
+    
 </style>
-</div>
-</div>
 
-</div>
+</body>
+</html>
 
-</html> 

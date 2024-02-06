@@ -7,20 +7,22 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #e0ebeb;
+            background-color: #f4f4f4;
             margin: 20px;
         }
 
         h1 {
-            color: black;
+            color: #3498db;
+            text-align: center;
         }
 
         .tender-details {
             background-color: #fff;
-            width: 500px;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         strong {
@@ -28,22 +30,30 @@
         }
 
         hr {
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
             border: 0;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #3498db;
         }
-        .register-button {
-            background-color: lightgrey;
-            color: black;
-            padding: 10px 20px;
+
+        .register-button, .close-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px 20px;
             text-decoration: none;
             display: inline-block;
             border-radius: 5px;
             margin-top: 20px;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
         }
-      
+
+        .register-button:hover, .close-button:hover {
+            background-color: #217dbb;
+        }
     </style>
+    <!-- Include Bootstrap and jQuery as you did in the original code -->
+    <!-- ... -->
 </head>
 <body>
     <h1>Tender Details</h1>
@@ -59,9 +69,10 @@
         <strong>Payment Mode:</strong> {{ tender.get_payment_mode_display }}<br><br>
         <!-- Add more fields as needed -->
         <hr>
-        <a href="" class="register-button">Register</a>
-
+        
+        <!-- Replace '#' with the URL of your registration page for each tender -->
+        <a href="{% url 'registration_page' tender.id %}" class="register-button">Register</a>
+        <a href="{% url 'tender_list' %}" class="close-button">Close</a>
     </div>
-</div>
 </body>
 </html>

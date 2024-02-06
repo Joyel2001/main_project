@@ -136,3 +136,36 @@ def tender_closing_within(self):
         formatted_time = f"{days} days, {hours} hours, {minutes} minutes"
 
         return formatted_time
+
+
+from django.contrib.auth.models import User
+
+class CompanyApplyForTender(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=0)
+    tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
+    application_date = models.DateField(auto_now_add=True)
+    
+    # Registration details
+    amount = models.PositiveIntegerField()
+    license_number = models.CharField(max_length=50)
+    nature_of_business = models.CharField(max_length=50)
+    legal_entity_type = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.user.username} applied for {self.tender.title} on {self.application_date}"
+
+
+class ApprovedTender(models.Model):
+    application = models.OneToOneField(CompanyApplyForTender, on_delete=models.CASCADE, primary_key=True)
+    approval_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.application.user.username}'s tender approved on {self.approval_date}"
+
+class RejectedTender(models.Model):
+    application = models.OneToOneField(CompanyApplyForTender, on_delete=models.CASCADE, primary_key=True)
+    rejection_date = models.DateField(auto_now_add=True)
+    rejection_reason = models.TextField()
+
+    def __str__(self):
+        return f"{self.application.user.username}'s tender rejected on {self.rejection_date}"

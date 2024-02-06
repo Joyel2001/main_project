@@ -17,6 +17,7 @@ path('tender_list/', tender_list, name='tender_list'),
 path('tender/<int:tender_id>/', tender_detail, name='tender_detail'),
 path('company_index/', company_index, name='company_index'),
 path('seller_login_view/', seller_login_view, name='seller_login_view'),
- path('add_like/', add_like, name='add_like'),
-
+path('registration/<int:tender_id>/', views.registration_page, name='registration_page'),
+ path('companys_profile/', companys_profile, name='companys_profile'),
+ path('company_apply_details/', display_company_apply_details, name='company_apply_details'),
 ]

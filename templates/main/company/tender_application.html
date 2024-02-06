@@ -1,0 +1,77 @@
+<!-- company_apply_details.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Application Details</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            background-color: #3498db;
+            margin: 0;
+        }
+
+        div {
+            background-color: #fff;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #3498db;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Company Application Details</h1>
+
+    {% for application in applications %}
+        <div>
+            <h2>{{ application.tender.title }}</h2>
+            <p>User: {{ application.user.username }}</p>
+            <p>Application Date: {{ application.application_date }}</p>
+            <p>Amount: {{ application.amount }}</p>
+            <p>License Number: {{ application.license_number }}</p>
+            <p>Nature of Business: {{ application.nature_of_business }}</p>
+            <p>Legal Entity Type: {{ application.legal_entity_type }}</p>
+            <hr>
+            <form method="post" action="#">
+                {% csrf_token %}
+                <button type="submit" name="action" value="approve">Approve</button>
+            </form>
+
+            <form method="post" action="#">
+                {% csrf_token %}
+                <button type="submit" name="action" value="reject">Reject</button>
+                <textarea name="rejection_reason" placeholder="Rejection Reason"></textarea>
+            </form>
+
+        </div>
+    {% endfor %}
+</body>
+</html>

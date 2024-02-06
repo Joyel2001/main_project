@@ -118,6 +118,27 @@
 </head>
 <body>
     <h1>Latest Tenders</h1>
+    <style>
+        /* Style for the button */
+        .company-profile-button {
+            background-color: #ccc; /* Grey shade */
+            color: #000; /* Text color */
+            padding: 10px 20px; /* Adjust padding as needed */
+            text-decoration: none; /* Remove default underline for anchor tag */
+            display: inline-block;
+        }
+    
+        /* Hover effect */
+        .company-profile-button:hover {
+            background-color: #000; /* Black hover */
+            color: #fff; /* Text color on hover */
+        }
+    </style>
+    
+    <!-- Button to navigate to company profile -->
+    <a href="{% url 'companys_profile' %}" class="company-profile-button">
+        Company's Profile
+    </a>
 
     {% if tenders %}
         <ul>
@@ -126,11 +147,12 @@
                     <strong>Title:</strong> {{ tender.title }}<br><br>
                     <strong>Reference Number:</strong> {{ tender.reference_number }}<br><br>
                     <strong>Closing Date:</strong> {{ tender.closing_date }}<br><br>
-                    <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br><br>
-                    <hr><strong>Closing Within:</strong> 6 days<br><br>
+                    <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br>
+                    <hr><strong>Closing Within:</strong> 6 days<br><br><br>
 
                     <a href="{% url 'tender_detail' tender.id %}" class="view-details">View More Details</a>    
                             </li>
+                            
             {% endfor %}
         </ul>
     {% else %}

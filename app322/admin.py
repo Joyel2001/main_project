@@ -43,3 +43,17 @@ admin.site.register(Seller)
 # tender 
 from .models import Tender
 admin.site.register(Tender)
+
+
+# CompanyApplyForTender
+from .models import CompanyApplyForTender
+admin.site.register(CompanyApplyForTender)
+
+
+from .models import ApprovedTender
+admin.site.register(ApprovedTender)
+
+
+from .models import RejectedTender
+admin.site.register(RejectedTender)
+

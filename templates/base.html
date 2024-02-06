@@ -218,12 +218,7 @@
                              
                          </a>
                      </li>
-                     <li class="sidebar-item">
-                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'all_posts' %}" aria-expanded="false">
-                             <i class="mdi mdi-message"></i>
-                             <span class="hide-menu">Community</span>
-                         </a>
-                     </li>
+                     
                      
                      
                      
@@ -384,7 +379,12 @@
         {% else %}
      <!-- Your other content for non-staff/superuser users -->
  
- 
+     <li class="sidebar-item">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'all_posts' %}" aria-expanded="false">
+            <i class="mdi mdi-message"></i>
+            <span class="hide-menu">Community</span>
+        </a>
+    </li>
                      <!-- Booked Bin - Visible for customers -->
                      <li class="sidebar-item">
                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">

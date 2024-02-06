@@ -97,65 +97,80 @@
 
         <input type="submit" value="Post">
     </form>
-<script>
-    function validateForm() {
-        var titleInput = document.getElementById('title');
-        var contentInput = CKEditor.instances.editor.getData();
+    <script>
+        function validateTitle() {
+            var title = document.getElementById("title").value.trim();
+            var titleError = document.getElementById("title-error");
     
-        var title = titleInput.value.trim();
-        var content = contentInput.trim();
-    
-        // Title validation
-        if (title === '') {
-            displayErrorMessage(titleInput, 'Please enter a title.');
-            return false;
-        } else {
-            hideErrorMessage(titleInput);
-        }
-    
-        // Content validation within CKEditor
-        if (content === '') {
-            displayErrorMessage(document.getElementById('editor'), 'Please enter content.');
-            return false;
-        } else {
-            hideErrorMessage(document.getElementById('editor'));
-        }
-    
-        // Image validation
-        var imageInput = document.getElementById('image');
-        var image = imageInput.value.trim();
-        var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
-    
-        if (!allowedExtensions.exec(image)) {
-            displayErrorMessage(imageInput, 'Please upload an image file with a valid extension (.jpg, .jpeg, .png).');
-            return false;
-        } else {
-            hideErrorMessage(imageInput);
-        }
-    
-        return true;
-    }
-    
-    
-
-        function displayErrorMessage(inputElement, message) {
-            var errorElement = document.getElementById(inputElement.id + '-error');
-            if (!errorElement) {
-                errorElement = document.createElement('div');
-                errorElement.id = inputElement.id + '-error';
-                errorElement.className = 'error-message';
-                inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+            if (title === "") {
+                titleError.innerText = "Please enter a title.";
+                return false;
             }
-            errorElement.textContent = message;
+    
+            titleError.innerText = "";
+            return true;
         }
-
-        function hideErrorMessage(inputElement) {
-            var errorElement = document.getElementById(inputElement.id + '-error');
-            if (errorElement) {
-                errorElement.textContent = '';
+    
+        function validateContent() {
+            var content = document.getElementById("content").value.trim();
+            var contentError = document.getElementById("content-error");
+    
+            if (content === "") {
+                contentError.innerText = "Please enter content.";
+                return false;
             }
+    
+            contentError.innerText = "";
+            return true;
+        }
+    
+        function validateImage() {
+            var imageInput = document.getElementById("image");
+            var image = imageInput.value;
+            var imageError = document.getElementById("image-error");
+    
+            if (image === "") {
+                imageError.innerText = "Please select an image.";
+                return false;
+            }
+    
+            var validExtensions = ['png', 'jpeg', 'jpg'];
+            var extension = image.split('.').pop().toLowerCase();
+            if (!validExtensions.includes(extension)) {
+                imageError.innerText = "Please select a valid image (png or jpeg).";
+                imageInput.value = "";
+                return false;
+            }
+    
+            imageError.innerText = "";
+            return true;
+        }
+    
+        // Add event listeners to validate on blur
+        document.getElementById("title").addEventListener("blur", validateTitle);
+        document.getElementById("content").addEventListener("blur", validateContent);
+        document.getElementById("image").addEventListener("blur", validateImage);
+    
+        // Add event listeners to clear error messages when the fields are focused
+        document.getElementById("title").addEventListener("focus", function () {
+            document.getElementById("title-error").innerText = "";
+        });
+    
+        document.getElementById("content").addEventListener("focus", function () {
+            document.getElementById("content-error").innerText = "";
+        });
+    
+        document.getElementById("image").addEventListener("focus", function () {
+            document.getElementById("image-error").innerText = "";
+        });
+    
+        // Form submission validation
+        function validateForm() {
+            return validateTitle() && validateContent() && validateImage();
         }
     </script>
+    
+    
 </body>
 
 </html>

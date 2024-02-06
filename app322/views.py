@@ -5,10 +5,11 @@ from django.views.decorators.cache import never_cache
 #  cumunity forum post section 
 # main/views.py
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Post
 from django.contrib.auth.decorators import login_required
 
-
+@login_required
 def post_content(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -23,9 +24,13 @@ def post_content(request):
         new_post = Post(title=title, content=content, image=image, user=request.user)
         new_post.save()
 
-        return redirect('forum_home')  # Change 'forum_home' to the appropriate URL
+        # Display success message
+        messages.success(request, 'Post created successfully!')
+
+        return redirect('all_posts')  # Change 'forum_home' to the appropriate URL
 
     return render(request, 'main/forum/newpost.html')
+
 
 
 
@@ -58,33 +63,6 @@ def all_posts(request):
 # views.py
 # views.py
 # views.py
-# views.py
-
-import json
-from django.http import JsonResponse
-from .models import Like, Post
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-
-@login_required
-@csrf_exempt  # Added to disable CSRF protection for this view during debugging
-def add_like(request):
-    if request.method == 'POST' and request.is_ajax():
-        post_id = request.POST.get('post_id')
-        post = Post.objects.get(id=post_id)
-        user = request.user
-        
-        print("Post ID:", post_id)  # Check if the post_id is received correctly
-        print("User:", user)        # Check if the user is correct
-
-        # Check if the user has already liked the post
-        if not Like.objects.filter(post=post, user=user).exists():
-            like = Like(post=post, user=user)
-            like.save()
-
-            return JsonResponse({'success': True})
-
-    return JsonResponse({'success': False})
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
@@ -374,3 +352,71 @@ from .models import Tender
 def tender_detail(request, tender_id):
     tender = get_object_or_404(Tender, pk=tender_id)
     return render(request, 'main/company/full_tender_details.html', {'tender': tender})
+
+
+
+
+
+# views.py
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from .models import Tender, CompanyApplyForTender
+
+def registration_page(request, tender_id):
+    # Ensure that the tender object exists, or return a 404 page if not found
+    tender = get_object_or_404(Tender, id=tender_id)
+
+    # Check if the user is already registered for the tender
+    is_registered = CompanyApplyForTender.objects.filter(user=request.user, tender=tender).exists()
+
+    if is_registered:
+        # If the user is already registered, return a message
+        messsage = 'You are already registered for this tender.'
+        return render(request, 'main/company/tender_registeration.html', {'tender': tender, 'messsage': messsage})
+
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+        license_number = request.POST.get('license_number')
+        nature_of_business = request.POST.get('nature_of_business')
+        legal_entity_type = request.POST.get('legal_entity_type')
+
+        # Create CompanyApplyForTender instance
+        CompanyApplyForTender.objects.create(
+            user=request.user,  # Assuming you have a user associated with the request
+            tender=tender,
+            amount=amount,
+            license_number=license_number,
+            nature_of_business=nature_of_business,
+            legal_entity_type=legal_entity_type,
+        )
+
+        # Add a success message to the context
+        successs_message = 'Successfully registered to the tender.'
+        return render(request, 'main/company/tender_registeration.html', {'tender': tender, 'successs_message': successs_message})
+
+    # Render the registration_page.html for GET requests
+    return render(request, 'main/company/tender_registeration.html', {'tender': tender})
+
+
+
+# company profile
+from django.shortcuts import render
+
+def companys_profile(request):
+    # Add logic to fetch company profile data or perform other operations as needed
+    context = {
+        # Add context data if necessary
+    }
+    return render(request, 'main/company/companys_profile.html', context)
+
+
+
+# tender application views.py
+
+from django.shortcuts import render
+from .models import CompanyApplyForTender
+
+def display_company_apply_details(request):
+    applications = CompanyApplyForTender.objects.all()
+    return render(request, 'main/company/tender_application.html', {'applications': applications})

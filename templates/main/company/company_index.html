@@ -77,7 +77,7 @@ https://www.tooplate.com/view/2125-artxibition
                     {% if request.user.is_superuser or request.user.is_staff %}
     <a href="{% url 'booking_chart' %}" class="btn px-0">Welcome, {{ request.user.username }}</a>
 {% else %}
-    <a href="{% url 'user_profile_view' %}" class="btn px-0">Welcome, {{ request.user.username }}</a>
+    <a href="{% url 'companys_profile' %}" class="btn px-0">Welcome, {{ request.user.username }}</a>
 {% endif %}
 
     
