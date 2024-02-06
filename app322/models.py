@@ -169,3 +169,19 @@ class RejectedTender(models.Model):
 
     def __str__(self):
         return f"{self.application.user.username}'s tender rejected on {self.rejection_date}"
+
+
+from django.db import models
+from .models import Tender
+
+class Waste(models.Model):
+    tender = models.ForeignKey(Tender, on_delete=models.CASCADE,default=0)
+    average_waste = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    recyclable_waste = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    e_waste = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    hazardous_waste = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    organic_waste = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    other_category = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"Waste for Tender: {self.tender.title}"

@@ -347,11 +347,14 @@ def tender_list(request):
 
 # tender_elaborated_list
 from django.shortcuts import render, get_object_or_404
-from .models import Tender
+from .models import Tender, Waste
+from django.shortcuts import render, get_object_or_404
+from .models import Tender, Waste
 
 def tender_detail(request, tender_id):
     tender = get_object_or_404(Tender, pk=tender_id)
-    return render(request, 'main/company/full_tender_details.html', {'tender': tender})
+    waste = Waste.objects.filter(tender=tender).first()  # Fetch the waste object related to the tender
+    return render(request, 'main/company/full_tender_details.html', {'tender': tender, 'waste': waste})
 
 
 
@@ -413,10 +416,27 @@ def companys_profile(request):
 
 
 # tender application views.py
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import CompanyApplyForTender
 
 def display_company_apply_details(request):
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        action = request.POST.get('action')
+        rejection_reason = request.POST.get('rejection_reason')
+
+        application = CompanyApplyForTender.objects.get(id=application_id)
+
+        if action == 'approve':
+            # Handle approval logic here
+            application.approved = True
+            application.save()
+        elif action == 'reject':
+            # Handle rejection logic here
+            application.rejected = True
+            application.rejection_reason = rejection_reason
+            application.save()
+
     applications = CompanyApplyForTender.objects.all()
     return render(request, 'main/company/tender_application.html', {'applications': applications})
+

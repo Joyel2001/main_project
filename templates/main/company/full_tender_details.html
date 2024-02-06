@@ -9,31 +9,29 @@
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             margin: 20px;
-        }
-
-        h1 {
-            color: #3498db;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
         }
 
         .tender-details {
             background-color: #fff;
-            width: 80%;
-            margin: 20px auto;
+            width: 45%; /* Adjust the width as needed */
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        strong {
-            color: #3498db;
+        .waste-details {
+            background-color: #fff;
+            width: 45%; /* Adjust the width as needed */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        hr {
-            margin-top: 20px;
-            margin-bottom: 20px;
-            border: 0;
-            border-top: 2px solid #3498db;
+        .tender-details h1, .waste-details h2 {
+            color: #3498db;
+            text-align: center;
         }
 
         .register-button, .close-button {
@@ -51,14 +49,18 @@
         .register-button:hover, .close-button:hover {
             background-color: #217dbb;
         }
+        
+        .waste-description {
+            font-weight: bold;
+            color: #2ecc71; /* Green color */
+        }
     </style>
     <!-- Include Bootstrap and jQuery as you did in the original code -->
     <!-- ... -->
 </head>
 <body>
-    <h1>Tender Details</h1>
-
     <div class="tender-details">
+        <h1>Tender Details</h1>
         <strong>Title:</strong> {{ tender.title }}<br><br>
         <strong>Organisation Chain:</strong> {{ tender.organisation_chain }}<br><br>
         <strong>Tender Type:</strong> {{ tender.get_tender_type_display }}<br><br>
@@ -67,12 +69,30 @@
         <strong>Closing Date:</strong> {{ tender.closing_date }}<br><br>
         <strong>Bid Opening Date:</strong> {{ tender.bid_opening_date }}<br><br>
         <strong>Payment Mode:</strong> {{ tender.get_payment_mode_display }}<br><br>
-        <!-- Add more fields as needed -->
         <hr>
-        
         <!-- Replace '#' with the URL of your registration page for each tender -->
         <a href="{% url 'registration_page' tender.id %}" class="register-button">Register</a>
         <a href="{% url 'tender_list' %}" class="close-button">Close</a>
     </div>
+
+    {% if waste %}
+    <div class="waste-details">
+        <h2>Waste Details</h2>
+        <p class="waste-description">Approximate waste details in tons per year</p>
+        <ul>
+        <ul>
+            <strong>Average Waste:</strong> {{ waste.average_waste }}<br><br>
+            <strong>Recyclable Waste:</strong> {{ waste.recyclable_waste }}<br><br>
+            <strong>E-Waste:</strong> {{ waste.e_waste }}<br><br>
+            <strong>Hazardous Waste:</strong> {{ waste.hazardous_waste }}<br><br>
+            <strong>Hazardous Waste:</strong> {{ waste.hazardous_waste }}<br><br>
+            <strong>Organic Waste:</strong> {{ waste.organic_waste }}<br><br>
+            <strong>Hazardous Waste:</strong> {{ waste.hazardous_waste }}<br><br>
+            <strong>Other Category:</strong> {{ waste.other_category }}<br>
+            <br><br>
+            <hr>
+        </ul>
+    </div>
+    {% endif %}
 </body>
 </html>
