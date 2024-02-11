@@ -1,0 +1,34 @@
+<!-- add_product.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+</head>
+<body>
+    <h2>Add Product</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        
+        <label for="product_image">Product Image:</label><br>
+        <input type="file" id="product_image" name="product_image" required><br>
+        
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" required></textarea><br>
+        
+        <label for="quantity">Quantity:</label><br>
+        <input type="number" id="quantity" name="quantity" required><br>
+        
+        <label for="original_price">Original Price:</label><br>
+        <input type="number" id="original_price" name="original_price" required><br>
+        
+        <label for="selling_price">Selling Price:</label><br>
+        <input type="number" id="selling_price" name="selling_price" required><br>
+        
+        <button type="submit">Add Product</button>
+    </form>
+</body>
+</html>

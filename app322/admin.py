@@ -61,3 +61,22 @@ from django.contrib import admin
 from .models import Waste
 
 admin.site.register(Waste)
+
+from .models import Category
+
+admin.site.register(Category)
+
+
+
+
+from .models import Subcategory
+
+admin.site.register(Subcategory)
+
+
+
+from .models import Product
+
+admin.site.register(Product)
+
+

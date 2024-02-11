@@ -89,74 +89,90 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-image: url('{% static "images/orginal/20.jpg" %}'); /* Corrected the path */
+            background-image: url('{% static "images/orginal/20.jpg" %}');
             background-size: cover;
             background-position: left center;
-            background-repeat: no-repeat; /* Added to prevent image repetition */
+            background-repeat: no-repeat;
         }
-        
         
         h2 {
             color: #333;
             text-align: center;
-            z-index: 1; /* Ensure the text is on top of the background image */
+            z-index: 1;
         }
         
         form {
-            max-width: 600px;
+            max-width: 500px;
             width: 100%;
-            background-color: #fff;
-            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            padding: 40px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
-            z-index: 1; /* Ensure the form is on top of the background image */
+            z-index: 1;
         }
-        
-
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #333;
+            font-weight: bold; /* Add bold font weight */
+            font-size: 16px; /* Increase font size */
         }
-
+        
         input[type="text"],
         input[type="email"],
         input[type="password"],
         textarea,
         input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 16px;
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 6px;
             box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            font-size: 16px;
         }
-
-        textarea {
-            resize: vertical;
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #4caf50; /* Highlight border color on focus */
         }
-
+        
         input[type="submit"] {
             background-color: #4caf50;
             color: #fff;
-            padding: 12px 20px;
+            padding: 15px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        /* Additional styling for password fields */
-        #password,
-        #confirm_password {
-            margin-bottom: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
         }
         
+        input[type="submit"]:hover {
+            background-color: #45a049; /* Darker shade on hover */
+        }
+        
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        a {
+            color: #4caf50;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #45a049; /* Darker shade on hover */
+        }
     </style>
 </head>
 <body>
@@ -167,7 +183,7 @@
 
     <form method="post" action="{% url 'register_company' %}" enctype="multipart/form-data">
         {% csrf_token %}
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
         <label for="company_name">Company Name:</label>
         <input type="text" id="company_name" name="company_name" >
 
@@ -184,7 +200,7 @@
         <input type="email" id="email_address" name="email_address" >
 
         <label for="business_license_document">Business License Document:</label>
-        <input type="file" id="business_license_document" name="business_license_document" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" required>
+        <input type="file" id="business_license_document" name="business_license_document" accept=".pdf, .doc, .docx, .jpg, .jpeg, .png" >
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" >

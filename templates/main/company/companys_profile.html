@@ -334,15 +334,66 @@
                     {% endif %}
                     {% else %}
                     <!-- Booked Bin - Visible for customers -->
-                    <li class="sidebar-item">
-                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "tender_list" %}" aria-expanded="false">
-                            <i class="mdi mdi-file-document"></i> <!-- You can change the icon as needed -->
-                            <span class="hide-menu">Tender Details</span>
-                        </a>
-                    </li>
+                    <!-- Booked Bin - Visible for customers -->
+<li class="sidebar-item">
+    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false" onclick="toggleSubMenu('tenderSubMenu')">
+        <i class="mdi mdi-file-document"></i> <!-- Icon for Tender Details -->
+        <span class="hide-menu">Tender Details</span>
+    </a>
+    <ul id="tenderSubMenu" class="collapse first-level">
+        <li class="sidebar-item">
+            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "tender_list" %}" aria-expanded="false">
+                <i class="mdi mdi-file-document"></i> <!-- Icon for Available Tender -->
+                <span class="hide-menu">Available Tender</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
+                <i class="mdi mdi-alert-circle"></i> <!-- Icon for Tender Status -->
+                <span class="hide-menu">Tender Status</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="sidebar-item">
+    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false" onclick="toggleSubMenu('productSubMenu')">
+        <i class="mdi mdi-folder"></i> <!-- Icon for Product Details -->
+        <span class="hide-menu">Product Details</span>
+    </a>
+    <ul id="productSubMenu" class="collapse first-level">
+        <li class="sidebar-item">
+            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
+                <i class="mdi mdi-plus"></i> <!-- Icon for Add Product -->
+                <span class="hide-menu">Add Product</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
+                <i class="mdi mdi-alert"></i> <!-- Icon for Out of Stock Products -->
+                <span class="hide-menu">Product List Out of Stock</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<script>
+    function toggleSubMenu(subMenuId) {
+        var subMenu = document.getElementById(subMenuId);
+        if (subMenu.classList.contains('show')) {
+            subMenu.classList.remove('show');
+        } else {
+            subMenu.classList.add('show');
+        }
+    }
+</script>
+
+                    
+                    
+                    
                     {% endif %}
             </ul>
-                  
+            
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>

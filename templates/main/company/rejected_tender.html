@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+{% block content %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejected Tender Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .rejected-tender {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .tender-application {
+            margin-left: 20px;
+        }
+        .details {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rejected Tender Details</h1>
+
+    {% for rejected_tender in rejected_tenders %}
+        <div class="rejected-tender">
+            <h2>{{ rejected_tender.registration.user.username }}'s Tender Rejected</h2>
+            <p>Rejection Date: {{ rejected_tender.rejection_date }}</p>
+            <p>Rejection Reason: {{ rejected_tender.rejection_reason }}</p>
+
+            <div class="tender-application">
+                <h3>Tender Application Details</h3>
+                <p>Application Date: {{ rejected_tender.registration.application_date }}</p>
+                <p>Amount: {{ rejected_tender.registration.amount }}</p>
+                <p>License Number: {{ rejected_tender.registration.license_number }}</p>
+                <p>Nature of Business: {{ rejected_tender.registration.nature_of_business }}</p>
+                <p>Legal Entity Type: {{ rejected_tender.registration.legal_entity_type }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</body>
+{% endblock  %}
+</html>

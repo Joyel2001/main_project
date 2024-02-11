@@ -368,7 +368,7 @@
              </a>
          </li>
          <li class="sidebar-item">
-             <a class="sidebar-link waves-effect waves-dark" href="">
+             <a class="sidebar-link waves-effect waves-dark" href="{% url 'rejected_tender_details' %}">
                  <i class="mdi mdi-close"></i>
                  <span class="hide-menu">Rejected Tender</span>
              </a>
@@ -441,7 +441,7 @@
                              <nav aria-label="breadcrumb">
                                  <ol class="breadcrumb">
                                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                     <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                     {% comment %} <li class="breadcrumb-item active" aria-current="page">Dashboard</li> {% endcomment %}
                                  </ol>
                              </nav>
                          </div>

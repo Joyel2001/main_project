@@ -9,7 +9,8 @@ from django.contrib import messages
 from .models import Post
 from django.contrib.auth.decorators import login_required
 
-@login_required
+@never_cache
+@login_required(login_url='loginn')
 def post_content(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -45,7 +46,8 @@ def post_content(request):
 # views.py
 from django.shortcuts import render
 from .models import Post
-
+@never_cache
+@login_required(login_url='loginn')
 def all_posts(request):
     # Retrieve all posts and posts shared by the currently logged-in user
     all_posts = Post.objects.all()
@@ -70,7 +72,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Post, Comment, Like  # Import the Like model
 
-@login_required
+@never_cache
+@login_required(login_url='loginn')
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = Comment.objects.filter(post=post)
@@ -222,24 +225,33 @@ def signup_view(request):
 
 
 # seller_login
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
 
 def seller_login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        user = authenticate(request, username=username, password=password)
-
-        if user and user.is_staff:
-            login(request, user)
-            return redirect('index')  # Replace 'seller_dashboard' with the actual URL for the seller dashboard
+    if request.user.is_authenticated:
+        if request.user.is_staff or request.user.is_superuser:
+            return redirect('hello_admin')
         else:
-            messages.error(request, 'Invalid login credentials or not a seller account.')
+            return redirect('index')
 
-    return render(request, 'main/seller/seller_login.html')
+    if request.method == "POST":
+        email = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            if user.is_staff or user.is_superuser:
+                return redirect('booking_chart')
+            else:
+                return redirect('index')
+        else:
+            messages.error(request, "Invalid Login")
+            return render(request, 'main\seller\seller_login.html')
+    else:
+        return render(request, 'main\seller\seller_login.html')
 
 
 
@@ -305,7 +317,8 @@ def company_index(request):
 from django.shortcuts import render, redirect
 from .models import Tender
 from django.http import HttpResponse
-
+@never_cache
+@login_required(login_url='company_login')
 def create_tender(request):
     tmessage = None  # Initialize a variable to store the success message
 
@@ -416,8 +429,11 @@ def companys_profile(request):
 
 
 # tender application views.py
+
+
 from django.shortcuts import render, redirect
-from .models import CompanyApplyForTender
+from .models import CompanyApplyForTender, ApprovedTender, RejectedTender
+from django.http import HttpResponse
 
 def display_company_apply_details(request):
     if request.method == 'POST':
@@ -428,15 +444,187 @@ def display_company_apply_details(request):
         application = CompanyApplyForTender.objects.get(id=application_id)
 
         if action == 'approve':
-            # Handle approval logic here
-            application.approved = True
-            application.save()
+            # Create an instance of ApprovedTender
+            approved_tender = ApprovedTender.objects.create(registration=application)
+            # Delete the application
+            application.delete()
+            # Return a redirect to the same page
+            return redirect('company_apply_details')
+            
         elif action == 'reject':
-            # Handle rejection logic here
-            application.rejected = True
-            application.rejection_reason = rejection_reason
-            application.save()
+            # Ensure rejection reason is provided
+            if not rejection_reason:
+                return HttpResponse("Rejection reason is required.")
+            try:
+                # Create an instance of RejectedTender
+                rejected_tender = RejectedTender.objects.create(registration=application, rejection_reason=rejection_reason)
+                # Return a redirect to the same page
+                return redirect('company_apply_details')
+            except Exception as e:
+                return HttpResponse(f"Error: {e}")
 
+    # Fetch all applications
     applications = CompanyApplyForTender.objects.all()
+    
+    # Render the template with the applications data
     return render(request, 'main/company/tender_application.html', {'applications': applications})
 
+
+
+
+
+from django.shortcuts import render
+from .models import RejectedTender
+
+def rejected_tender_details(request):
+    rejected_tenders = RejectedTender.objects.all()
+    return render(request, 'main/company/rejected_tender.html', {'rejected_tenders': rejected_tenders})
+
+
+
+# ecomerce_index
+
+from django.shortcuts import render
+
+from django.shortcuts import render
+from .models import Product
+
+def ecomerce_index(request):
+    products = Product.objects.all()
+    return render(request, 'main/ecomerce/ecomerce_index', {'products': products})
+
+
+# add category and sub 
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import Category
+
+def add_category(request):
+    if request.method == 'POST':
+        # Extract data from the POST request
+        name = request.POST['name']
+        image = request.FILES['image']
+        status = bool(int(request.POST['status']))  # Convert '0' or '1' to boolean
+        trending = bool(int(request.POST['trending']))  # Convert '0' or '1' to boolean
+        description = request.POST['description']
+
+        # Create a new Category object
+        category = Category.objects.create(
+            name=name,
+            image=image,
+            status=status,
+            trending=trending,
+            description=description
+        )
+
+        # Get the ID of the newly created category
+        new_category_id = category.id
+
+        # Redirect to a success page or do something else
+        return HttpResponse(f'Category added successfully! ID: {new_category_id}')
+    else:
+        # Retrieve all categories from the database
+        categories = Category.objects.all()
+        # Render the form template with categories
+        return render(request, 'main/products/add_details.html', {'categories': categories})
+
+# add_sub_category
+    
+#     from django.shortcuts import render, redirect
+# from django.http import HttpResponse
+# from .models import Subcategory
+
+# def add_subcategory(request, category_id):
+#     if request.method == 'POST':
+#         # Extract data from the POST request
+#         name = request.POST['subcategory_name']
+#         description = request.POST['subcategory_description']
+#         image = request.FILES['subcategory_image']
+#         status = bool(int(request.POST['subcategory_status']))  # Convert '0' or '1' to boolean
+#         trending = bool(int(request.POST['subcategory_trending']))  # Convert '0' or '1' to boolean
+
+#         # Create a new Subcategory object
+#         subcategory = Subcategory.objects.create(
+#             category_id=category_id,
+#             name=name,
+#             description=description,
+#             image=image,
+#             status=status,
+#             trending=trending
+#         )
+
+#         # Redirect to a success page or do something else
+#         return HttpResponse('Subcategory added successfully!')
+#     else:
+#         # Render the form template if it's a GET request
+#         return render(request, 'your_app/add_subcategory.html', {'category_id': category_id})
+
+
+
+# add_product
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Product, Subcategory
+
+def add_product(request):
+    if request.method == 'POST':
+        try:
+            subcategory_id = request.POST.get('subcategory')
+            subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
+            
+            name = request.POST.get('name')
+            product_image = request.FILES.get('product_image')
+            description = request.POST.get('description')
+            quantity = request.POST.get('quantity')
+            original_price = request.POST.get('original_price')
+            selling_price = request.POST.get('selling_price')
+            status = bool(int(request.POST.get('status', 0)))  # Default to False if not provided
+            trending = bool(int(request.POST.get('trending', 0)))  # Default to False if not provided
+
+            product = Product.objects.create(
+                subcategory=subcategory,
+                name=name,
+                product_image=product_image,
+                description=description,
+                quantity=quantity,
+                original_price=original_price,
+                selling_price=selling_price,
+                status=status,
+                trending=trending
+            )
+
+            new_product_id = product.id
+            return HttpResponse(f'Product added successfully! ID: {new_product_id}')
+        except Exception as e:
+            return HttpResponse(f'Error adding product: {e}')
+
+    else:
+        subcategories = Subcategory.objects.all()
+        return render(request, 'main/products/add_product.html', {'subcategories': subcategories})
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import Product
+
+def add_product1(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        product_image = request.FILES['product_image']
+        description = request.POST.get('description')
+        quantity = request.POST.get('quantity')
+        original_price = request.POST.get('original_price')
+        selling_price = request.POST.get('selling_price')
+        
+        product = Product.objects.create(
+            name=name,
+            product_image=product_image,
+            description=description,
+            quantity=quantity,
+            original_price=original_price,
+            selling_price=selling_price
+        )
+        return redirect('add_product1', product.id)  # Redirect to product detail page after adding product
+    return render(request, 'main/products/demo.html')

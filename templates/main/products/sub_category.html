@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Subcategory</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Subcategory for Category {{ category_id }}</h1>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubcategoryModal">
+            Add Subcategory
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="addSubcategoryModal" tabindex="-1" role="dialog" aria-labelledby="addSubcategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSubcategoryModalLabel">Add Subcategory</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form to add subcategory -->
+                        <form id="subcategoryForm" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="subcategory_name">Subcategory Name:</label>
+                                <input type="text" class="form-control" id="subcategory_name" name="subcategory_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subcategory_description">Subcategory Description:</label>
+                                <textarea class="form-control" id="subcategory_description" name="subcategory_description" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="subcategory_image">Subcategory Image:</label>
+                                <input type="file" class="form-control-file" id="subcategory_image" name="subcategory_image" accept="image/jpeg, image/png" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="subcategory_status">Status:</label>
+                                <select class="form-control" id="subcategory_status" name="subcategory_status" required>
+                                    <option value="0">Default</option>
+                                    <option value="1">Hidden</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="subcategory_trending">Trending:</label>
+                                <select class="form-control" id="subcategory_trending" name="subcategory_trending" required>
+                                    <option value="0">Default</option>
+                                    <option value="1">Trending</option>
+                                </select>
+                            </div>
+                            <button type="button" onclick="validateSubcategoryForm()" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function validateSubcategoryForm() {
+            // Add validation logic here
+            
+            // If all validations pass, submit the form
+            document.getElementById("subcategoryForm").submit();
+        }
+    </script>
+</body>
+</html>

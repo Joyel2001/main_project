@@ -156,19 +156,22 @@ class CompanyApplyForTender(models.Model):
 
 
 class ApprovedTender(models.Model):
-    application = models.OneToOneField(CompanyApplyForTender, on_delete=models.CASCADE, primary_key=True)
+    registration = models.OneToOneField('CompanyApplyForTender', on_delete=models.CASCADE, primary_key=True)
     approval_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.application.user.username}'s tender approved on {self.approval_date}"
+        return f"{self.registration.user.username}'s tender registration approved on {self.approval_date}"
 
 class RejectedTender(models.Model):
-    application = models.OneToOneField(CompanyApplyForTender, on_delete=models.CASCADE, primary_key=True)
+    registration = models.OneToOneField(CompanyApplyForTender, on_delete=models.CASCADE, primary_key=True)
     rejection_date = models.DateField(auto_now_add=True)
     rejection_reason = models.TextField()
 
     def __str__(self):
-        return f"{self.application.user.username}'s tender rejected on {self.rejection_date}"
+        return f"{self.registration.user.username}'s tender registration rejected on {self.rejection_date}"
+
+
+
 
 
 from django.db import models
@@ -185,3 +188,59 @@ class Waste(models.Model):
 
     def __str__(self):
         return f"Waste for Tender: {self.tender.title}"
+
+
+
+# product caegory
+    
+class Category(models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False)
+    image = models.ImageField(upload_to="category_images", null=False, blank=False)
+    status = models.BooleanField(default=False, help_text="0=default,1=Hidden")
+    trending = models.BooleanField(default=False, help_text="0=default,1=Hidden")
+    description = models.CharField(max_length=500, null=False, blank=False, default="Default description")
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+# sub  product caegory
+    
+class Subcategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(max_length=500, null=False, blank=False, default="Default subcategory description")
+    image = models.ImageField(upload_to="subcategory_images", null=False, blank=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+    status = models.BooleanField(default=False, help_text="0=default, 1=Hidden")
+    trending = models.BooleanField(default=False, help_text="0=default, 1=Trending")
+
+    def __str__(self):
+        return self.name
+
+
+
+# add product 
+    
+
+from django.db import models
+
+class Product(models.Model):
+    subcategory = models.ForeignKey('Subcategory', on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,default=0)
+    name = models.CharField(max_length=100, null=False, blank=False)
+    product_image = models.ImageField(upload_to="product_images", null=False, blank=False)
+    description = models.CharField(max_length=500, null=False, blank=False)
+    quantity = models.IntegerField(null=False, blank=False)
+    original_price = models.FloatField(null=False, blank=False)
+    selling_price = models.FloatField(null=False, blank=False)
+    status = models.BooleanField(default=False, help_text="0=default,1=Hidden")
+    trending = models.BooleanField(default=False, help_text="0=default,1=Trending")
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name

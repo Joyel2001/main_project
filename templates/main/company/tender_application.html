@@ -1,13 +1,14 @@
-<!-- company_apply_details.html -->
-
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html lang="en">
+  {% block content %}
 <head>
-    <!-- Add this in the head section of your HTML file -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add Bootstrap JavaScript and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,14 +23,14 @@
         }
 
         h1 {
-            color: #333;
+            color: #fff;
             text-align: center;
             padding: 20px;
             background-color: #3498db;
             margin: 0;
         }
 
-        div {
+        .application-card {
             background-color: #fff;
             margin: 20px;
             padding: 20px;
@@ -37,12 +38,8 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        h2 {
+        .application-title {
             color: #3498db;
-        }
-
-        p {
-            margin: 10px 0;
         }
 
         hr {
@@ -51,50 +48,63 @@
             background: #ddd;
             margin: 15px 0;
         }
+
+        .modal-content {
+            border-radius: 0;
+        }
     </style>
 </head>
 <body>
-    <h1>Company Application Details</h1>
+  <h1>Company Application Details</h1>
 
-    {% for application in applications %}
-        <div>
-            <h2>{{ application.tender.title }}</h2>
-            <p>User: {{ application.user.username }}</p>
-            <p>Application Date: {{ application.application_date }}</p>
-            <p>Amount: {{ application.amount }}</p>
-            <p>License Number: {{ application.license_number }}</p>
-            <p>Nature of Business: {{ application.nature_of_business }}</p>
-            <p>Legal Entity Type: {{ application.legal_entity_type }}</p>
-            <hr>
-            {% if not application.approved and not application.rejected %}
-        <form method="post" action="{% url 'company_apply_details' %}">
-          {% csrf_token %}
-          <input type="hidden" name="application_id" value="{{ application.id }}">
-          <button type="submit" name="action" value="approve">Approve</button>
-          <button type="submit" name="action" value="reject" data-toggle="modal" data-target="#rejectModal{{ application.id }}">Reject</button>
-          <textarea name="rejection_reason" placeholder="Rejection Reason" style="display: none;"></textarea>
+  {% if applications %}
+      {% for application in applications %}
+          <div class="application-card">
+              <h2 class="application-title">{{ application.tender.title }}</h2>
+              <p>User: {{ application.user.username }}</p>
+              <p>Application Date: {{ application.application_date }}</p>
+              <p>Amount: {{ application.amount }}</p>
+              <p>License Number: {{ application.license_number }}</p>
+              <p>Nature of Business: {{ application.nature_of_business }}</p>
+              <p>Legal Entity Type: {{ application.legal_entity_type }}</p>
+              <hr>
+              {% if not application.approved and not application.rejected %}
+                  <form method="post" action="{% url 'company_apply_details' %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="application_id" value="{{ application.id }}">
+                      <button type="submit" name="action" value="approve" class="btn btn-success mr-2">Approve</button>
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal{{ application.id }}">Reject</button>
+                      <textarea name="rejection_reason" class="form-control mt-3" placeholder="Rejection Reason" style="display: none;"></textarea>
 
-          <!-- Modal for rejection reason -->
-          <div class="modal fade" id="rejectModal{{ application.id }}" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="rejectModalLabel">Rejection Reason</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <textarea name="rejection_reason" placeholder="Rejection Reason" required></textarea>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
-                </div>
-              </div>
-            </div>
+                      <!-- Modal for rejection reason -->
+                      <div class="modal fade" id="rejectModal{{ application.id }}" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="rejectModalLabel">Rejection Reason</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <textarea name="rejection_reason" class="form-control" placeholder="Rejection Reason" required></textarea>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                      <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+              {% endif %}
           </div>
-        </form>
-      {% endif %}
-    </div>
-  {% endfor %}
+      {% endfor %}
+  {% else %}
+  <br>
+      <p>No tender applications at the moment.</p>
+  {% endif %}
+</body>
+
+{% endblock  %}
+</html>

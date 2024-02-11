@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add Category</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            /* Custom CSS for the "Add Category" button */
+            .add-category-button {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+                border-radius: 10px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+    
+            .add-category-button:hover {
+                background-color: #0056b3;
+            }
+    
+            /* Custom CSS for the table */
+            .table-container {
+                margin-top: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+    
+            .table-container table {
+                width: 100%;
+                border-collapse: collapse;
+                border-spacing: 0;
+            }
+    
+            .table-container th,
+            .table-container td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #dee2e6;
+            }
+    
+            .table-container th {
+                background-color: #f8f9fa;
+                font-weight: bold;
+            }
+    
+            .table-container tbody tr:nth-of-type(even) {
+                background-color: #f8f9fa;
+            }
+    
+            .table-container tbody tr:hover {
+                background-color: #e9ecef;
+            }
+    
+            .table-container img {
+                max-width: 100px;
+                height: auto;
+                display: block;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <button type="button" class="btn btn-link add-category-button" data-toggle="modal" data-target="#addCategoryModal">
+                Add Category
+            </button>
+        </div>
+        <div class="table-container">
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td><img src="{{ category.image.url }}" alt="{{ category.name }}"></td>
+                        <td>{{ category.description }}</td>
+                        {% comment %} <td>
+                            <button class="add-subcategories-button" onclick="window.location.href='{% url 'add_subcategory' category.id %}'">Add Subcategories</button>
+                        </td> {% endcomment %}
+                    </tr>  
+                    {% endfor %}
+                </tbody>
+            </table>
+    
+        
+            
+    <!-- Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Category form fields -->
+                    <form id="categoryForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="name">Name:</label><br>
+                        <input type="text" id="name" name="name" required><br><br>
+
+                        <label for="image">Image:</label><br>
+                        <input type="file" id="image" name="image" accept="image/jpeg, image/png" required><br><br>
+
+                        <label for="status">Status:</label><br>
+                        <select id="status" name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="0">Default</option>
+                            <option value="1">Hidden</option>
+                        </select><br><br>
+
+                        <label for="trending">Trending:</label><br>
+                        <select id="trending" name="trending" required>
+                            <option value="">Select Trending</option>
+                            <option value="0">Default</option>
+                            <option value="1">Trending</option>
+                        </select><br><br>
+
+                        <label for="description">Description:</label><br>
+                        <textarea id="description" name="description" rows="4" required></textarea><br><br>
+
+                        <button type="button" onclick="validateForm()" class="btn btn-primary">Submit</button>
+                    </form>
+
+                    <!-- Table to display categories -->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function validateForm() {
+            var name = document.getElementById('name').value.trim();
+            var image = document.getElementById('image').value.trim();
+            var status = document.getElementById('status').value.trim();
+            var trending = document.getElementById('trending').value.trim();
+            var description = document.getElementById('description').value.trim();
+
+            if (name === "") {
+                alert("Please enter Name");
+                return;
+            }
+
+            if (image === "") {
+                alert("Please select an Image");
+                return;
+            }
+
+            if (!/\.(jpe?g|png)$/i.test(image)) {
+                alert("Please select a valid JPEG or PNG image");
+                return;
+            }
+
+            if (status === "") {
+                alert("Please select Status");
+                return;
+            }
+
+            if (trending === "") {
+                alert("Please select Trending");
+                return;
+            }
+
+            if (description === "") {
+                alert("Please enter Description");
+                return;
+            }
+
+            // If all validations pass, submit the form
+            document.getElementById("categoryForm").submit();
+        }
+    </script>
+</body>
+</html
