@@ -4,77 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Subcategory</title>
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>.error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Add Subcategory for Category {{ category_id }}</h1>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubcategoryModal">
-            Add Subcategory
-        </button>
 
-        <!-- Modal -->
-        <div class="modal fade" id="addSubcategoryModal" tabindex="-1" role="dialog" aria-labelledby="addSubcategoryModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addSubcategoryModalLabel">Add Subcategory</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Form to add subcategory -->
-                        <form id="subcategoryForm" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="subcategory_name">Subcategory Name:</label>
-                                <input type="text" class="form-control" id="subcategory_name" name="subcategory_name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subcategory_description">Subcategory Description:</label>
-                                <textarea class="form-control" id="subcategory_description" name="subcategory_description" rows="3" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="subcategory_image">Subcategory Image:</label>
-                                <input type="file" class="form-control-file" id="subcategory_image" name="subcategory_image" accept="image/jpeg, image/png" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="subcategory_status">Status:</label>
-                                <select class="form-control" id="subcategory_status" name="subcategory_status" required>
-                                    <option value="0">Default</option>
-                                    <option value="1">Hidden</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="subcategory_trending">Trending:</label>
-                                <select class="form-control" id="subcategory_trending" name="subcategory_trending" required>
-                                    <option value="0">Default</option>
-                                    <option value="1">Trending</option>
-                                </select>
-                            </div>
-                            <button type="button" onclick="validateSubcategoryForm()" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<!-- Button to Open Modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubcategoryModal">
+    Add Subcategory
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addSubcategoryModal" tabindex="-1" aria-labelledby="addSubcategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addSubcategoryModalLabel">Add Subcategory</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <form id="subcategoryForm" action="/add_subcategory/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="category">Category:</label>
+              <select class="form-control" id="category" name="category">
+                  {% for category in categories %}
+                      <option value="{{ category.id }}">{{ category.name }}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description:</label>
+              <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="image">Image:</label>
+              <input type="file" class="form-control-file" id="image" name="image" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <!-- Bootstrap JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        function validateSubcategoryForm() {
-            // Add validation logic here
+  </div>
+  
+  <!-- Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('#subcategoryForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
             
-            // If all validations pass, submit the form
-            document.getElementById("subcategoryForm").submit();
+            const nameInput = document.querySelector('#name');
+            const descriptionInput = document.querySelector('#description');
+            const imageInput = document.querySelector('#image');
+
+            // Clear any existing error messages
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(function (errorMessage) {
+                errorMessage.remove();
+            });
+
+            let isValid = true;
+
+            // Validate name field
+            if (nameInput.value.trim() === '') {
+                showError(nameInput, 'Name is required.');
+                isValid = false;
+            }
+
+            // Validate description field
+            if (descriptionInput.value.trim() === '') {
+                showError(descriptionInput, 'Description is required.');
+                isValid = false;
+            }
+
+            // Validate image field
+            if (imageInput.files.length === 0) {
+                showError(imageInput, 'Image is required.');
+                isValid = false;
+            } else {
+                const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                if (!allowedExtensions.test(imageInput.value)) {
+                    showError(imageInput, 'Only JPEG and PNG images are allowed.');
+                    isValid = false;
+                }
+            }
+
+            // If all fields are valid, submit the form
+            if (isValid) {
+                form.submit();
+            }
+        });
+
+        function showError(input, message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = message;
+            input.parentNode.appendChild(errorDiv);
         }
-    </script>
+    });
+</script>
+
+
 </body>
 </html>

@@ -23,6 +23,7 @@ path('registration/<int:tender_id>/', views.registration_page, name='registratio
  path('rejected-tenders/', rejected_tender_details, name='rejected_tender_details'),
  path('ecomerce_index/', ecomerce_index, name='ecomerce_index'),
  path('add_category/', views.add_category, name='add_category'),
-#  path('add_subcategory/<int:category_id>/', add_subcategory, name='add_subcategory'),
+path('add_subcategory/', add_subcategory, name='add_subcategory'),
 path('add_product1/', add_product1, name='add_product1'),
+path('product/<int:product_id>/', views.product_detail, name='product_detail'),
 ]

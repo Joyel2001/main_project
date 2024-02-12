@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -61,39 +63,177 @@
                 display: block;
                 margin: auto;
             }
+            .add-subcategories-button {
+                background-color: #4CAF50; /* Green background */
+                border: none; /* Remove border */
+                color: white; /* White text */
+                padding: 10px 20px; /* Padding */
+                text-align: center; /* Center text */
+                text-decoration: none; /* Remove underline */
+                display: inline-block; /* Make it inline block */
+                font-size: 16px; /* Font size */
+                cursor: pointer; /* Add cursor pointer */
+                border-radius: 5px; /* Add border radius */
+                transition: background-color 0.3s; /* Add transition */
+            }
+            
+            .add-subcategories-button:hover {
+                background-color: #45a049; /* Darker green on hover */
+            }
+            
         </style>
     </head>
+    &nbsp;&nbsp;&nbsp;
     <body>
         <div class="container">
-            <button type="button" class="btn btn-link add-category-button" data-toggle="modal" data-target="#addCategoryModal">
-                Add Category
+            <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#addCategoryModal">
+                <i class="fas fa-plus-circle mr-1"></i> Add Category
+            </button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSubcategoryModal">
+                <i class="fas fa-plus-circle mr-1"></i> Add Subcategory
             </button>
         </div>
+        
+        <div class="modal fade" id="addSubcategoryModal" tabindex="-1" aria-labelledby="addSubcategoryModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addSubcategoryModalLabel">Add Subcategory</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="subcategoryForm" action="/add_subcategory/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="category">Category:</label>
+                      <select class="form-control" id="category" name="category">
+                          {% for category in categories %}
+                              <option value="{{ category.id }}">{{ category.name }}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Name:</label>
+                      <input type="text" class="form-control" id="name" name="name" >
+                    </div>
+                    <div class="form-group">
+                      <label for="description">Description:</label>
+                      <textarea class="form-control" id="description" name="description" rows="3" ></textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="image">Image:</label>
+                      <input type="file" class="form-control-file" id="image" name="image" accept="image/*" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Bootstrap JS -->
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+          
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const form = document.querySelector('#subcategoryForm');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    
+                    const nameInput = document.querySelector('#name');
+                    const descriptionInput = document.querySelector('#description');
+                    const imageInput = document.querySelector('#image');
+        
+                    // Clear any existing error messages
+                    const errorMessages = document.querySelectorAll('.error-message');
+                    errorMessages.forEach(function (errorMessage) {
+                        errorMessage.remove();
+                    });
+        
+                    let isValid = true;
+        
+                    // Validate name field
+                    if (nameInput.value.trim() === '') {
+                        showError(nameInput, 'Name is required.');
+                        isValid = false;
+                    }
+        
+                    // Validate description field
+                    if (descriptionInput.value.trim() === '') {
+                        showError(descriptionInput, 'Description is required.');
+                        isValid = false;
+                    }
+        
+                    // Validate image field
+                    if (imageInput.files.length === 0) {
+                        showError(imageInput, 'Image is required.');
+                        isValid = false;
+                    } else {
+                        const allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                        if (!allowedExtensions.test(imageInput.value)) {
+                            showError(imageInput, 'Only JPEG and PNG images are allowed.');
+                            isValid = false;
+                        }
+                    }
+        
+                    // If all fields are valid, submit the form
+                    if (isValid) {
+                        form.submit();
+                    }
+                });
+        
+                function showError(input, message) {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'error-message';
+                    errorDiv.innerText = message;
+                    input.parentNode.appendChild(errorDiv);
+                }
+            });
+        </script>
+        
         <div class="table-container">
             <table class="table mt-4">
                 <thead>
                     <tr>
+                        <th>Category</th>
                         <th>Name</th>
-                        <th>Image</th>
                         <th>Description</th>
+                        <th>Image</th>
+                        <th>Created Date</th>
+                        
+                        
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for category in categories %}
-                    <tr>
-                        <td>{{ category.name }}</td>
-                        <td><img src="{{ category.image.url }}" alt="{{ category.name }}"></td>
-                        <td>{{ category.description }}</td>
-                        {% comment %} <td>
-                            <button class="add-subcategories-button" onclick="window.location.href='{% url 'add_subcategory' category.id %}'">Add Subcategories</button>
-                        </td> {% endcomment %}
-                    </tr>  
+                        {% for subcategory in category.subcategory_set.all %}
+                            <tr>
+                                {% if forloop.first %}
+                                    <td rowspan="{{ category.subcategory_set.count }}">{{ category.name }}</td>
+                                {% endif %}
+                                <td>{{ subcategory.name }}</td>
+                                <td>{{ subcategory.description }}</td>
+                                <td><img src="{{ subcategory.image.url }}" alt="{{ subcategory.name }}"></td>
+                                <td>{{ subcategory.created_date }}</td>
+                                
+                                
+                                <td>
+                                    <!-- Add actions/buttons for subcategory if needed -->
+                                </td>
+                            </tr>
+                        {% endfor %}
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+         
     
-        
+       
             
     <!-- Modal -->
     <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
@@ -141,7 +281,7 @@
             </div>
         </div>
     </div>
-
+   
     <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -190,4 +330,5 @@
         }
     </script>
 </body>
-</html
+{% endblock content %}
+</html>

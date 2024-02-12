@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'app32',
-    'app322'
+    'app322',
+    'sass_processor',
 
     # 'social_django'
     
@@ -220,3 +221,9 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 RAZOR_KEY_ID = 'rzp_test_ldDot4bxZwoO6o'
 RAZOR_KEY_SECRET = 'x4mpqquzpZEvAaPe6NMOvHE9'
+
+
+SASS_PROCESSOR_ROOT = os.path.join(BASE_DIR, 'static')
+SASS_PROCESSOR_INCLUDE_DIRS = [
+    os.path.join(BASE_DIR, 'app322', 'scss'),
+]

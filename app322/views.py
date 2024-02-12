@@ -531,34 +531,31 @@ def add_category(request):
 
 # add_sub_category
     
-#     from django.shortcuts import render, redirect
-# from django.http import HttpResponse
-# from .models import Subcategory
+from django.shortcuts import render
 
-# def add_subcategory(request, category_id):
-#     if request.method == 'POST':
-#         # Extract data from the POST request
-#         name = request.POST['subcategory_name']
-#         description = request.POST['subcategory_description']
-#         image = request.FILES['subcategory_image']
-#         status = bool(int(request.POST['subcategory_status']))  # Convert '0' or '1' to boolean
-#         trending = bool(int(request.POST['subcategory_trending']))  # Convert '0' or '1' to boolean
+from django.shortcuts import render
+from .models import Category
 
-#         # Create a new Subcategory object
-#         subcategory = Subcategory.objects.create(
-#             category_id=category_id,
-#             name=name,
-#             description=description,
-#             image=image,
-#             status=status,
-#             trending=trending
-#         )
+from django.shortcuts import render, redirect
+from .models import Category, Subcategory
 
-#         # Redirect to a success page or do something else
-#         return HttpResponse('Subcategory added successfully!')
-#     else:
-#         # Render the form template if it's a GET request
-#         return render(request, 'your_app/add_subcategory.html', {'category_id': category_id})
+def add_subcategory(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        
+        category = Category.objects.get(pk=category_id)
+        subcategory = Subcategory.objects.create(category=category, name=name, description=description, image=image)
+        # Redirect to a success page or homepage
+        return redirect('home')  # Change 'home' to the name of your homepage URL pattern
+    else:
+        categories = Category.objects.all()
+        return render(request, 'main/products/sub_category.html', {'categories': categories})
+
+
+
 
 
 
@@ -567,64 +564,82 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from .models import Product, Subcategory
 
-def add_product(request):
+from django.shortcuts import render, redirect
+from .models import Product,Subcategory
+
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from .models import Product, Subcategory
+from django.shortcuts import render, redirect
+from .models import Product, Subcategory
+from django.db import IntegrityError
+
+def add_product1(request):
+    subcategories = Subcategory.objects.all()
     if request.method == 'POST':
         try:
             subcategory_id = request.POST.get('subcategory')
-            subcategory = get_object_or_404(Subcategory, pk=subcategory_id)
-            
-            name = request.POST.get('name')
-            product_image = request.FILES.get('product_image')
-            description = request.POST.get('description')
-            quantity = request.POST.get('quantity')
-            original_price = request.POST.get('original_price')
-            selling_price = request.POST.get('selling_price')
-            status = bool(int(request.POST.get('status', 0)))  # Default to False if not provided
-            trending = bool(int(request.POST.get('trending', 0)))  # Default to False if not provided
+            # Check if the selected subcategory exists
+            if Subcategory.objects.filter(id=subcategory_id).exists():
+                name = request.POST.get('name')
+                description = request.POST.get('description')
+                quantity = request.POST.get('quantity')
+                original_price = request.POST.get('original_price')
+                selling_price = request.POST.get('selling_price')
+                image = request.FILES.get('image')
+                
+                new_product = Product.objects.create(subcategory_id=subcategory_id, name=name, description=description, 
+                                  quantity=quantity, original_price=original_price, selling_price=selling_price, 
+                                  product_image=image)
 
-            product = Product.objects.create(
-                subcategory=subcategory,
-                name=name,
-                product_image=product_image,
-                description=description,
-                quantity=quantity,
-                original_price=original_price,
-                selling_price=selling_price,
-                status=status,
-                trending=trending
-            )
-
-            new_product_id = product.id
-            return HttpResponse(f'Product added successfully! ID: {new_product_id}')
-        except Exception as e:
-            return HttpResponse(f'Error adding product: {e}')
-
+                # Redirect to a success page or homepage
+                return redirect('home')  # Change 'home' to the name of your homepage URL pattern
+            else:
+                # Handle the case where the selected subcategory doesn't exist
+                error_message = "Selected subcategory does not exist."
+                return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'error_message': error_message})
+        except IntegrityError as e:
+            # Handle any IntegrityError exceptions (e.g., database constraint violations)
+            error_message = "An error occurred while adding the product."
+            return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'error_message': error_message})
     else:
-        subcategories = Subcategory.objects.all()
         return render(request, 'main/products/add_product.html', {'subcategories': subcategories})
 
 
 
 
-from django.shortcuts import render, redirect
-from .models import Product
 
-def add_product1(request):
+
+
+# prduct details 
+
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Product, Cart
+
+@csrf_exempt
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    
     if request.method == 'POST':
-        name = request.POST.get('name')
-        product_image = request.FILES['product_image']
-        description = request.POST.get('description')
+        user = request.user  # Assuming user is authenticated
         quantity = request.POST.get('quantity')
-        original_price = request.POST.get('original_price')
-        selling_price = request.POST.get('selling_price')
+        price = product.price * int(quantity)
         
-        product = Product.objects.create(
-            name=name,
-            product_image=product_image,
-            description=description,
-            quantity=quantity,
-            original_price=original_price,
-            selling_price=selling_price
-        )
-        return redirect('add_product1', product.id)  # Redirect to product detail page after adding product
-    return render(request, 'main/products/demo.html')
+        # Check if the user already has this product in their cart
+        cart_item = Cart.objects.filter(user=user, product=product).first()
+        
+        if cart_item:
+            # If the item already exists in the cart, update the quantity and price
+            cart_item.quantity += int(quantity)
+            cart_item.price += price
+            cart_item.save()
+        else:
+            # If the item does not exist in the cart, create a new entry
+            cart_item = Cart.objects.create(user=user, product=product, quantity=quantity, price=price)
+        
+        return JsonResponse({'message': 'Item added to cart successfully'})
+    
+    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product})
+
