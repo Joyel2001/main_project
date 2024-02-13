@@ -26,4 +26,7 @@ path('registration/<int:tender_id>/', views.registration_page, name='registratio
 path('add_subcategory/', add_subcategory, name='add_subcategory'),
 path('add_product1/', add_product1, name='add_product1'),
 path('product/<int:product_id>/', views.product_detail, name='product_detail'),
+path('view_cart/', views.view_cart, name='view_cart'),
+path('update_quantity/', views.update_quantity, name='update_quantity'),
+# path('approve/<int:application_id>/', views.approve_application, name='approve_application'),
 ]

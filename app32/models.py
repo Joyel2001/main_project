@@ -224,3 +224,14 @@ class Feedback(models.Model):
 # waste_classifier/models.py
 
 
+# coin
+    
+from django.db import models
+from django.contrib.auth.models import User
+
+class SuperCoin(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    coins = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"Super Coins - {self.user.username}"

@@ -98,7 +98,8 @@ from django.contrib import admin
 from .models import Payment  # Import the Payment model
 admin.site.register(Payment)
 
-
+from .models import SuperCoin  # Import the Payment model
+admin.site.register(SuperCoin)
 
 
 

@@ -428,9 +428,22 @@ from django.shortcuts import render, HttpResponse, redirect
 from .models import Bin, BinBooking
 from django.contrib import messages
 from django.db.models import Count
+from .models import SuperCoin
+from .models import SuperCoin
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Bin, BinBooking, SuperCoin
+from django.contrib.auth.models import User
+
 
 @never_cache
 @login_required(login_url='loginn')
+
+
+
+
+
 
 
 
@@ -486,6 +499,28 @@ def orderforhome(request):
             )
             booking.save()
 
+            # Add super coins based on the bin size booked
+            super_coins, created = SuperCoin.objects.get_or_create(user=user)
+            if created:
+                # If a new SuperCoin instance is created, set initial coins based on bin size
+                if bin_size == 'Large Size':
+                    super_coins.coins = 50
+                elif bin_size == 'Medium Size':
+                    super_coins.coins = 20
+                elif bin_size == 'Small Size':
+                    super_coins.coins = 10
+                super_coins.save()
+
+            else:
+                # If the SuperCoin instance already exists, add coins based on bin size
+                if bin_size == 'Large Size':
+                    super_coins.coins += 50
+                elif bin_size == 'Medium Size':
+                    super_coins.coins += 20
+                elif bin_size == 'Small Size':
+                    super_coins.coins += 10
+                super_coins.save()
+
             messages.success(request, 'Booking saved successfully.', extra_tags='bin message')
 
             # Redirect to a different URL or view (you can specify your profile page here)
@@ -499,6 +534,11 @@ def orderforhome(request):
 
     return render(request, 'bin/orderforhome.html', context)
 
+
+
+
+       
+         
  
 
 

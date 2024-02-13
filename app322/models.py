@@ -251,7 +251,7 @@ class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
     image = models.ImageField(upload_to='cart_item_images/', blank=True, null=True)  # Add image field
 
     def _str_(self):
@@ -261,3 +261,6 @@ class Cart(models.Model):
     #     # Calculate the price based on the product's price per kg and the quantity
     #     self.price = self.product.product_price * self.quantity
     #     super().save(*args, **kwargs)
+
+
+    

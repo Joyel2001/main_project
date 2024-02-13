@@ -430,10 +430,8 @@ def companys_profile(request):
 
 # tender application views.py
 
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import CompanyApplyForTender, ApprovedTender, RejectedTender
-from django.http import HttpResponse
 
 def display_company_apply_details(request):
     if request.method == 'POST':
@@ -443,22 +441,11 @@ def display_company_apply_details(request):
 
         application = CompanyApplyForTender.objects.get(id=application_id)
 
-        if action == 'approve':
-            # Create an instance of ApprovedTender
-            approved_tender = ApprovedTender.objects.create(registration=application)
-            # Delete the application
-            application.delete()
-            # Return a redirect to the same page
-            return redirect('company_apply_details')
-            
-        elif action == 'reject':
-            # Ensure rejection reason is provided
+        if action == 'reject':
             if not rejection_reason:
                 return HttpResponse("Rejection reason is required.")
             try:
-                # Create an instance of RejectedTender
                 rejected_tender = RejectedTender.objects.create(registration=application, rejection_reason=rejection_reason)
-                # Return a redirect to the same page
                 return redirect('company_apply_details')
             except Exception as e:
                 return HttpResponse(f"Error: {e}")
@@ -468,6 +455,8 @@ def display_company_apply_details(request):
     
     # Render the template with the applications data
     return render(request, 'main/company/tender_application.html', {'applications': applications})
+
+
 
 
 
@@ -612,34 +601,106 @@ def add_product1(request):
 
 
 # prduct details 
-
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseBadRequest
 from .models import Product, Cart
 
-@csrf_exempt
 def product_detail(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
-    
+    try:
+        product = Product.objects.get(pk=product_id)
+    except Product.DoesNotExist:
+        return HttpResponseBadRequest("Invalid product ID")
+
+    # Calculate the number of items in the cart
+    cart_item_count = 0
+    if request.user.is_authenticated:
+        cart_item_count = Cart.objects.filter(user=request.user).count()
+
     if request.method == 'POST':
-        user = request.user  # Assuming user is authenticated
-        quantity = request.POST.get('quantity')
-        price = product.price * int(quantity)
-        
-        # Check if the user already has this product in their cart
-        cart_item = Cart.objects.filter(user=user, product=product).first()
-        
-        if cart_item:
-            # If the item already exists in the cart, update the quantity and price
-            cart_item.quantity += int(quantity)
-            cart_item.price += price
-            cart_item.save()
-        else:
-            # If the item does not exist in the cart, create a new entry
-            cart_item = Cart.objects.create(user=user, product=product, quantity=quantity, price=price)
-        
-        return JsonResponse({'message': 'Item added to cart successfully'})
+        if request.user.is_authenticated:
+            if product.quantity == 0:
+                return HttpResponseBadRequest("Product is out of stock.")
+            else:
+                cart_item, created = Cart.objects.get_or_create(
+                    user=request.user,
+                    product=product,
+                    defaults={'quantity': 1}
+                )
+
+                if created:
+                    return HttpResponse("Product added to the cart")
+                else:
+                    return HttpResponse("Product already in the cart")
+
+    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product, 'cart_item_count': cart_item_count})
+
+
+
+
+
+
+
+# views.py cart irems 
+
+# views.py
+
+from django.shortcuts import render
+from .models import Cart
+
+def view_cart(request):
+    # Retrieve cart items for the current user
+    cart_items = Cart.objects.filter(user=request.user)
     
-    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product})
+    # Calculate total number of items and total price
+    total_items = sum(item.quantity for item in cart_items)
+    total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
+    
+    return render(request, 'main/ecomerce/cart.html', {'cart_items': cart_items, 'total_items': total_items, 'total_price': total_price})
+
+
+# views.py
+
+# views.py
+
+from django.http import JsonResponse
+from .models import Cart
+
+# views.py
+
+# views.py
+
+from django.http import JsonResponse
+from .models import Cart
+
+def update_quantity(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        action = request.POST.get('action')
+        
+        # Retrieve the cart item
+        cart_item = Cart.objects.get(id=item_id)
+        
+        # Perform the action (add or remove)
+        if action == 'add':
+            cart_item.quantity += 1
+        elif action == 'remove':
+            cart_item.quantity -= 1
+        
+        # Save the updated quantity
+        cart_item.save()
+        
+        # Recalculate total price
+        cart_items = Cart.objects.filter(user=request.user)
+        total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
+        
+        # Prepare response data
+        response_data = {
+            'quantity': cart_item.quantity,
+            'total_price': total_price
+        }
+        
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+
 

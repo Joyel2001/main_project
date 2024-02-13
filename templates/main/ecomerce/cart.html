@@ -1,0 +1,104 @@
+{% extends 'main/ecomerce/baseeco.html' %}
+<!DOCTYPE html>
+{% block content %}
+<br><br><br><br>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Shopping Cart</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- Custom CSS -->
+        <style>
+            /* Add your custom styles here */
+            body {
+                padding-top: 20px;
+            }
+            .cart-item {
+                border-bottom: 1px solid #dee2e6;
+                padding: 15px 0;
+            }
+            .cart-item img {
+                max-width: 100px;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="mb-4">Shopping Cart</h1>
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Cart Items -->
+                    {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="cart-item row">
+                        <div class="col-md-3">
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                        </div>
+                        <div class="col-md-5">
+                            <h4>{{ item.product.name }}</h4>
+                            <p>{{ item.product.description }}</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Quantity: <span id="quantity_{{ item.id }}">{{ item.quantity }}</span></p>
+                            <button class="btn btn-sm btn-primary" onclick="updateQuantity('{{ item.id }}', 'add')">+</button>
+                            <button class="btn btn-sm btn-danger" onclick="updateQuantity('{{ item.id }}', 'remove')">-</button>
+                        </div>
+                        <div class="col-md-2">
+                            <p>Price: Rs {{ item.product.selling_price }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p>Your cart is empty.</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <!-- Cart Summary -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cart Summary</h5>
+                            <p class="card-text">Total Items: <span id="total_items">{{ total_items }}</span></p>
+                            <p class="card-text">Total Price: <span id="total_price">Rs {{ total_price }}</span></p>
+                            <a href="#" class="btn btn-primary">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            function updateQuantity(itemId, action) {
+                // Send AJAX request to update quantity
+                $.ajax({
+                    url: '/update_quantity/',
+                    method: 'POST',
+                    data: {
+                        'item_id': itemId,
+                        'action': action,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Update quantity and total price on the page
+                        $('#quantity_' + itemId).text(response.quantity);
+                        $('#total_items').text(response.total_items);
+                        $('#total_price').text('Rs ' + response.total_price.toFixed(2));
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        </script>
+    
+    
+</body>
+</html>
+
+{% endblock content %}
