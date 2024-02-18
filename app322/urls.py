@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import include, path
 from . import views
 
 from .views import *
+
 urlpatterns = [
 path('post_content/', views.post_content, name='post_content'),
 path('all_posts/', all_posts, name='all_posts'),
@@ -28,5 +29,10 @@ path('add_product1/', add_product1, name='add_product1'),
 path('product/<int:product_id>/', views.product_detail, name='product_detail'),
 path('view_cart/', views.view_cart, name='view_cart'),
 path('update_quantity/', views.update_quantity, name='update_quantity'),
+path('students/', StudentListView.as_view(), name='student-list'),
+path('users_lists/', UserListView.as_view(), name='user-list'),
+path('custom_login/', login_view, name='custom_login'),
+path('csrf_token/', csrf_token_view, name='csrf_token'),
+path('paymentform1/', views.paymentform1, name='paymentform1'),
 # path('approve/<int:application_id>/', views.approve_application, name='approve_application'),
 ]

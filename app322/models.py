@@ -264,3 +264,8 @@ class Cart(models.Model):
 
 
     
+from django.db import models
+
+class Student(models.Model):
+    stuname = models.CharField(max_length=100)
+    eemail = models.CharField(max_length=100)  # Corrected typo in max_length

@@ -67,7 +67,7 @@ def all_posts(request):
 # views.py
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Post, Comment, Like  # Import the Like model
@@ -474,13 +474,14 @@ def rejected_tender_details(request):
 # ecomerce_index
 
 from django.shortcuts import render
-
 from django.shortcuts import render
-from .models import Product
+from .models import Product, Subcategory
 
 def ecomerce_index(request):
     products = Product.objects.all()
-    return render(request, 'main/ecomerce/ecomerce_index', {'products': products})
+    subcategories = Subcategory.objects.all()
+    return render(request, 'main\ecomerce\ecomerce_index', {'products': products, 'subcategories': subcategories})
+
 
 
 # add category and sub 
@@ -601,9 +602,7 @@ def add_product1(request):
 
 
 # prduct details 
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseBadRequest
-from .models import Product, Cart
+from django.contrib import messages
 
 def product_detail(request, product_id):
     try:
@@ -616,10 +615,12 @@ def product_detail(request, product_id):
     if request.user.is_authenticated:
         cart_item_count = Cart.objects.filter(user=request.user).count()
 
+    response_message = None  # Initialize response message variable
+
     if request.method == 'POST':
         if request.user.is_authenticated:
             if product.quantity == 0:
-                return HttpResponseBadRequest("Product is out of stock.")
+                response_message = "Product is out of stock."
             else:
                 cart_item, created = Cart.objects.get_or_create(
                     user=request.user,
@@ -628,11 +629,12 @@ def product_detail(request, product_id):
                 )
 
                 if created:
-                    return HttpResponse("Product added to the cart")
+                    response_message = "Product added to the cart"
                 else:
-                    return HttpResponse("Product already in the cart")
+                    response_message = "Product already in the cart"
 
-    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product, 'cart_item_count': cart_item_count})
+    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product, 'cart_item_count': cart_item_count, 'response_message': response_message})
+
 
 
 
@@ -668,10 +670,6 @@ from .models import Cart
 # views.py
 
 # views.py
-
-from django.http import JsonResponse
-from .models import Cart
-
 def update_quantity(request):
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
@@ -689,13 +687,15 @@ def update_quantity(request):
         # Save the updated quantity
         cart_item.save()
         
-        # Recalculate total price
+        # Recalculate total items and total price
         cart_items = Cart.objects.filter(user=request.user)
+        total_items = sum(item.quantity for item in cart_items)
         total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
         
         # Prepare response data
         response_data = {
             'quantity': cart_item.quantity,
+            'total_items': total_items,
             'total_price': total_price
         }
         
@@ -704,3 +704,115 @@ def update_quantity(request):
         return JsonResponse({'error': 'Invalid request method'})
 
 
+
+
+from rest_framework.generics import ListAPIView
+from .models import Student
+from .serializers import StudentSerializer
+
+class StudentListView(ListAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
+
+# views.py
+
+from rest_framework import generics
+from django.contrib.auth.models import User
+from .serializers import UserSerializer
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+# views.py
+# authentication/views.py
+
+from django.http import JsonResponse
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Perform authentication (not implemented here)
+        # You would typically authenticate the user against your database or other authentication backend
+
+        # Dummy authentication for demonstration
+        if username == 'user' and password == 'password':
+            return JsonResponse({'success': True, 'message': 'Login successful'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Invalid credentials'})
+
+    return JsonResponse({'success': False, 'message': 'Only POST requests are allowed'})
+
+
+
+from django.middleware.csrf import get_token
+from django.http import HttpResponse
+
+def csrf_token_view(request):
+    token = get_token(request)
+    return HttpResponse(token)
+
+
+
+
+
+# payment
+from django.conf import settings
+from django.shortcuts import render
+from django.http import HttpRequest
+import razorpay
+
+razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+def paymentform1(request: HttpRequest):
+    currency = 'INR'
+    
+    # Get the amount from the GET request and convert it to a float
+    amount = float(request.GET.get("amount")) * 100  # Convert to float and then multiply by 100
+    
+    # Assuming you have imported your Cart model
+    from .models import Cart
+    
+    # Retrieve the cart items for the current user
+    cart_items = Cart.objects.filter(user=request.user)
+    
+    # Calculate total price
+    total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
+    
+    # Create Razorpay order
+    razorpay_order = razorpay_client.order.create(dict(amount=total_price * 100, currency=currency, payment_capture='0'))
+    razorpay_order_id = razorpay_order['id']
+    callback_url = '/paymenthandler/'
+    context = {}
+    context['razorpay_order_id'] = razorpay_order_id
+    context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
+    context['razorpay_amount'] = total_price  # Pass total price here
+    context['currency'] = currency
+    context['callback_url'] = callback_url
+
+    return render(request, 'main\ecomerce\payment.html', context=context)
+
+
+
+
+# from django.http import JsonResponse
+from .models import Cart
+
+def delete_item(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        try:
+            cart_item = Cart.objects.get(id=item_id)
+            cart_item.delete()
+            # Get updated total items and total price
+            total_items = Cart.objects.filter(user=request.user).count()
+            total_price = sum(item.product.selling_price * item.quantity for item in Cart.objects.filter(user=request.user))
+            return JsonResponse({'success': True, 'total_items': total_items, 'total_price': total_price})
+        except Cart.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Cart item does not exist'})
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method'})

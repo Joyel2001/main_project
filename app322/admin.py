@@ -85,3 +85,7 @@ from .models import Cart
 admin.site.register(Cart)
 
 
+
+from .models import Student
+
+admin.site.register(Student)

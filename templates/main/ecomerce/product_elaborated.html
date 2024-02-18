@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-
+<br>
     <head>
         <meta charset="utf-8">
         <title>ECORECOVER</title>
@@ -150,6 +150,24 @@
 	<p>Design from <a href="https://dribbble.com/shots/5216438-Daily-UI-012">dribbble shot</a> of <a href="https://dribbble.com/rodrigorramos">Rodrigo Ramos</a></p>
 </footer> {% endcomment %}
 <style>
+  .alert {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensure the alert appears above other elements */
+    width: 90%; /* Adjust as needed */
+    padding: 10px;
+    margin-top: 20px; /* Adjust the margin from the top */
+    text-align: center;
+  }
+
+  /* Alert colors */
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
   /* ----- Variables ----- */
 :root {
     --color-primary: #4c4c4c;
@@ -396,3 +414,28 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    
+    <script>
+      // JavaScript function to show alerts
+      function showAlert(message, type) {
+          // Create a new alert element
+          var alertDiv = document.createElement('div');
+          alertDiv.classList.add('alert', 'alert-' + type);
+          alertDiv.textContent = message;
+    
+          // Prepend the alert to the document body
+          document.body.insertBefore(alertDiv, document.body.firstChild);
+    
+          // Remove the alert after 5 seconds
+          setTimeout(function() {
+              alertDiv.remove();
+          }, 5000);
+      }
+    
+      // Check if response_message exists and show it as an alert
+      var responseMessage = "{{ response_message }}";
+      if (responseMessage) {
+          showAlert(responseMessage, "success");  // Change "success" to "danger" or "warning" as per your need
+      }
+    </script>
+    

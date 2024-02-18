@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-r^delmk#e*^c5$$bd2%dx$wcy_4=8hse41$5v1yyw5=1ilc1ku
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1']
 
 
 RAZOR_KEY_ID = 'rzp_test_Ul5agYuKOPazq3'
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.account', # must
     'allauth.socialaccount', # must+
     'allauth.socialaccount.providers.google', 
+    'rest_framework',
     # new
 ]
     
@@ -188,3 +189,10 @@ LOGOUT_REDIRECT_URL = "/"
 
 SOCIALACCOUNT_LOGIN_ON_GET=True
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',  # Corrected spelling here
+        # Other renderer classes if any
+    ],
+    # Other DRF settings if any
+}

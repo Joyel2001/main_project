@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-5u%kjybv=%sm@+i%&oljv_y%&_7=*a=z*jmr6^#@94(br=r)r@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.0.2.2', '127.0.0.1']
 
 
 # Application definition
@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'app32',
     'app322',
+    
     'sass_processor',
+    'rest_framework',
 
     # 'social_django'
     
@@ -125,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 AUTH_USER_MODEL = 'dashboard.CustomUser'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost','10.0.2.2','8000']
 
 
 # Internationalization
