@@ -432,24 +432,12 @@ def companys_profile(request):
 
 from django.shortcuts import render, redirect, HttpResponse
 from .models import CompanyApplyForTender, ApprovedTender, RejectedTender
+from django.shortcuts import render, redirect, HttpResponse
+from .models import CompanyApplyForTender, ApprovedTender, RejectedTender
+from django.shortcuts import render
+from .models import CompanyApplyForTender
 
 def display_company_apply_details(request):
-    if request.method == 'POST':
-        application_id = request.POST.get('application_id')
-        action = request.POST.get('action')
-        rejection_reason = request.POST.get('rejection_reason')
-
-        application = CompanyApplyForTender.objects.get(id=application_id)
-
-        if action == 'reject':
-            if not rejection_reason:
-                return HttpResponse("Rejection reason is required.")
-            try:
-                rejected_tender = RejectedTender.objects.create(registration=application, rejection_reason=rejection_reason)
-                return redirect('company_apply_details')
-            except Exception as e:
-                return HttpResponse(f"Error: {e}")
-
     # Fetch all applications
     applications = CompanyApplyForTender.objects.all()
     
@@ -458,6 +446,47 @@ def display_company_apply_details(request):
 
 
 
+
+from django.shortcuts import render, redirect, HttpResponse
+from .models import CompanyApplyForTender, RejectedTender
+
+def reject_application(request):
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        rejection_reason = request.POST.get('rejection_reason')
+        try:
+            application = CompanyApplyForTender.objects.get(id=application_id)
+            rejected_tender = RejectedTender.objects.create(registration=application, rejection_reason=rejection_reason)
+            # Optionally, you may want to update the application status here.
+            application.rejected = True
+            application.save()
+            return redirect('company_apply_details')  # Redirect to the page showing applications
+        except CompanyApplyForTender.DoesNotExist:
+            return HttpResponse("Application not found.")
+    else:
+        return HttpResponse("Invalid request method.")
+
+
+from django.shortcuts import render, redirect, HttpResponse
+from .models import CompanyApplyForTender, ApprovedTender
+
+def approve_application(request):
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        try:
+            application = CompanyApplyForTender.objects.get(id=application_id)
+            if not application.approved:
+                approved_tender = ApprovedTender.objects.create(registration=application)
+                # Optionally, you may want to update the application status here.
+                application.approved = True
+                application.save()
+                return redirect('company_apply_details')  # Redirect to the page showing applications
+            else:
+                return HttpResponse("Application already approved.")
+        except CompanyApplyForTender.DoesNotExist:
+            return HttpResponse("Application not found.")
+    else:
+        return HttpResponse("Invalid request method.")
 
 
 
@@ -556,44 +585,53 @@ from .models import Product, Subcategory
 
 from django.shortcuts import render, redirect
 from .models import Product,Subcategory
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .models import Product
+from django.contrib.auth.decorators import login_required
 
 from django.shortcuts import render, redirect
-from django.db import IntegrityError
-from .models import Product, Subcategory
-from django.shortcuts import render, redirect
-from .models import Product, Subcategory
-from django.db import IntegrityError
+from django.http import HttpResponse
+from .models import Product
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Product
 
-def add_product1(request):
-    subcategories = Subcategory.objects.all()
+@login_required
+def add_product(request):
     if request.method == 'POST':
-        try:
-            subcategory_id = request.POST.get('subcategory')
-            # Check if the selected subcategory exists
-            if Subcategory.objects.filter(id=subcategory_id).exists():
-                name = request.POST.get('name')
-                description = request.POST.get('description')
-                quantity = request.POST.get('quantity')
-                original_price = request.POST.get('original_price')
-                selling_price = request.POST.get('selling_price')
-                image = request.FILES.get('image')
-                
-                new_product = Product.objects.create(subcategory_id=subcategory_id, name=name, description=description, 
-                                  quantity=quantity, original_price=original_price, selling_price=selling_price, 
-                                  product_image=image)
+        subcategory_id = request.POST.get('subcategory')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        quantity = request.POST.get('quantity')
+        original_price = request.POST.get('original_price')
+        selling_price = request.POST.get('selling_price')
+        image = request.FILES.get('image')
 
-                # Redirect to a success page or homepage
-                return redirect('home')  # Change 'home' to the name of your homepage URL pattern
-            else:
-                # Handle the case where the selected subcategory doesn't exist
-                error_message = "Selected subcategory does not exist."
-                return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'error_message': error_message})
-        except IntegrityError as e:
-            # Handle any IntegrityError exceptions (e.g., database constraint violations)
-            error_message = "An error occurred while adding the product."
-            return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'error_message': error_message})
+        # Assuming the user is logged in and you have access to the user object
+        user = request.user
+
+        product = Product(subcategory_id=subcategory_id, user=user, name=name, 
+                          description=description, quantity=quantity, 
+                          original_price=original_price, selling_price=selling_price,
+                          product_image=image)
+        product.save()
+
+        return render(request, 'main/products/add_product.html', {'message': 'Product added successfully!'})
+    elif request.method == 'GET':
+        # Fetch subcategories from the database or any other source
+        subcategories = Subcategory.objects.all()
+          # Or whatever query you use
+
+        products = Product.objects.all()
+
+        # Render the form template with subcategories and products in the context
+        return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'products': products})
     else:
-        return render(request, 'main/products/add_product.html', {'subcategories': subcategories})
+        return HttpResponse('Method not allowed')
+
+
 
 
 
@@ -706,46 +744,56 @@ def update_quantity(request):
 
 
 
-from rest_framework.generics import ListAPIView
-from .models import Student
-from .serializers import StudentSerializer
+# delete item from cart
+    # views.py
+from django.http import JsonResponse
+from .models import Cart
 
-class StudentListView(ListAPIView):
-    queryset = Student.objects.all()
-    serializer_class = StudentSerializer
+def delete_item(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        
+        # Retrieve the cart item and delete it
+        Cart.objects.filter(id=item_id).delete()
+        
+        return JsonResponse({'success': 'Item deleted successfully'})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
 
 
-# views.py
 
-from rest_framework import generics
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
 
-class UserListView(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+# all_product_details 
+from django.shortcuts import render
+from .models import Product  # Import your Product model
+
+def all_products(request):
+    # Retrieve all products from the database
+    products = Product.objects.all()
+    return render(request, 'main/products/all_products.html', {'products': products})
+
 
 
 # views.py
 # authentication/views.py
 
-from django.http import JsonResponse
+# from django.http import JsonResponse
 
-def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
 
-        # Perform authentication (not implemented here)
-        # You would typically authenticate the user against your database or other authentication backend
+#         # Perform authentication (not implemented here)
+#         # You would typically authenticate the user against your database or other authentication backend
 
-        # Dummy authentication for demonstration
-        if username == 'user' and password == 'password':
-            return JsonResponse({'success': True, 'message': 'Login successful'})
-        else:
-            return JsonResponse({'success': False, 'message': 'Invalid credentials'})
+#         # Dummy authentication for demonstration
+#         if username == 'user' and password == 'password':
+#             return JsonResponse({'success': True, 'message': 'Login successful'})
+#         else:
+#             return JsonResponse({'success': False, 'message': 'Invalid credentials'})
 
-    return JsonResponse({'success': False, 'message': 'Only POST requests are allowed'})
+#     return JsonResponse({'success': False, 'message': 'Only POST requests are allowed'})
 
 
 
@@ -759,12 +807,11 @@ def csrf_token_view(request):
 
 
 
-
-# payment
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest
 import razorpay
+from .models import Cart, Product  # Import the Product model
 
 razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
@@ -774,14 +821,20 @@ def paymentform1(request: HttpRequest):
     # Get the amount from the GET request and convert it to a float
     amount = float(request.GET.get("amount")) * 100  # Convert to float and then multiply by 100
     
-    # Assuming you have imported your Cart model
-    from .models import Cart
-    
     # Retrieve the cart items for the current user
     cart_items = Cart.objects.filter(user=request.user)
     
     # Calculate total price
     total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
+    
+    # Deduct quantity from products and create Razorpay order
+    for item in cart_items:
+        # Retrieve the product
+        product = item.product
+        # Deduct the quantity from the product
+        product.quantity -= item.quantity
+        # Save the updated product
+        product.save()
     
     # Create Razorpay order
     razorpay_order = razorpay_client.order.create(dict(amount=total_price * 100, currency=currency, payment_capture='0'))
@@ -794,7 +847,11 @@ def paymentform1(request: HttpRequest):
     context['currency'] = currency
     context['callback_url'] = callback_url
 
-    return render(request, 'main\ecomerce\payment.html', context=context)
+    return render(request, 'main/ecomerce/payment.html', context=context)
+
+
+
+
 
 
 
@@ -816,3 +873,34 @@ def delete_item(request):
             return JsonResponse({'success': False, 'error': 'Cart item does not exist'})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
+
+# delattr
+    
+    # views.py
+
+
+from django.http import HttpResponseNotAllowed
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful'}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid username or password'}, status=400)
+    else:
+        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)

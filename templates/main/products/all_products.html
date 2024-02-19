@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Add your custom styles here */
+        body {
+            padding-top: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .product-card h3 {
+            color: #333;
+        }
+        .product-card p {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mb-4">All Products</h1>
+    <div class="row">
+        <!-- Loop through products and display each one -->
+        {% for product in products %}
+        <div class="col-md-4">
+            <div class="product-card">
+                <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="img-fluid">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p>Price: Rs {{ product.selling_price }}</p>
+                <button class="btn btn-primary">Add to Cart</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

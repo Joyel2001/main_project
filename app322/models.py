@@ -137,11 +137,11 @@ def tender_closing_within(self):
 
         return formatted_time
 
-
 from django.contrib.auth.models import User
+from django.db import models
 
 class CompanyApplyForTender(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     tender = models.ForeignKey(Tender, on_delete=models.CASCADE)
     application_date = models.DateField(auto_now_add=True)
     
@@ -150,9 +150,14 @@ class CompanyApplyForTender(models.Model):
     license_number = models.CharField(max_length=50)
     nature_of_business = models.CharField(max_length=50)
     legal_entity_type = models.CharField(max_length=50)
+    
+    # Approval status
+    approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username} applied for {self.tender.title} on {self.application_date}"
+
 
 
 class ApprovedTender(models.Model):
@@ -269,3 +274,25 @@ from django.db import models
 class Student(models.Model):
     stuname = models.CharField(max_length=100)
     eemail = models.CharField(max_length=100)  # Corrected typo in max_length
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+class CustomUser(AbstractUser):
+    # Add any additional fields you want for your custom user model here
+    # For example:
+    # bio = models.TextField(max_length=500, blank=True)
+
+    # Provide unique related_name attributes for groups and user_permissions
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name='groups',
+        blank=True,
+        related_name='custom_user_groups'
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name='user permissions',
+        blank=True,
+        related_name='custom_user_permissions'
+    )

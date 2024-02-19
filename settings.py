@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     
     'sass_processor',
     'rest_framework',
-
+    #auth
+    
     # 'social_django'
     
 ]
