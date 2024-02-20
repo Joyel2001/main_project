@@ -68,7 +68,7 @@
                         <div class="navbar-nav mx-auto">
                             <a href="{% url "index" %}" class="nav-item nav-link active">Home</a>
                             
-                            <a href="{% url "all_products" %}" class="nav-item nav-link">Shop Detail</a>
+                            <a href="{% url "all_products" %}" class="nav-item nav-link">Recycled Products</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
@@ -123,11 +123,7 @@
                         <h4 class="mb-3 text-secondary">
                             "100% Recycled Products</h4>
                         <h2 class="mb-5 display-3 text-primary">Shop sustainable style at our recycled product store</h2>
-                        <div class="position-relative mx-auto">
-                            <input class="form-control border-2 border-secondary w-75 py-3 px-4 rounded-pill" type="number" placeholder="Search">
-                            <button type="submit" class="btn btn-primary border-2 border-secondary py-3 px-4 position-absolute rounded-pill text-white h-100" style="top: 0; right: 25%; color: red ;">Submit Now</button>
-
-                        </div>
+                        
                     </div>
                     <div class="col-md-12 col-lg-5">
                         <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">

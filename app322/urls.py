@@ -38,6 +38,7 @@ path('approve/', approve_application, name='approve_application'),
     path('reject/', reject_application, name='reject_application'),
     path('delete_item/', delete_item, name='delete_item'),
      path('all_products/', views.all_products, name='all_products'),
+     path('get-products-by-subcategory/<int:subcategory_id>/', views.get_products_by_subcategory, name='get_products_by_subcategory'),
 # path('approve_tender_application/', views.approve_tender_application, name='approve_tender_application'),
 # path('approve/<int:application_id>/', views.approve_application, name='approve_application'),
 ]

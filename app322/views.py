@@ -765,12 +765,31 @@ def delete_item(request):
 
 # all_product_details 
 from django.shortcuts import render
-from .models import Product  # Import your Product model
+from django.http import JsonResponse
+from .models import Product, Subcategory
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from .models import Product
 
 def all_products(request):
-    # Retrieve all products from the database
     products = Product.objects.all()
-    return render(request, 'main/products/all_products.html', {'products': products})
+    subcategories = Subcategory.objects.all()
+    return render(request, 'main/products/all_products.html', {'products': products, 'subcategories': subcategories})
+
+
+def get_products_by_subcategory(request):
+    subcategory_id = request.GET.get('subcategory_id')
+    if subcategory_id:
+        products = Product.objects.filter(subcategory_id=subcategory_id)
+    else:
+        products = Product.objects.all()
+    data = {
+        'html': render_to_string('main/products/product_list.html', {'products': products})
+    }
+    return JsonResponse(data)
+
+
+
 
 
 

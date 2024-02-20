@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+{% extends 'main/ecomerce/baseeco.html' %}
+{% block content %}
+<br>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,7 +22,7 @@
         }
         .product-card img {
             max-width: 100%;
-            height: auto;
+            height: 200px;
             margin-bottom: 10px;
         }
         .product-card h3 {
@@ -35,6 +37,19 @@
 <div class="container">
     <h1 class="mb-4">All Products</h1>
     <div class="row">
+        <!-- Display subcategories -->
+        <div class="col-md-12">
+            <select id="subcategory-dropdown" class="form-select mb-3">
+                <option value="">All Subcategories</option>
+                <!-- Loop through subcategories -->
+                {% for subcategory in subcategories %}
+                    <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+    </div>
+    <div class="row" id="product-list">
         <!-- Loop through products and display each one -->
         {% for product in products %}
         <div class="col-md-4">
@@ -43,7 +58,7 @@
                 <h3>{{ product.name }}</h3>
                 <p>{{ product.description }}</p>
                 <p>Price: Rs {{ product.selling_price }}</p>
-                <button class="btn btn-primary">Add to Cart</button>
+                <a href="{% url 'product_detail' product_id=product.id %}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Details</a>
             </div>
         </div>
         {% endfor %}
@@ -51,5 +66,41 @@
 </div>
 <!-- Bootstrap JS -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#subcategory-dropdown').change(function(){
+            var subcategoryId = $(this).val();
+            $.ajax({
+                url: '/get_products_by_subcategory/',
+                type: 'GET',
+                data: {
+                    'subcategory_id': subcategoryId
+                },
+                success: function(response){
+                    $('#product-list').empty(); // Clear existing products
+                    $.each(response.products, function(index, product){
+                        // Append each product to the product list
+                        var productHtml = `
+                            <div class="col-md-4">
+                                <div class="product-card">
+                                    <img src="${product.product_image.url}" alt="${product.name}" class="img-fluid">
+                                    <h3>${product.name}</h3>
+                                    <p>${product.description}</p>
+                                    <p>Price: Rs ${product.selling_price}</p>
+                                    <a href="/product_detail/${product.id}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Details</a>
+                                </div>
+                            </div>
+                        `;
+                        $('#product-list').append(productHtml);
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 </body>
+{% endblock%}
 </html>
