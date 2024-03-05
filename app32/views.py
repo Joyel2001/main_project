@@ -1437,3 +1437,44 @@ def user_sub_details(request):
     user_profiles = UserProfile.objects.all()  # Retrieve all user profiles
     return render(request, 'admin\subscription.html', {'user_profiles': user_profiles})
 
+
+
+
+
+# views.py
+
+from django.http import JsonResponse
+from .models import Feedback
+from .serializers import FeedbackSerializer
+
+def feedback_list(request):
+    feedback = Feedback.objects.all()
+    serializer = FeedbackSerializer(feedback, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import UserProfile
+from .serializers import UserProfileSerializer
+
+class UserProfileAPIView(APIView):
+    def get(self, request):
+        profiles = UserProfile.objects.all()
+        serializer = UserProfileSerializer(profiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+
+
+# views.py
+from rest_framework import generics
+from .models import EventBooking
+from .serializers import EventBookingSerializer
+
+class EventBookingList(generics.ListAPIView):
+    queryset = EventBooking.objects.all()
+    serializer_class = EventBookingSerializer
+
+

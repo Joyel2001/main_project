@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from django.urls import path
-from . import views
+from . import views 
 from django.contrib.auth import views as auth_views
 
 
@@ -82,6 +82,6 @@ urlpatterns = [
     # path('handle_payment/', views.handle_payment, name='handle_payment'),
     path('contact_info/', views.contact_info, name='contact_info'),
     path('user_sub_details/', views.user_sub_details, name='user_sub_details'),
-    ]    
-
-    
+    path('api/feedback/', views.feedback_list, name='feedback-list'),
+ path('api/user-profile/', views.UserProfileAPIView.as_view(), name='user_profile'),
+path('api/bookings/', views.EventBookingList.as_view(), name='booking-list'),]

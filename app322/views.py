@@ -770,12 +770,33 @@ from .models import Product, Subcategory
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Product
+from django.db.models import Q
 
 def all_products(request):
     products = Product.objects.all()
     subcategories = Subcategory.objects.all()
     return render(request, 'main/products/all_products.html', {'products': products, 'subcategories': subcategories})
 
+
+
+
+# seacrch
+
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Product, Subcategory
+
+def search_products(request):
+    query = request.GET.get('search')
+    products = Product.objects.filter(name__icontains=query)
+    subcategories = Subcategory.objects.all()
+    return render(request, 'main/products/all_products.html', {'products': products, 'subcategories': subcategories})
+
+
+
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from .models import Product
 
 def get_products_by_subcategory(request):
     subcategory_id = request.GET.get('subcategory_id')
@@ -784,9 +805,10 @@ def get_products_by_subcategory(request):
     else:
         products = Product.objects.all()
     data = {
-        'html': render_to_string('main/products/product_list.html', {'products': products})
+        'products': list(products.values())  # Convert queryset to list of dictionaries
     }
     return JsonResponse(data)
+
 
 
 
@@ -906,20 +928,39 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-@csrf_exempt
-def login_view(request):
+@csrf_exempt 
+def user_loginnn(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        username = data.get('username')
+        email = data.get('username')
         password = data.get('password')
-        
-        user = authenticate(request, username=username, password=password)
-        
+        user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message': 'Login successful'}, status=200)
+            return JsonResponse({'success': True})
         else:
-            return JsonResponse({'error': 'Invalid username or password'}, status=400)
+            # Check if user with given email exists
+            if email and not User.objects.filter(email=email).exists():
+                return JsonResponse({'success': False, 'error': 'User with this email does not exist'}, status=400)
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid password'}, status=400)
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+
+
+from django.http import JsonResponse
+from app32.models import Feedback
+from django.core.serializers import serialize
+
+def feedback_list(request):
+    feedback = Feedback.objects.all()
+    data = serialize('json', feedback)
+    return JsonResponse(data, safe=False)
+
