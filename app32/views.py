@@ -1365,7 +1365,7 @@ from django.shortcuts import render
 from .models import Feedback
 @never_cache
 @login_required(login_url='loginn')
-def feedback_list(request):
+def feedback_lists(request):
     feedback_entries = Feedback.objects.all()  # Retrieve all feedback entries
     return render(request, 'admin/feedback_display/feedback_list.html', {'feedback_entries': feedback_entries})
 

@@ -94,3 +94,15 @@ admin.site.register(Student)
 from .models import Wishlist
 
 admin.site.register(Wishlist)
+
+
+
+from .models import OrderItem
+
+admin.site.register(OrderItem)
+
+
+
+from .models import Order
+
+admin.site.register(Order)

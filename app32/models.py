@@ -235,3 +235,6 @@ class SuperCoin(models.Model):
 
     def __str__(self):
         return f"Super Coins - {self.user.username}"
+
+
+

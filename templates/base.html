@@ -1,150 +1,197 @@
  <!-- userlist/user_list.html -->
 
+
+ <!-- userlist/user_list.html -->
+
  {% load static %}
  <!-- userlist/user_list.html -->
 
  {% load static %}
+ <!DOCTYPE html>
+ <html dir="ltr" lang="en">
+ 
  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords"
-        content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Xtreme lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Xtreme admin lite design, Xtreme admin lite dashboard bootstrap 5 dashboard template">
-    <meta name="description"
-        content="Xtreme Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
-    <meta name="robots" content="noindex,nofollow">
-    <title>EcoRecover</title>
-    <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
-    <!-- Custom CSS -->
-    <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
-    <!-- jQuery and Bootstrap JS -->
-{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> {% endcomment %}
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <!-- Tell the browser to be responsive to screen width -->
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="keywords"
+         content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Xtreme lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Xtreme admin lite design, Xtreme admin lite dashboard bootstrap 5 dashboard template">
+     <meta name="description"
+         content="Xtreme Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
+     <meta name="robots" content="noindex,nofollow">
+     <title>EcoRecover</title>
+     <link rel="canonical" href="https://www.wrappixel.com/templates/xtreme-admin-lite/" />
+     <!-- Favicon icon -->
+     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/images/favicon.png' %}">
+     <!-- Custom CSS -->
+     <link href="{% static 'assets/libs/chartist/dist/chartist.min.css' %}" rel="stylesheet">
+     <!-- Custom CSS -->
+     <link href="{% static 'dist/css/style.min.css' %}" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/6.4.95/css/materialdesignicons.min.css">
 
-    {% comment %} <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> {% endcomment %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
-</head>
-<body>
-  <!-- ============================================================== -->
-  <!-- Preloader - style you can find in spinners.css -->
-  <!-- ============================================================== -->
-  {% comment %} <div class="preloader">
-      <div class="lds-ripple">
-          <div class="lds-pos"></div>
-          <div class="lds-pos"></div>
-      </div>
-  </div> {% endcomment %}
-  <!-- ============================================================== -->
-  <!-- Main wrapper - style you can find in pages.scss -->
-  <!-- ============================================================== -->
-  <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
-      data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
-      <!-- ============================================================== -->
-      <!-- Topbar header - style you can find in pages.scss -->
-      <!-- ============================================================== -->
-      <header class="topbar" data-navbarbg="skin5">
-          <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-              <div class="navbar-header" data-logobg="skin5">
-                  <!-- ============================================================== -->
-                  <!-- Logo -->
-                  <!-- ============================================================== -->
-                  <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
-
-                  <style>
-                      .logo {
-                          display: inline-block;
-                          font-size: 28px;
-                          font-weight: bold;
-                          text-decoration: none;
-                          color: #000; /* Black for "Eco" */
-                      }
-              
-                      .logo em {
-                          color: #777; /* Grey for "Recover" */
-                      }
-                      .col-md-8 {
-                        -webkit-box-flex: 0;
-                        -ms-flex: 0 0 auto;
-                        flex: 0 0 auto;
-                        width: 100%;
-                      }
-                  </style>
-                      <!-- Logo icon -->
-                      <b class="logo-icon">
-                          <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                          <!-- Dark Logo icon -->
-                          
-                      </b>
-                      <!--End Logo icon -->
-                      <!-- Logo text -->
-                      <span class="logo-text">
-                          <!-- dark Logo text -->
-                          <!-- Light Logo text -->
-                      </span>
-                  </a>
-                  <!-- ============================================================== -->
-                  <!-- End Logo -->
-                  <!-- ============================================================== -->
-                  <!-- This is for the sidebar toggle which is visible on mobile only -->
-                  <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
-                          class="ti-menu ti-close"></i></a>
-              </div>
-              <!-- ============================================================== -->
-              <!-- End Logo -->
-              <!-- ============================================================== -->
-              <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
-                  <!-- ============================================================== -->
-                  <!-- toggle and nav items -->
-                  <!-- ============================================================== -->
-                  <ul class="navbar-nav float-start me-auto">
-                      <!-- ============================================================== -->
-                      <!-- Search -->
-                      <!-- ============================================================== -->
-                      <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark"
-                              href="javascript:void(0)"><i class="ti-search"></i></a>
-                          <form class="app-search position-absolute">
-                              <input type="text" class="form-control" placeholder="Search &amp; enter"> <a
-                                  class="srh-btn"><i class="ti-close"></i></a>
-                          </form>
-                      </li>
-                  </ul>
-                  <!-- ============================================================== -->
-                  <!-- Right side toggle and nav items -->
-                  <!-- ============================================================== -->
-                  <ul class="navbar-nav float-end">
-                      <!-- ============================================================== -->
-                      <!-- User profile and search -->
-                      <!-- ============================================================== -->
-                      <li class="nav-item dropdown">
-                          <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
-                          </a>
-                          <ul class="dropdown-menu dropdown-menu-end user-dd animated dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                            <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a>
-                        </ul>
-                        
-                      </li>
-                      <!-- ============================================================== -->
-                      <!-- User profile and search -->
-                      <!-- ============================================================== -->
-                  </ul>
-              </div>
-          </nav>
-      </header>
+     <!-- jQuery and Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+     {% comment %} <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> {% endcomment %}
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+     <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+ <![endif]-->
+ </head>
+ <body>
+   <!-- ============================================================== -->
+   <!-- Preloader - style you can find in spinners.css -->
+   <!-- ============================================================== -->
+   {% comment %} <div class="preloader">
+       <div class="lds-ripple">
+           <div class="lds-pos"></div>
+           <div class="lds-pos"></div>
+       </div>
+   </div> {% endcomment %}
+   <!-- ============================================================== -->
+   <!-- Main wrapper - style you can find in pages.scss -->
+   <!-- ============================================================== -->
+   <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+       data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+       <!-- ============================================================== -->
+       <!-- Topbar header - style you can find in pages.scss -->
+       <!-- ============================================================== -->
+       <header class="topbar" data-navbarbg="skin5">
+           <nav class="navbar top-navbar navbar-expand-md navbar-dark">
+               <div class="navbar-header" data-logobg="skin5">
+                   <!-- ============================================================== -->
+                   <!-- Logo -->
+                   <!-- ============================================================== -->
+                   <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+ 
+                   <style>
+                     body {
+                         font-family: Arial, sans-serif;
+                         background-color: #f4f4f4;
+                         margin: 0;
+                         padding: 0;
+                     }
+                     .container {
+                         max-width: 1200px;
+                         margin: 0 auto;
+                         padding: 20px;
+                         background-color: #fff;
+                         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                     }
+                     h1 {
+                         font-size: 24px;
+                         margin-bottom: 10px;
+                     }
+                     canvas {
+                         max-width: 100%;
+                         height: auto; /* Change height to auto to maintain aspect ratio */
+                     }
+                 
+                     /* Add media queries for responsiveness */
+                     @media (max-width: 768px) {
+                         h1 {
+                             font-size: 18px; /* Adjust font size for smaller screens */
+                         }
+                         .container {
+                             padding: 10px; /* Reduce padding for smaller screens */
+                         }
+                     }
+                       .logo {
+                           display: inline-block;
+                           font-size: 28px;
+                           font-weight: bold;
+                           text-decoration: none;
+                           color: #000; /* Black for "Eco" */
+                       }
+               
+                       .logo em {
+                           color: #777; /* Grey for "Recover" */
+                       }
+                       .col-md-8 {
+                         -webkit-box-flex: 0;
+                         -ms-flex: 0 0 auto;
+                         flex: 0 0 auto;
+                         width: 100%;
+                       }
+                   </style>
+                       <!-- Logo icon -->
+                       <b class="logo-icon">
+                           <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                           <!-- Dark Logo icon -->
+                           
+                       </b>
+                       <!--End Logo icon -->
+                       <!-- Logo text -->
+                       <span class="logo-text">
+                           <!-- dark Logo text -->
+                           <!-- Light Logo text -->
+                       </span>
+                   </a>
+                   <!-- ============================================================== -->
+                   <!-- End Logo -->
+                   <!-- ============================================================== -->
+                   <!-- This is for the sidebar toggle which is visible on mobile only -->
+                   <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                           class="ti-menu ti-close"></i></a>
+               </div>
+               <!-- ============================================================== -->
+               <!-- End Logo -->
+               <!-- ============================================================== -->
+               <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
+                   <!-- ============================================================== -->
+                   <!-- toggle and nav items -->
+                   <!-- ============================================================== -->
+                   <ul class="navbar-nav float-start me-auto">
+                       <!-- ============================================================== -->
+                       <!-- Search -->
+                       <!-- ============================================================== -->
+                       <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark"
+                               href="javascript:void(0)"><i class="ti-search"></i></a>
+                           <form class="app-search position-absolute">
+                               <input type="text" class="form-control" placeholder="Search &amp; enter"> <a
+                                   class="srh-btn"><i class="ti-close"></i></a>
+                           </form>
+                       </li>
+                   </ul>
+                   <!-- ============================================================== -->
+                   <!-- Right side toggle and nav items -->
+                   <!-- ============================================================== -->
+                   <ul class="navbar-nav float-end">
+                       <!-- ============================================================== -->
+                       <!-- User profile and search -->
+                       <!-- ============================================================== -->
+                       <li class="nav-item dropdown">
+                           <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                               <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
+                           </a>
+                           <ul class="dropdown-menu dropdown-menu-end user-dd animated dropdown-menu-right" aria-labelledby="navbarDropdown">
+                             <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+                             <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a>
+                         </ul>
+                         <script>
+                             $(document).ready(function () {
+                                 $('.dropdown-toggle').dropdown();
+                             });
+                           </script>
+                           
+                       </li>
+                       <!-- ============================================================== -->
+                       <!-- User profile and search -->
+                       <!-- ============================================================== -->
+                   </ul>
+               </div>
+           </nav>
+       </header>
        <!-- ============================================================== -->
        <!-- End Topbar header -->
        <!-- ============================================================== -->
@@ -175,17 +222,10 @@
                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_chart' %}" aria-expanded="false">
                              <i class="mdi mdi-view-dashboard"></i>
                              <span class="hide-menu">Dashboard</span>
-                             
                          </a>
                      </li>
-                     
-                     
-                     
-                     
                      {% endif %}
-                     <!-- Assuming you are inside a loop over posts -->
- 
- 
+                     
                      <!-- User Details - Always visible for all users -->
                      {% if  user.is_superuser %}
                      <li class="sidebar-item">
@@ -198,31 +238,55 @@
                      <!-- Event Details - Visible for staff and superuser -->
                      {% if user.is_staff or user.is_superuser %}
                      <li class="sidebar-item">
-                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'event_details_view' %}" aria-expanded="false">
-                             <i class="mdi mdi-border-all"></i>
-                             <span class="hide-menu">Event Details</span>
-                         </a>
-                     </li>
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('eventDetailsSubMenu')">
+                            <i class="mdi mdi-border-all"></i>
+                            <span class="hide-menu">Event Details</span>
+                        </a>
+                        <div id="eventDetailsSubMenu" class="sidebar-submenu" style="display: none;">
+                            <ul class="submenu-list">
+                                <li>
+                                    <a href="{% url 'event_details_view' %}"><i class="mdi mdi-calendar-check"></i> Current Event</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'booking_list' %}"><i class="mdi mdi-calendar-star"></i> Booked Event Details</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <script>
+                        function toggleSubMenu(submenuId) {
+                            var submenu = document.getElementById(submenuId);
+                            if (submenu.style.display === 'block') {
+                                submenu.style.display = 'none';
+                            } else {
+                                submenu.style.display = 'block';
+                            }
+                        }
+                    </script>
+                    
+                    
                      {% endif %}
-                     {% if user.is_staff or user.is_superuser %}
-                     <li class="sidebar-item">
-                         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_list' %}" aria-expanded="false">
-                             <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
-                             <span class="hide-menu">Feedback</span>
-                         </a>
-                     </li>
-                     {% endif %}
- 
+                     <!-- Feedback - Visible for staff and superuser -->
+                    {% if user.is_staff or user.is_superuser %}
+                    <li class="sidebar-item">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'feedback_lists' %}" aria-expanded="false">
+                            <i class="mdi mdi-comment"></i> <!-- mdi-comment is the icon for feedback -->
+                            <span class="hide-menu">Feedback</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
                      
                      <!-- Booked Event Details - Visible for staff and superuser -->
-                     {% if user.is_staff or user.is_superuser %}
+                     {% comment %} {% if user.is_staff or user.is_superuser %}
                      <li class="sidebar-item">
                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'booking_list' %}" aria-expanded="false">
                              <i class="mdi mdi-face"></i>
                              <span class="hide-menu">Booked Event Details</span>
                          </a>
                      </li>
-                     {% endif %}
+                     {% endif %} {% endcomment %}
                      
                      <!-- Bin Details - Visible for staff and superuser -->
                      {% if user.is_staff or user.is_superuser %}
@@ -241,6 +305,12 @@
      </div>
  {% endif %}
  <style>
+    /* Style for the "Feedback" icon */
+.sidebar-item .mdi.mdi-comment {
+    font-size: 20px; /* Adjust the size as needed */
+    color: #FF5722; /* Choose a color that matches your design */
+}
+
      /* Custom styles for submenu list */
  .submenu-list {
      list-style-type: none;
@@ -323,72 +393,65 @@
      </script>
      {% endif %}
      {% if user.is_staff or user.is_superuser %}
-         <!-- Your other content for non-staff/superuser users -->
-         <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "user_sub_details" %}" aria-expanded="false">
-                <i class="mdi mdi-calendar-text"></i>
-                <span class="hide-menu">Subscription Details</span>
-            </a>
-        </li>
+        <!-- Your other content for non-staff/superuser users -->
         <li class="sidebar-item">
-         <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'all_posts' %}" aria-expanded="false">
-             <i class="mdi mdi-message"></i>
-             <span class="hide-menu">Community</span>
-         </a>
-     </li>
-    <!-- Assuming you're using Bootstrap for styling -->
- 
- <!-- Assuming you're using Bootstrap for styling and jQuery -->
- 
- <!-- Assuming you're using Bootstrap for styling and jQuery -->
- 
- <li class="sidebar-item">
-     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" id="toggleTenderMenu" aria-expanded="false">
-         <i class="mdi mdi-file-document"></i>
-         <span class="hide-menu">Tender Application</span>
-     </a>
-     
-     <ul class="nav-second-level" id="tenderMenu" style="display: none;">
-         <li class="sidebar-item">
-             <a class="sidebar-link waves-effect waves-dark" href="{% url 'tender_list' %}">
-                 <i class="mdi mdi-format-list-bulleted"></i>
-                 <span class="hide-menu">Tender List</span>
-             </a>
-         </li>
-         <li class="sidebar-item">
-             <a class="sidebar-link waves-effect waves-dark" href="{% url 'company_apply_details' %}">
-                 <i class="mdi mdi-arrow-right"></i>
-                 <span class="hide-menu">Tender Request</span>
-             </a>
-         </li>
-         <li class="sidebar-item">
-             <a class="sidebar-link waves-effect waves-dark" href="">
-                 <i class="mdi mdi-check"></i>
-                 <span class="hide-menu">Approved Tender</span>
-             </a>
-         </li>
-         <li class="sidebar-item">
-             <a class="sidebar-link waves-effect waves-dark" href="{% url 'rejected_tender_details' %}">
-                 <i class="mdi mdi-close"></i>
-                 <span class="hide-menu">Rejected Tender</span>
-             </a>
-         </li>
-     </ul>
- </li>
- 
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- <script>
-     $(document).ready(function () {
-         $("#toggleTenderMenu").click(function () {
-             $("#tenderMenu").toggle();
-         });
-     });
- </script>
- 
- 
+           <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url "user_sub_details" %}" aria-expanded="false">
+               <i class="mdi mdi-calendar-text"></i>
+               <span class="hide-menu">Subscription Details</span>
+           </a>
+       </li>
+       <li class="sidebar-item">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'all_posts' %}" aria-expanded="false">
+            <i class="mdi mdi-message"></i>
+            <span class="hide-menu">Community</span>
+        </a>
+    </li>
+    <li class="sidebar-item">
+        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('tenderMenu')">
+            <i class="mdi mdi-file-document"></i>
+            <span class="hide-menu">Tender Application</span>
+        </a>
+    </li>
+    <div id="tenderMenu" class="sidebar-submenu" style="display: none;">
+        <ul class="submenu-list">
+            <li>
+                <a href="{% url 'tender_list' %}"><i class="mdi mdi-format-list-bulleted"></i> Tender List</a>
+            </li>
+            <li>
+                <a href="{% url 'company_apply_details' %}"><i class="mdi mdi-arrow-right"></i> Tender Request</a>
+            </li>
+            <li>
+                <a href=""><i class="mdi mdi-check"></i> Approved Tender</a>
+            </li>
+            <li>
+                <a href="{% url "rejected_tender_details" %}"><i class="mdi mdi-close"></i> Rejected Tender</a>
+            </li>
+        </ul>
+    </div>
+    
+    <script>
+        function toggleSubMenu(submenuId) {
+            var submenu = document.getElementById(submenuId);
+            if (submenu.style.display === 'block') {
+                submenu.style.display = 'none';
+            } else {
+                submenu.style.display = 'block';
+            }
+        }
+    </script>
+    
+   <!-- Assuming you're using Bootstrap for styling -->
+
+<!-- Assuming you're using Bootstrap for styling and jQuery -->
+
+<!-- Assuming you're using Bootstrap for styling and jQuery -->
+
+
+
         {% else %}
      <!-- Your other content for non-staff/superuser users -->
-    
+ 
+ 
                      <!-- Booked Bin - Visible for customers -->
                      <li class="sidebar-item">
                          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{% url 'bin_details' user.id %}" aria-expanded="false">
@@ -441,7 +504,7 @@
                              <nav aria-label="breadcrumb">
                                  <ol class="breadcrumb">
                                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                     {% comment %} <li class="breadcrumb-item active" aria-current="page">Dashboard</li> {% endcomment %}
+                                    
                                  </ol>
                              </nav>
                          </div>

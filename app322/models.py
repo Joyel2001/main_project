@@ -313,3 +313,29 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return f"{self.user.username}'s Wishlist - {self.product.name}"
+
+
+from django.db import models
+from django.contrib.auth.models import User
+from app32.models import UserProfile  # Importing UserProfile from app32
+
+from django.db import models
+from django.contrib.auth.models import User
+from app32.models import UserProfile  # Importing UserProfile from app32
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, through='OrderItem')
+    order_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Order {self.id} by {self.user.username}"
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} of {self.product.name} in Order {self.order.id}"
+

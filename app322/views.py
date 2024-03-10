@@ -712,39 +712,64 @@ from .models import Cart
 from django.http import JsonResponse
 from .models import Cart
 
+from django.http import JsonResponse
+from .models import Cart, Order, OrderItem
+from django.db import transaction
+
+@transaction.atomic
 def update_quantity(request):
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         action = request.POST.get('action')
-        
+
         # Retrieve the cart item
         cart_item = Cart.objects.get(id=item_id)
-        
+
         # Get the maximum available quantity for the product
         max_available_quantity = cart_item.product.quantity
-        
+
         # Perform the action (add or remove) if it doesn't exceed the available quantity
         if action == 'add' and cart_item.quantity < max_available_quantity:
             cart_item.quantity += 1
         elif action == 'remove':
             cart_item.quantity -= 1
-        
+
         # Save the updated quantity
         cart_item.save()
-        
+
         # Recalculate total items and total price
         cart_items = Cart.objects.filter(user=request.user)
         total_items = sum(item.quantity for item in cart_items)
         total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
-        
+
         # Prepare response data
         response_data = {
             'quantity': cart_item.quantity,
             'total_items': total_items,
             'total_price': total_price
         }
-        
+
         return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Invalid request method'})
+
+@transaction.atomic
+def checkout(request):
+    if request.method == 'POST':
+        # Retrieve cart items for the current user
+        cart_items = Cart.objects.filter(user=request.user)
+
+        # Create an order for the user
+        order = Order.objects.create(user=request.user)
+
+        # Create order items for each cart item
+        for cart_item in cart_items:
+            OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
+
+        # Clear the cart
+        cart_items.delete()
+
+        return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
@@ -994,14 +1019,14 @@ def user_loginnn(request):
 
 
 
-from django.http import JsonResponse
-from app32.models import Feedback
-from django.core.serializers import serialize
+# from django.http import JsonResponse
+# from app32.models import Feedback
+# from django.core.serializers import serialize
 
-def feedback_list(request):
-    feedback = Feedback.objects.all()
-    data = serialize('json', feedback)
-    return JsonResponse(data, safe=False)
+# def feedback_list(request):
+#     feedback = Feedback.objects.all()
+#     data = serialize('json', feedback)
+#     return JsonResponse(data, safe=False)
 
 
 
