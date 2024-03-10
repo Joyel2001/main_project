@@ -265,8 +265,11 @@ https://www.tooplate.com/view/2125-artxibition
                                 </ul>
                             </li>
                             <li><a href="{% url 'show_events' %}">campaigns and Seminars</a></li> 
-                            <li><a href="{% url "contact_info" %}">Contact</a></li> 
-                            <li><a href="#" id="classify-waste-link">Disposal Methods</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'submit_feedback' user_id=user.id %}">feedback</a></li>
+                        {% endif %}
+                                                    <li><a href="#" id="classify-waste-link">Disposal Methods</a></li>
+                           
                             
                         </ul>        
                         <a class='menu-trigger'>

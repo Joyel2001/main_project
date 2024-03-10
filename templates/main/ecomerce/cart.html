@@ -40,8 +40,7 @@
             {% for item in cart_items %}
             <div class="cart-item row">
                 <div class="col-md-3">
-                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
-                </div>
+                    <img src="{{ item.product.product_image.url }}" alt="{{ item.product.name }}" class="img-fluid">                </div>
                 <div class="col-md-5">
                     <h4>{{ item.product.name }}</h4>
                     <p>{{ item.product.description }}</p>
@@ -71,8 +70,11 @@
                     <h5 class="card-title">Cart Summary</h5>
                     <p class="card-text">Total Items: <span id="total_items">{{ total_items }}</span></p>
                     <p class="card-text">Total Price: <span id="total_price">Rs {{ total_price }}</span></p>
-                    <a href="{% url 'paymentform1' %}?amount={{ total_price }}" class="btn btn-primary">Checkout</a>
-
+                    {% if total_price > 0 %}
+                        <a href="{% url 'paymentform1' %}?amount={{ total_price }}" class="btn btn-primary">Checkout</a>
+                    {% else %}
+                        <p class="text-danger">Payment cannot be performed as the total price is zero.</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -98,45 +100,64 @@
     </div>
   </div>
 </div>
-
-
 <script>
-    function updateQuantity(itemId, action) {
-    // Retrieve the current quantity and maximum stock from the page
-    var currentQuantity = parseInt($('#quantity_' + itemId).text());
-    var maxStock = parseInt('{{ item.product.quantity }}'); // Assuming quantity is a field in your Product model
-
-    // If action is 'add', check if adding 1 exceeds the maximum stock, if so, set quantity to maxStock
-    if (action === 'add' && currentQuantity < maxStock) {
-        currentQuantity += 1;
-    }
-
-    // Send AJAX request to update quantity
-    $.ajax({
-        url: '/update_quantity/',
-        method: 'POST',
-        data: {
-            'item_id': itemId,
-            'action': action,
-            'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        success: function(response) {
-            // Update quantity and total price on the page
-            $('#quantity_' + itemId).text(response.quantity);
-            $('#total_items').text(response.total_items);
-            $('#total_price').text('Rs ' + response.total_price.toFixed(2));
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
+    $(document).ready(function() {
+        // Hide or show the checkout button based on the total price
+        var totalPrice = parseFloat('{{ total_price }}');
+        if (totalPrice > 0) {
+            $('#checkoutBtn').show();
+        } else {
+            $('#checkoutBtn').hide();
         }
     });
-}
 
+    function updateQuantity(itemId, action) {
+        // Retrieve the current quantity and maximum stock from the page
+        var currentQuantity = parseInt($('#quantity_' + itemId).text());
+        var maxStock = parseInt('{{ item.product.quantity }}'); // Assuming quantity is a field in your Product model
+
+        // If action is 'add', check if adding 1 exceeds the maximum stock, if so, show alert
+        if (action === 'add' && currentQuantity >= maxStock) {
+            alert("Sorry, the maximum available quantity is " + maxStock);
+            return;
+        }
+
+        // If action is 'add', check if adding 1 exceeds the maximum stock, if so, set quantity to maxStock
+        if (action === 'add' && currentQuantity < maxStock) {
+            currentQuantity += 1;
+        }
+
+        // Send AJAX request to update quantity
+        $.ajax({
+            url: '/update_quantity/',
+            method: 'POST',
+            data: {
+                'item_id': itemId,
+                'action': action,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                // Update quantity and total price on the page
+                $('#quantity_' + itemId).text(response.quantity);
+                $('#total_items').text(response.total_items);
+                $('#total_price').text('Rs ' + response.total_price.toFixed(2));
+                // Check if total price is greater than zero to show checkout button
+                if (response.total_price > 0) {
+                    $('#checkoutBtn').show();
+                } else {
+                    $('#checkoutBtn').hide();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
 
     function deleteItem(itemId) {
         // Show confirmation modal
         $('#confirmDeleteModal').modal('show');
-        
+
         // Set click event for delete button in the modal
         $('#confirmDeleteBtn').click(function() {
             // Send AJAX request to delete item
@@ -155,13 +176,15 @@
                     console.error(xhr.responseText);
                 }
             });
-            
+
             // Hide the modal
             $('#confirmDeleteModal').modal('hide');
         });
     }
 </script>
 
+      
+   
 
 </body>
 </html>

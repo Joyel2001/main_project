@@ -708,6 +708,10 @@ from .models import Cart
 # views.py
 
 # views.py
+# views.py
+from django.http import JsonResponse
+from .models import Cart
+
 def update_quantity(request):
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
@@ -716,8 +720,11 @@ def update_quantity(request):
         # Retrieve the cart item
         cart_item = Cart.objects.get(id=item_id)
         
-        # Perform the action (add or remove)
-        if action == 'add':
+        # Get the maximum available quantity for the product
+        max_available_quantity = cart_item.product.quantity
+        
+        # Perform the action (add or remove) if it doesn't exceed the available quantity
+        if action == 'add' and cart_item.quantity < max_available_quantity:
             cart_item.quantity += 1
         elif action == 'remove':
             cart_item.quantity -= 1
@@ -740,6 +747,7 @@ def update_quantity(request):
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
 
 
 
@@ -776,6 +784,37 @@ def all_products(request):
     products = Product.objects.all()
     subcategories = Subcategory.objects.all()
     return render(request, 'main/products/all_products.html', {'products': products, 'subcategories': subcategories})
+
+# views.py
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import Wishlist
+
+def add_to_wishlist(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=product_id)
+        user = request.user  # Assuming users are authenticated
+        wishlist, created = Wishlist.objects.get_or_create(user=user, product=product)
+        if created:
+            message = 'Product added to wishlist successfully.'
+        else:
+            message = 'Product already exists in the wishlist.'
+        return JsonResponse({'message': message})
+    else:
+        return JsonResponse({'error': 'Invalid request method.'}, status=400)
+    
+
+
+# page for wishlist 
+    
+# views.py
+from django.shortcuts import render
+from .models import Wishlist
+
+def wishlists(request):
+    # Assuming users are authenticated
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    return render(request, 'main/products/wishlist.html', {'wishlist_items': wishlist_items})
 
 
 
@@ -964,3 +1003,17 @@ def feedback_list(request):
     data = serialize('json', feedback)
     return JsonResponse(data, safe=False)
 
+
+
+
+# views.py
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import Cart
+
+def cart_info(request):
+    if request.user.is_authenticated:
+        cart_item_count = Cart.objects.filter(user=request.user).count()
+    else:
+        cart_item_count = 0
+    return JsonResponse({'cart_item_count': cart_item_count})

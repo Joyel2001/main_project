@@ -1,0 +1,91 @@
+{% extends 'main/ecomerce/baseeco.html' %}
+{% block content %}
+
+<br><br><br>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">My Wishlist</h2>
+    <style>/* Added CSS for wishlist display */
+        .wishlist-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .wishlist-item {
+            width: 300px;
+            margin: 0 20px 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        
+        .wishlist-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-info {
+            display: flex;
+        }
+        
+        .product-image {
+            flex: 0 0 100px;
+            margin-right: 15px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .product-details {
+            flex: 1;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .empty-wishlist {
+            text-align: center;
+            font-style: italic;
+            color: #999;
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+    <div class="wishlist-container">
+        {% if wishlist_items %}
+            {% for item in wishlist_items %}
+                <div class="wishlist-item">
+                    <div class="product-info">
+                        <div class="product-image">
+                            <img src="{{ item.product.product_image.url }}" alt="{{ item.product.name }}">
+                        </div>
+                        <div class="product-details">
+                            <h3>{{ item.product.name }}</h3>
+                            <p class="price">Price: Rs {{ item.product.selling_price }}</p>
+                            <a href="{% url 'product_detail' product_id=item.product.id %}" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-wishlist">Your wishlist is empty.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

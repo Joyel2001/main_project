@@ -84,8 +84,9 @@
                             <a href="#" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 {% if cart_item_count %}
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">{{ cart_item_count }}</span>
-                                <a href="{% url 'view_cart' %}" class="position-relative">
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;" onclick="window.location.href = '{% url "view_cart" %}'">{{ cart_item_count }}</span>
+
+                                
                                 {% endif %}    
                                                         </a>
                             <a href="#" class="my-auto">

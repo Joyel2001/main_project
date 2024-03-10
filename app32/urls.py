@@ -83,5 +83,9 @@ urlpatterns = [
     path('contact_info/', views.contact_info, name='contact_info'),
     path('user_sub_details/', views.user_sub_details, name='user_sub_details'),
     path('api/feedback/', views.feedback_list, name='feedback-list'),
- path('api/user-profile/', views.UserProfileAPIView.as_view(), name='user_profile'),
-path('api/bookings/', views.EventBookingList.as_view(), name='booking-list'),]
+ path('user-profiles/', views.user_profiles, name='user_profiles'),
+ path('api/bookings/', views.EventBookingList.as_view(), name='booking-list'),
+path('all-users-detail/', views.all_users_detail, name='all_users_detail'),
+ path('event-booking-detail/', views.event_booking_detail, name='event_booking_detail'),
+ path('bin-booking-detail/', views.bin_booking_detail, name='bin_booking_detail'),
+]

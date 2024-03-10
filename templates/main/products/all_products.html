@@ -55,12 +55,41 @@
             <a href="{% url 'product_detail' product_id=product.id %}" class="btn border border-secondary rounded-pill px-3 text-primary">
                 <i class="fa fa-eye me-2 text-primary"></i> View Details
             </a>
+            <!-- Heart icon for wishlist -->
+            <button class="btn btn-link add-to-wishlist-btn" data-product-id="{{ product.id }}">
+                <i class="fas fa-heart"></i> Add to Wishlist
+            </button>
         </div>
     </div>
     {% endfor %}
 </div>
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.add-to-wishlist-btn').click(function(event) {
+            event.preventDefault();
+            var productId = $(this).data('product-id');
+            $.ajax({
+                type: 'POST',
+                url: '/add_to_wishlist/' + productId + '/',
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                },
+                success: function(response) {
+                    alert(response.message);
+                    // You can perform further actions here if needed, such as updating UI
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText); // Log any errors to the console
+                    // Handle errors gracefully in your UI
+                }
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const input = document.querySelector('#searchInput');

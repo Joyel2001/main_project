@@ -1478,3 +1478,102 @@ class EventBookingList(generics.ListAPIView):
     serializer_class = EventBookingSerializer
 
 
+# views.py
+
+# views.py
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import UserProfile
+
+def all_users_detail(request):
+    # Retrieve all user profiles
+    profiles = UserProfile.objects.all()
+    # Create a list to store user details
+    users_data = []
+    # Iterate through each user profile and construct a dictionary with user details
+    for profile in profiles:
+        user_data = {
+            'username': profile.user.username,
+            'email': profile.user.email,
+            'address': profile.address,
+            'mobile_number': profile.mobile_number,
+            'subscribed': profile.subscribed,
+            'subscription_expiration': profile.subscription_expiration,
+            'subscription_duration': profile.subscription_duration
+        }
+        users_data.append(user_data)
+    # Return the list of user data as JSON response
+    return JsonResponse(users_data, safe=False)
+
+
+
+
+
+# views.py
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import EventBooking
+
+def event_booking_detail(request):
+    bookings = EventBooking.objects.all()
+    booking_data = []
+    for booking in bookings:
+        booking_data.append({
+            'booking_id': booking.booking_id,
+            'user': booking.user.username,
+            'event': booking.event.name,
+            'attendees': booking.attendees
+        })
+    return JsonResponse(booking_data, safe=False)
+
+
+
+# views.py
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import UserProfile
+
+def user_profiles(request):
+    profiles = UserProfile.objects.all()
+    profile_data = []
+    for profile in profiles:
+        profile_data.append({
+            'username': profile.user.username,
+            'subscribed': profile.subscribed,
+            'subscription_expiration': profile.subscription_expiration,
+            'subscription_duration': profile.subscription_duration
+        })
+    return JsonResponse(profile_data, safe=False)
+
+
+
+
+# views.py
+
+# views.py
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .models import BinBooking
+
+def bin_booking_detail(request):
+    bookings = BinBooking.objects.all()
+    booking_data = []
+    for booking in bookings:
+        booking_data.append({
+            'user': booking.user.username,
+            'bin': booking.bin.bin_name,  # Modify this line
+            'house_number': booking.house_number,
+            'landmark': booking.landmark,
+            'pin_code': booking.pin_code,
+            'bin_size': booking.bin_size,
+            'bin_capacity': booking.bin_capacity,
+            'collection_period': booking.collection_period,
+            'booking_id': booking.booking_id
+        })
+    return JsonResponse(booking_data, safe=False)
+
+

@@ -89,3 +89,8 @@ admin.site.register(Cart)
 from .models import Student
 
 admin.site.register(Student)
+
+
+from .models import Wishlist
+
+admin.site.register(Wishlist)
