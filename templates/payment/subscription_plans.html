@@ -37,6 +37,7 @@
 </head>
 <form method="POST">
   {% csrf_token %}
+  <input type="hidden" name="subscription_plan" id="subscription_plan">
 <div class='wrapper'>
     <div class='package'>
       <div class='name'>Monthly</div>
@@ -249,5 +250,12 @@
           font-size: 1.4rem;
         }
     </style>
-
+    <script>
+      document.querySelectorAll('.subscribe-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+          document.getElementById('subscription_plan').value = this.getAttribute('data-plan');
+        });
+      });
+    </script>
+    
     </html>

@@ -1,0 +1,118 @@
+{% extends 'main/ecomerce/baseeco.html' %}
+{% load static %}
+{% block content %}
+<br><br><br><br>
+<style>
+    /* Custom styling for the search form */
+    .container.mb-4 {
+        margin-top: 20px; /* Add some top margin */
+    }
+
+    .input-group {
+        width: 100%; /* Ensure the input group spans the full width */
+    }
+
+    .form-control {
+        border-radius: 20px 0 0 20px; /* Rounded corners on the left side of the input */
+    }
+
+    .btn-primary {
+        border-radius: 0 20px 20px 0; /* Rounded corners on the right side of the button */
+    }
+
+    /* Optional: Add some padding to the button icon */
+    .btn-primary .fas {
+        margin-right: 5px;
+    }
+
+    /* Optional: Change button hover effect */
+    .btn-primary:hover {
+        background-color: #3c8dbc; /* Change hover background color */
+    }
+</style>
+
+<div class="container mb-4">
+    <form id="searchForm" class="form-inline">
+        <div class="input-group">
+            <input type="text" class="form-control" id="searchInput" placeholder="Search by name">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary mb-2">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row" id="product-list">
+    <!-- Products will be displayed here -->
+    {% for product in products %}
+    <div class="col-md-4 product-card">
+        <div>
+            <img src="{{ product.product_image.url }}" alt="{{ product.name }}" class="img-fluid">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p><img style="height: 10%; width: 10%;" src="{% static 'images/coin/download.jpg' %}" alt="Coin Image"> :  {{ product.selling_price }}</p>
+            <a href="{% url 'redeem_detail' product_id=product.id %}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                <i class="fa fa-eye me-2 text-primary"></i> View Details
+            </a>
+            <!-- Heart icon for wishlist -->
+            <button class="btn btn-link add-to-wishlist-btn" data-product-id="{{ product.id }}">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.add-to-wishlist-btn').click(function(event) {
+            event.preventDefault();
+            var productId = $(this).data('product-id');
+            $.ajax({
+                type: 'POST',
+                url: '/add_to_wishlist/' + productId + '/',
+                dataType: 'json',
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                },
+                success: function(response) {
+                    alert(response.message);
+                    // You can perform further actions here if needed, such as updating UI
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ': ' + xhr.responseText); // Log any errors to the console
+                    // Handle errors gracefully in your UI
+                }
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.querySelector('#searchInput');
+        const products = document.querySelectorAll('.product-card');
+
+        input.addEventListener('input', filterProducts);
+
+        function filterProducts() {
+            const searchTerm = input.value.toLowerCase();
+
+            products.forEach(function (product) {
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+                const productDescription = product.querySelector('p').textContent.toLowerCase();
+
+                if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

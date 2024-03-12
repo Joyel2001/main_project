@@ -705,73 +705,72 @@ def view_cart(request):
 from django.http import JsonResponse
 from .models import Cart
 
-# views.py
-
-# views.py
-# views.py
 from django.http import JsonResponse
-from .models import Cart
+from .models import Cart, Order
 
-from django.http import JsonResponse
-from .models import Cart, Order, OrderItem
-from django.db import transaction
-
-@transaction.atomic
 def update_quantity(request):
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         action = request.POST.get('action')
-
+        
         # Retrieve the cart item
         cart_item = Cart.objects.get(id=item_id)
-
+        
         # Get the maximum available quantity for the product
         max_available_quantity = cart_item.product.quantity
-
+        
         # Perform the action (add or remove) if it doesn't exceed the available quantity
         if action == 'add' and cart_item.quantity < max_available_quantity:
             cart_item.quantity += 1
         elif action == 'remove':
             cart_item.quantity -= 1
-
+        
         # Save the updated quantity
         cart_item.save()
-
+        
         # Recalculate total items and total price
         cart_items = Cart.objects.filter(user=request.user)
         total_items = sum(item.quantity for item in cart_items)
         total_price = sum(item.product.selling_price * item.quantity for item in cart_items)
-
+        
         # Prepare response data
         response_data = {
             'quantity': cart_item.quantity,
             'total_items': total_items,
             'total_price': total_price
         }
-
+        
+        # If the action is 'checkout', create orders
+        if action == 'checkout':
+            try:
+                # Create orders for items in the cart
+                for cart_item in cart_items:
+                    order = Order.objects.create(
+                        user=request.user,
+                        product=cart_item.product,
+                        price=cart_item.product.selling_price * cart_item.quantity,
+                        address=request.user.profile.address  # Assuming user profile has address field
+                    )
+                    order.save()
+                
+                # Clear the cart after creating orders
+                cart_items.delete()
+                response_data['checkout'] = True  # Add a flag to indicate successful checkout
+            except Exception as e:
+                response_data['error'] = str(e)  # Add error message to response data
+        
         return JsonResponse(response_data)
     else:
         return JsonResponse({'error': 'Invalid request method'})
 
-@transaction.atomic
-def checkout(request):
-    if request.method == 'POST':
-        # Retrieve cart items for the current user
-        cart_items = Cart.objects.filter(user=request.user)
 
-        # Create an order for the user
-        order = Order.objects.create(user=request.user)
+# redeem_store_view
+  
 
-        # Create order items for each cart item
-        for cart_item in cart_items:
-            OrderItem.objects.create(order=order, product=cart_item.product, quantity=cart_item.quantity)
 
-        # Clear the cart
-        cart_items.delete()
 
-        return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'error': 'Invalid request method'})
+ 
+
 
 
 
@@ -1083,3 +1082,40 @@ def login_view(request):
             return JsonResponse({'message': 'Invalid Login'}, status=400)
     else:
         return JsonResponse({'message': 'Method Not Allowed'}, status=405)
+
+
+
+
+
+
+def redeem_store_view(request):
+    products = Product.objects.all()
+    subcategories = Subcategory.objects.all()
+    return render(request, 'main/ecomerce/redeem_store.html', {'products': products, 'subcategories': subcategories})
+  
+from django.shortcuts import render, get_object_or_404
+from .models import Product  # Import the Product model or adjust this based on your actual model import path
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from app32.models import SuperCoin
+
+from django.http import JsonResponse
+
+def redeem_detail(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    if request.method == 'POST':
+        user = request.user
+        supercoin = SuperCoin.objects.get_or_create(user=user)[0]
+        if supercoin.coins < product.selling_price:
+            return JsonResponse({'success': False, 'message': "You don't have enough super coins to redeem this product."})
+        else:
+            product.quantity -= 1
+            product.save()
+
+            supercoin.coins -= product.selling_price
+            supercoin.save()
+
+            return JsonResponse({'success': True, 'message': "Product redeemed successfully."})
+
+    # If the request is not POST or if there was an error, render the page with the product details
+    return render(request, 'main/ecomerce/redeem_product_elaborated.html', {'product': product})

@@ -130,21 +130,23 @@ def loggout(request):
 
 #userprofile
 from django.shortcuts import render
-from .models import UserProfile
-
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import UserProfile
+from django.views.decorators.cache import never_cache
+from .models import UserProfile, SuperCoin
 
 @never_cache
 @login_required(login_url='loginn')
 def user_profile_view(request):
     profile = UserProfile.objects.get(user=request.user)
+    super_coin = SuperCoin.objects.get(user=request.user)
     
     context = {
         'profile': profile,
+        'super_coin': super_coin,
     }
     return render(request, 'profile/profile.html', context)
+
+
 
 
 
@@ -1577,3 +1579,36 @@ def bin_booking_detail(request):
     return JsonResponse(booking_data, safe=False)
 
 
+# coins
+
+@login_required
+def subscription_plans(request):
+    user = request.user
+    
+    # Check if the user has a SuperCoin instance, create one if it doesn't exist
+    supercoin, created = SuperCoin.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        subscription_plan = request.POST.get('subscription_plan')  # Assuming subscription plan is sent in the form
+
+        if subscription_plan == 'Monthly':
+            coins_to_add = 100
+        elif subscription_plan == '6 Months':
+            coins_to_add = 300
+        elif subscription_plan == '1 year':
+            coins_to_add = 500
+        else:
+            coins_to_add = 20
+
+        # Update user's SuperCoin balance
+        print(f"Old coins count: {supercoin.coins}")
+        supercoin.coins += coins_to_add
+        print(f"Adding {coins_to_add} coins...")
+        supercoin.save()
+        print(f"New coins count: {supercoin.coins}")
+
+        messages.success(request, f"{coins_to_add} coins added to your account.")
+        return redirect('subscription_plans')  # Redirect to the same page after processing
+
+    # Render the template with the context
+    return render(request, 'payment/subscription_plans.html')

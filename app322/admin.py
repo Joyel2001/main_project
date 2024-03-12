@@ -97,9 +97,9 @@ admin.site.register(Wishlist)
 
 
 
-from .models import OrderItem
+# from .models import OrderItem
 
-admin.site.register(OrderItem)
+# admin.site.register(OrderItem)
 
 
 

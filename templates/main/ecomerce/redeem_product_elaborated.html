@@ -1,0 +1,357 @@
+{% extends 'main/ecomerce/baseeco.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+{% load static %}
+
+        <!-- Navbar End -->
+<br>
+<section class="product">
+  <div class="product__photo">
+      <div class="photo-container">
+          <div class="photo-main">
+              <div class="controls">
+                  
+              </div>
+              <img src="{{ product.product_image.url|default:'https://res.cloudinary.com/john-mantas/image/upload/v1537291846/codepen/delicious-apples/green-apple-with-slice.png' }}" alt="{{ product.name }}">
+          </div>
+      </div>
+  </div>
+  <div class="product__info">
+    
+      <div class="title">
+          <h1>{{ product.name }}</h1>
+          <span>COD: 45999</span>
+          {% if product.quantity == 0 %}
+              <p style="color: red;">Out of Stock</p>
+          {% elif product.quantity > 0 and product.quantity <= 4 %}
+              <p style="color: orange;">Limited stock available</p>
+          {% else %}
+              <p style="color: green;">In Stock</p>
+          {% endif %}
+      </div>
+      <h3>Ratings</h3>
+      <div class="price">
+        <img style="height: 10%; width: 10%;" src="{% static 'images/coin/download.jpg' %}" alt="Coin Image"> <span>{{ product.selling_price }}</span>
+      </div>
+      <div class="description">
+          <h3>Product Description</h3>
+          <ul>
+              <li><p>{{ product.description }}</p></li>
+          </ul>
+        </div>
+        {% if response_message %}
+        <p style="background-color: green; color: white; padding: 10px; border-top-left-radius: 10px;border-bottom-left-radius: 10px;">{{ response_message }}</p>
+        {% endif %}
+        {% if product.quantity > 0 %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="buy--btn">Redeem Now </button>
+        </form>
+        {% endif %}
+        </div>
+        
+</section>
+
+
+
+
+{% comment %} <footer>
+	<p>Design from <a href="https://dribbble.com/shots/5216438-Daily-UI-012">dribbble shot</a> of <a href="https://dribbble.com/rodrigorramos">Rodrigo Ramos</a></p>
+</footer> {% endcomment %}
+<style>
+  .alert {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Ensure the alert appears above other elements */
+    width: 90%; /* Adjust as needed */
+    padding: 10px;
+    margin-top: 20px; /* Adjust the margin from the top */
+    text-align: center;
+  }
+
+  /* Alert colors */
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  /* ----- Variables ----- */
+:root {
+    --color-primary: #4c4c4c;
+    --color-secondary: #a6a6a6;
+    --color-highlight: #ff3f40;
+  }
+  
+  /* ----- Global ----- */
+  * {
+    box-sizing: border-box;
+  }
+  
+  html,
+  body {
+    height: 100%;
+  }
+  
+  body {
+    display: grid;
+    grid-template-rows: 1fr;
+    font-family: "Raleway", sans-serif;
+    background-color: #d8f2df;
+  }
+  
+  h3 {
+    font-size: 0.7em;
+    letter-spacing: 1.2px;
+    color: var(--color-secondary);
+  }
+  
+  img {
+    max-width: 100%;
+    filter: drop-shadow(1px 1px 3px var(--color-secondary));
+  }
+  
+  /* ----- Product Section ----- */
+  .product {
+    display: grid;
+    grid-template-columns: 0.9fr 1fr;
+    margin: auto;
+    padding: 2.5em 0;
+    min-width: 600px;
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  /* ----- Photo Section ----- */
+  .product__photo {
+    position: relative;
+  }
+  
+  .photo-container {
+    position: absolute;
+    left: -2.5em;
+    display: grid;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    box-shadow: 4px 4px 25px -2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .photo-main {
+    border-radius: 6px 6px 0 0;
+    background: radial-gradient(#e5f89e, white);
+  }
+  
+  .photo-main .controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8em;
+    color: #fff;
+  }
+  
+  .photo-main .controls i {
+    cursor: pointer;
+  }
+  
+  .photo-main .photo-wrapper {
+    position: relative;
+    padding-top: 40%; /* Adjust this value to control the aspect ratio */
+  }
+  
+  .photo-main img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 550px;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: saturate(150%) contrast(120%) hue-rotate(10deg) drop-shadow(1px 20px 10px rgba(0, 0, 0, 0.3));
+  }
+  
+  
+  .photo-album {
+    padding: 0.7em 1em;
+    border-radius: 0 0 6px 6px;
+    background-color: white;
+  }
+  
+  .photo-album ul {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .photo-album li {
+    float: left;
+    width: 55px;
+    height: 55px;
+    padding: 7px;
+    border: 1px solid var(--color-secondary);
+    border-radius: 3px;
+  }
+  
+  /* ----- Informations Section ----- */
+  .product__info {
+    padding: 0.8em 0;
+  }
+  
+  .title h1 {
+    margin-bottom: 0.1em;
+    color: var(--color-primary);
+    font-size: 1.5em;
+    font-weight: 900;
+  }
+  
+  .title span {
+    font-size: 0.7em;
+    color: var(--color-secondary);
+  }
+  
+  .price {
+    margin: 1.5em 0;
+    color: var(--color-highlight);
+    font-size: 1.2em;
+  }
+  
+  .price span {
+    padding-left: 0.15em;
+    font-size: 2.9em;
+  }
+  
+  .variant {
+    overflow: auto;
+  }
+  
+  .variant h3 {
+    margin-bottom: 1.1em;
+  }
+  
+  .variant li {
+    float: left;
+    width: 35px;
+    height: 35px;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .variant li:first-child,
+  .variant li:hover {
+    border: 1px solid var(--color-secondary);
+  }
+  
+  .variant li:not(:first-child) {
+    margin-left: 0.1em;
+  }
+  
+  .description {
+    clear: left;
+    margin: 2em 0;
+  }
+  
+  .description h3 {
+    margin-bottom: 1em;
+  }
+  
+  .description ul {
+    font-size: 0.8em;
+    list-style: disc;
+    margin-left: 1em;
+  }
+  
+  .description li {
+    text-indent: -0.6em;
+    margin-bottom: 0.5em;
+  }
+  
+  .buy--btn {
+    padding: 1.5em 3.1em;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    color: #fff;
+    background-color: var(--color-highlight);
+    box-shadow: 2px 2px 25px -7px var(--color-primary);
+    cursor: pointer;
+  }
+  
+  .buy--btn:active {
+    transform: scale(0.97);
+  }
+  
+  /* ----- Footer Section ----- */
+  footer {
+    padding: 1em;
+    text-align: center;
+    color: #fff;
+  }
+  
+  footer a {
+    color: var(--color-primary);
+  }
+  
+  footer a:hover {
+    color: var(--color-highlight);
+  }
+  
+
+</style>
+  <!-- JavaScript Libraries -->
+    <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    
+    <!-- Include Bootstrap JS -->
+    <script src="{% static 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js' %}"></script>
+    
+    <!-- Include Easing library -->
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    
+    <!-- Include Waypoints library -->
+    <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+    
+    <!-- Include Lightbox library -->
+    <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+    
+    <!-- Include Owl Carousel library -->
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    
+    <script>
+       // JavaScript function to show alerts
+    function showAlert(message, type) {
+      // Create a new alert element
+      var alertDiv = document.createElement('div');
+      alertDiv.classList.add('alert', 'alert-dismissible', 'fade', 'show', 'position-fixed', 'top-0', 'start-50', 'translate-middle-x');
+      alertDiv.innerHTML = `
+          <div class="alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x" role="alert">
+              <strong>${type.charAt(0).toUpperCase() + type.slice(1)}!</strong> ${message}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      `;
+
+      // Append the alert to the document body
+      document.body.appendChild(alertDiv);
+
+      // Automatically close the alert after 5 seconds
+      setTimeout(function() {
+          alertDiv.remove();
+      }, 5000);
+  }
+
+  // Check if response_message exists and show it as an alert
+  var responseMessage = "{{ response_message }}";
+  if (responseMessage) {
+      showAlert(responseMessage, "success");  // Change "success" to "danger" or "warning" as per your need
+  }
+    </script>
+    
+{% endblock  %}

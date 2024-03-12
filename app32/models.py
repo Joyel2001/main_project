@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     subscribed=models.BooleanField(default=False)
     subscription_expiration = models.DateField(null=True, blank=True)
     subscription_duration = models.PositiveIntegerField(default=0)
+    
 
     def __str__(self):
         return self.user.username
@@ -225,16 +226,24 @@ class Feedback(models.Model):
 
 
 # coin
-    
 from django.db import models
 from django.contrib.auth.models import User
 
 class SuperCoin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    coins = models.IntegerField(default=0)
+    coins = models.IntegerField(default=300)
 
     def __str__(self):
         return f"Super Coins - {self.user.username}"
+
+    @classmethod
+    def get_or_create(cls, user):
+        supercoin, created = cls.objects.get_or_create(user=user)
+        if created:
+            supercoin.coins = 0  # Initialize coins count to zero for new instances
+            supercoin.save()
+        return supercoin, created
+
 
 
 

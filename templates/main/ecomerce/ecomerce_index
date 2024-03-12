@@ -74,6 +74,8 @@
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="{% url "view_cart" %}" class="dropdown-item">Cart</a>
                                     <a href="{% url "wishlist" %}" class="dropdown-item">Wishlist</a>
+                                    <a href="{% url "redeem_store_view" %}" class="dropdown-item">Redeem store</a>
+
                                     
                                 </div>
                             </div>
