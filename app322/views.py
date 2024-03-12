@@ -1042,3 +1042,44 @@ def cart_info(request):
     else:
         cart_item_count = 0
     return JsonResponse({'cart_item_count': cart_item_count})
+
+
+
+
+
+
+# comunity forum
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Post
+
+@csrf_exempt
+def get_posts(request):
+    if request.method == 'GET':
+        posts = Post.objects.all()
+        data = [{'title': post.title, 'content': post.content, 'image_url': post.image.url} for post in posts]
+        return JsonResponse(data, safe=False)
+
+
+
+
+
+# login 
+
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+
+def login_view(request):
+    if request.method == "POST":
+        email = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Success'})
+        else:
+            return JsonResponse({'message': 'Invalid Login'}, status=400)
+    else:
+        return JsonResponse({'message': 'Method Not Allowed'}, status=405)
