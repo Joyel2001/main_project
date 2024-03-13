@@ -319,17 +319,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from app32.models import UserProfile  # Importing UserProfile from app32
 
-from django.db import models
-from django.contrib.auth.models import User
-
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,default=0)
-    price = models.DecimalField(max_digits=10, decimal_places=2,default=0)
-    address = models.CharField(max_length=255,default=0)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, default=0)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    address = models.CharField(max_length=255, default=0)
     date_of_booking = models.DateTimeField(auto_now_add=True)
+    quantity = models.IntegerField(default=1)  # Adding quantity field
 
     def __str__(self):
-        return f"Order for {self.product.product_name} by {self.user.username}"
+        return f"Order for {self.product.name} ({self.quantity} units) by {self.user.username}"
+
+
 
 

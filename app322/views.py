@@ -1093,29 +1093,69 @@ def redeem_store_view(request):
     subcategories = Subcategory.objects.all()
     return render(request, 'main/ecomerce/redeem_store.html', {'products': products, 'subcategories': subcategories})
   
-from django.shortcuts import render, get_object_or_404
-from .models import Product  # Import the Product model or adjust this based on your actual model import path
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from app32.models import SuperCoin
-
+from .models import Product, Order
+from app32.models import SuperCoin, UserProfile
 from django.http import JsonResponse
 
 def redeem_detail(request, product_id):
-    product = Product.objects.get(pk=product_id)
+    product = get_object_or_404(Product, pk=product_id)
+
     if request.method == 'POST':
         user = request.user
         supercoin = SuperCoin.objects.get_or_create(user=user)[0]
+
         if supercoin.coins < product.selling_price:
             return JsonResponse({'success': False, 'message': "You don't have enough super coins to redeem this product."})
+        elif product.quantity < 1:
+            return JsonResponse({'success': False, 'message': "Sorry, this product is out of stock."})
         else:
+            try:
+                user_profile = UserProfile.objects.get(user=user)
+                address = user_profile.address
+            except UserProfile.DoesNotExist:
+                address = ""
+
+            order = Order.objects.create(
+                user=user,
+                product=product,
+                price=product.selling_price,
+                address=address,
+                quantity=1  # Set the quantity to 1 for now, adjust as necessary
+            )
+
             product.quantity -= 1
             product.save()
 
             supercoin.coins -= product.selling_price
             supercoin.save()
 
-            return JsonResponse({'success': True, 'message': "Product redeemed successfully."})
+            messages.success(request, "Product redeemed successfully.")
 
-    # If the request is not POST or if there was an error, render the page with the product details
+            return redirect('redeem_detail', product_id=product_id)
+
     return render(request, 'main/ecomerce/redeem_product_elaborated.html', {'product': product})
+
+
+
+
+# order_page 
+from django.shortcuts import render
+from .models import Order
+
+def order_page(request):
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(user=request.user)
+    else:
+        orders = None
+    return render(request, 'main/ecomerce/order_page.html', {'orders': orders})
+
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Order
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, pk=order_id)
+    return render(request, 'main/ecomerce/oder_detail.html', {'order': order})
