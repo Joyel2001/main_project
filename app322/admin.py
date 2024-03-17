@@ -106,3 +106,7 @@ admin.site.register(Wishlist)
 from .models import Order
 
 admin.site.register(Order)
+
+
+from.models import ProductReview
+admin.site.register(ProductReview)

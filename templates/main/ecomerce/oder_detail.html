@@ -1,3 +1,6 @@
+
+
+
 {% load static %}
 <head>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -6,6 +9,7 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
 </head>
+
 <div class="container-fluid my-5 d-sm-flex justify-content-center">
     <div class="card px-2">
         <div class="card-header bg-white">
@@ -29,6 +33,7 @@
                 </div> <img class="align-self-center img-fluid" src="{{ order.product.product_image.url }}" width="180" height="180">
             </div>
         </div>
+        
         {% comment %} <div class="row px-3">
             <div class="col">
                 <ul id="progressbar" >

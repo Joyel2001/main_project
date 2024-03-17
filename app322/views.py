@@ -1159,3 +1159,21 @@ from .models import Order
 def order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
     return render(request, 'main/ecomerce/oder_detail.html', {'order': order})
+
+
+
+from django.http import JsonResponse
+from .models import ProductReview
+
+def submit_review(request):
+    if request.method == 'POST':
+        product_id = request.POST.get('product')
+        review_text = request.POST.get('review')
+
+        # Save the review to the database
+        review = ProductReview(product_id=product_id, comment=review_text)
+        review.save()
+
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({'error': 'Invalid request method'})

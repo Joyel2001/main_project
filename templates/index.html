@@ -10,8 +10,10 @@
     <meta name="author" content="Tooplate">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
-    <title>EcoRecover</title>                               
-
+    <title>EcoRecover</title>   
+    
+    {% comment %} alan ai {% endcomment %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
@@ -23,6 +25,8 @@
     <link rel="stylesheet" href="{% static 'css/tooplate-artxibition.css' %}">
 <!--
  
+
+    
 Tooplate 2125 ArtXibition
 
 https://www.tooplate.com/view/2125-artxibition
@@ -502,7 +506,20 @@ https://www.tooplate.com/view/2125-artxibition
         </div>
     </div>
 </div>
-    
+<div class="alan-btn"></div>
+<script type="text/javascript"
+ src="https://studio.alan.app/web/lib/alan_lib.min.js"></script>
+<script>
+  var alanBtnInstance = alanBtn({
+    key: "a631b7ca63d2e4e620b614e1fc9fe7f82e956eca572e1d8b807a3e2338fdd0dc/stage",
+    onCommand: function (commandData) {
+      if (commandData.command === "go:back") {
+        //call client code that will react on the received command
+      }
+    },
+    rootEl: document.getElementById("alan-btn"),
+  });
+</script>
     <!-- ***** Main Banner Area End ***** -->
 
     <!-- *** Owl Carousel Items ***-->

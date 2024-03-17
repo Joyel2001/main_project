@@ -1,33 +1,39 @@
 {% extends 'main/ecomerce/baseeco.html' %}
 {% load static %}
 {% block content %}
-<br><br><br><br>
 <style>
-    /* Custom styling for the search form */
     .container.mb-4 {
-        margin-top: 20px; /* Add some top margin */
+        margin-top: 20px;
     }
 
     .input-group {
-        width: 100%; /* Ensure the input group spans the full width */
+        width: 100%;
     }
 
     .form-control {
-        border-radius: 20px 0 0 20px; /* Rounded corners on the left side of the input */
+        border-radius: 20px 0 0 20px;
     }
 
     .btn-primary {
-        border-radius: 0 20px 20px 0; /* Rounded corners on the right side of the button */
+        border-radius: 0 20px 20px 0;
+        background-color: #3c8dbc;
+        border-color: #3c8dbc;
     }
 
-    /* Optional: Add some padding to the button icon */
-    .btn-primary .fas {
-        margin-right: 5px;
-    }
-
-    /* Optional: Change button hover effect */
     .btn-primary:hover {
-        background-color: #3c8dbc; /* Change hover background color */
+        background-color: #357ca5;
+        border-color: #357ca5;
+    }
+
+    .product-card {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
 </style>
 
@@ -45,7 +51,6 @@
 </div>
 
 <div class="row" id="product-list">
-    <!-- Products will be displayed here -->
     {% for product in products %}
     <div class="col-md-4 product-card">
         <div>
@@ -56,7 +61,6 @@
             <a href="{% url 'redeem_detail' product_id=product.id %}" class="btn border border-secondary rounded-pill px-3 text-primary">
                 <i class="fa fa-eye me-2 text-primary"></i> View Details
             </a>
-            <!-- Heart icon for wishlist -->
             <button class="btn btn-link add-to-wishlist-btn" data-product-id="{{ product.id }}">
                 <i class="fas fa-heart"></i>
             </button>
@@ -64,7 +68,6 @@
     </div>
     {% endfor %}
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -81,11 +84,9 @@
                 },
                 success: function(response) {
                     alert(response.message);
-                    // You can perform further actions here if needed, such as updating UI
                 },
                 error: function(xhr, errmsg, err) {
-                    console.log(xhr.status + ': ' + xhr.responseText); // Log any errors to the console
-                    // Handle errors gracefully in your UI
+                    console.log(xhr.status + ': ' + xhr.responseText);
                 }
             });
         });
@@ -105,11 +106,7 @@
                 const productName = product.querySelector('h3').textContent.toLowerCase();
                 const productDescription = product.querySelector('p').textContent.toLowerCase();
 
-                if (productName.includes(searchTerm) || productDescription.includes(searchTerm)) {
-                    product.style.display = 'block';
-                } else {
-                    product.style.display = 'none';
-                }
+                product.style.display = (productName.includes(searchTerm) || productDescription.includes(searchTerm)) ? 'block' : 'none';
             });
         }
     });

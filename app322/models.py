@@ -333,3 +333,19 @@ class Order(models.Model):
 
 
 
+from django.db import models
+from django.contrib.auth.models import User  # If you want to associate reviews with users
+from .models import Product  # Import your Product model
+
+class ProductReview(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # If you want to associate reviews with users
+    rating = models.IntegerField(default=5)  # Example field for rating
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']  # Order reviews by creation date, newest first
+
+    def __str__(self):
+        return f"Review for {self.product.name} by {self.user.username}"
