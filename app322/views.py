@@ -589,14 +589,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Product
 from django.contrib.auth.decorators import login_required
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Product
+from .models import Product, Subcategory  # Import the Subcategory model
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from django.http import HttpResponse
-from .models import Product
 
 @login_required
 def add_product(request):
@@ -618,19 +614,21 @@ def add_product(request):
                           product_image=image)
         product.save()
 
-        return render(request, 'main/products/add_product.html', {'message': 'Product added successfully!'})
-    elif request.method == 'GET':
-        # Fetch subcategories from the database or any other source
-        subcategories = Subcategory.objects.all()
-          # Or whatever query you use
+        # Fetch updated list of products after adding the new product
+        products = Product.objects.all()
 
+        return render(request, 'main/products/add_product.html', {'message': 'Product added successfully!', 'products': products})
+    elif request.method == 'GET':
+        # Fetch subcategories from the database
+        subcategories = Subcategory.objects.all()
+
+        # Fetch products
         products = Product.objects.all()
 
         # Render the form template with subcategories and products in the context
         return render(request, 'main/products/add_product.html', {'subcategories': subcategories, 'products': products})
     else:
         return HttpResponse('Method not allowed')
-
 
 
 
@@ -1152,13 +1150,33 @@ def order_page(request):
     return render(request, 'main/ecomerce/order_page.html', {'orders': orders})
 
 
-
 from django.shortcuts import render, get_object_or_404
-from .models import Order
+from django.contrib import messages  # Import messages module for displaying alerts
+from .models import Order, ProductReview
 
 def order_detail(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
+    
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        comment = request.POST.get('comment')
+        rating = request.POST.get('rating')  # Retrieve rating from form input
+
+        # Save the review to the database
+        product_review = ProductReview.objects.create(
+            product_id=product_id,
+            user=request.user,  # Assuming you have authentication and each user can submit one review
+            rating=rating,
+            comment=comment
+        )
+        
+        # Display success message
+        messages.success(request, 'Your feedback has been successfully added.')
+        # Render the same page with the success message
+        return render(request, 'main/ecomerce/oder_detail.html', {'order': order})
+    
     return render(request, 'main/ecomerce/oder_detail.html', {'order': order})
+
 
 
 
@@ -1177,3 +1195,47 @@ def submit_review(request):
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'error': 'Invalid request method'})
+
+
+
+
+# recyclable collectrion
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import CollectionRequest
+
+@login_required
+def collection_request_form(request):
+    success = False
+    if request.method == 'POST':
+        recyclable_type = request.POST.get('recyclable_type')
+        location = request.POST.get('location')
+        collection_date = request.POST.get('collection_date')
+        
+        # Get the current logged-in user
+        user = request.user
+        
+        # Create a new CollectionRequest object and save it to the database
+        new_request = CollectionRequest.objects.create(
+            user=user,
+            recyclable_type=recyclable_type,
+            location=location,
+            collection_date=collection_date
+        )
+        
+        success = True
+        
+    return render(request, 'main/recyclables/recycle.html', {'success': success})
+
+
+
+# admin_view 
+
+# views.py
+from django.shortcuts import render
+from .models import CollectionRequest
+
+def collection_request_list(request):
+    collection_requests = CollectionRequest.objects.all()
+    return render(request, 'admin/recyclable.html', {'collection_requests': collection_requests})
+

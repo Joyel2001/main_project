@@ -349,3 +349,17 @@ class ProductReview(models.Model):
 
     def __str__(self):
         return f"Review for {self.product.name} by {self.user.username}"
+
+
+
+from django.db import models
+from django.contrib.auth.models import User
+
+class CollectionRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recyclable_type = models.CharField(max_length=100)
+    location = models.CharField(max_length=255)
+    collection_date = models.CharField(max_length=50)  # You can use DateField if you want to store dates as date objects
+
+    def __str__(self):
+        return f"Collection Request for {self.recyclable_type} at {self.location} on {self.collection_date} by {self.user.username}"

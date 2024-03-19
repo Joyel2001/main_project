@@ -110,3 +110,7 @@ admin.site.register(Order)
 
 from.models import ProductReview
 admin.site.register(ProductReview)
+
+
+from.models import CollectionRequest
+admin.site.register(CollectionRequest)

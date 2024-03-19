@@ -1,3 +1,4 @@
+
 <!-- userlist/user_list.html -->
 
 {% load static %}
@@ -64,7 +65,7 @@
                   <!-- ============================================================== -->
                   <!-- Logo -->
                   <!-- ============================================================== -->
-                  <a href="{% url 'index' %}" class="logo">Eco<em>Recover</em></a>
+                  <a href="{% url 'company_index' %}" class="logo">Eco<em>Recover</em></a>
 
                   <style>
                     body {
@@ -167,7 +168,7 @@
                               <img src="{% static 'images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg' %}" alt="user" class="rounded-circle" width="31">
                           </a>
                           <ul class="dropdown-menu dropdown-menu-end user-dd animated dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'user_profile_view' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
+                            <a class="dropdown-item" href="{% url 'companys_profile' %}"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
                             <a class="dropdown-item" href="{% url 'loggout' %}"><i class="ti-wallet m-r-5 m-l-5"></i> Logout</a>
                         </ul>
                         <script>
@@ -368,12 +369,7 @@
                 <span class="hide-menu">Add Product</span>
             </a>
         </li>
-        <li class="sidebar-item">
-            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
-                <i class="mdi mdi-alert"></i> <!-- Icon for Out of Stock Products -->
-                <span class="hide-menu">Product List Out of Stock</span>
-            </a>
-        </li>
+        
     </ul>
 </li>
 
@@ -430,6 +426,8 @@
               <div class="col-md-8">
                   <div class="card">
                       <div class="card-body">
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -528,11 +526,14 @@
 
     <!-- Modal -->
     <div id="addProductModal">
-        <form method="post" action="{% url 'add_product1' %}" enctype="multipart/form-data">
+        <form id="addProductForm" method="post" action="{% url 'add_product1' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <label for="subcategory">Subcategory:</label>
             <select name="subcategory" id="subcategory" required>
+                <option value="" disabled selected>Select subcategory</option>
+
                 {% for subcategory in subcategories %}
+
                     <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
                 {% endfor %}
             </select>
@@ -544,19 +545,19 @@
             <textarea name="description" id="description" required></textarea>
             <br>
             <label for="quantity">Quantity:</label>
-            <input type="number" name="quantity" id="quantity" required>
+            <input type="number" name="quantity" id="quantity" min="1" required>
             <br>
             <label for="original_price">Original Price:</label>
-            <input type="number" name="original_price" id="original_price" required>
+            <input type="number" name="original_price" id="original_price" min="0" required>
             <br>
             <label for="selling_price">Selling Price:</label>
-            <input type="number" name="selling_price" id="selling_price" required>
+            <input type="number" name="selling_price" id="selling_price" min="0" required>
             <br>
             <label for="image">Image:</label>
             <input type="file" name="image" id="image" accept="image/*" required>
             <br>
-            <button type="submit">Submit</button>
-</form>
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
     </div>
 
     <!-- JavaScript to handle modal display -->
@@ -564,22 +565,32 @@
         document.getElementById('addProductButton').addEventListener('click', function() {
             document.getElementById('addProductModal').style.display = 'block';
         });
-    </script>
-    <script>
-        // Check if the message variable is defined in the template context
-        {% if message %}
-            // Display the message as an alert
-            alert("{{ message }}");
     
-            // After 2 seconds, hide the alert
-            setTimeout(function(){
-                // Find all alert boxes and hide them
-                var alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function(alert) {
-                    alert.style.display = 'none';
-                });
-            }, 2000); // 2000 milliseconds = 2 seconds
-        {% endif %}
+        // Function to validate form fields before submission
+        document.getElementById('submitBtn').addEventListener('click', function(event) {
+            var name = document.getElementById('name').value;
+            var description = document.getElementById('description').value;
+            var quantity = document.getElementById('quantity').value;
+            var originalPrice = document.getElementById('original_price').value;
+            var sellingPrice = document.getElementById('selling_price').value;
+            var image = document.getElementById('image');
+            var file = image.files[0]; // Get the first file from the file input
+    
+            // Check if any field is empty or quantity is less than 1
+            if (!name || !description || quantity < 1 || !originalPrice || !sellingPrice || !file) {
+                alert("Please fill in all fields and ensure quantity is at least 1.");
+                event.preventDefault(); // Prevent form submission
+                return; // Stop further validation
+            }
+    
+            // Validate the image file type
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i; // Regular expression to match allowed extensions
+            if (!allowedExtensions.exec(file.name)) {
+                alert("Please select a valid image file (JPEG, JPG, PNG, or GIF).");
+                event.preventDefault(); // Prevent form submission
+                return; // Stop further validation
+            }
+        });
     </script>
     
 </body>
