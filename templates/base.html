@@ -447,6 +447,22 @@
 <!-- Assuming you're using Bootstrap for styling and jQuery -->
 
 <!-- Assuming you're using Bootstrap for styling and jQuery -->
+<li class="sidebar-item">
+    <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" onclick="toggleSubMenu('productDetailsMenu')">
+        <i class="mdi mdi-folder-information"></i>
+        <span class="hide-menu">Product Details</span>
+    </a>
+</li>
+<div id="productDetailsMenu" class="sidebar-submenu" style="display: none;">
+    <ul class="submenu-list">
+        <li>
+            <a href="{% url "add_category" %}"><i class="mdi mdi-information"></i> Categories</a>
+        </li>
+        <li>
+            <a href="#"><i class="mdi mdi-view-list"></i> Product Details</a>
+        </li>
+    </ul>
+</div>
 
 
 

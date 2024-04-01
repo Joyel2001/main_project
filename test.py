@@ -16,59 +16,63 @@ class Hosttest(TestCase):
     def tearDown(self):
         self.driver.quit()
 
-  
-
     def test_02_login_page(self):
         driver = self.driver
         driver.get(self.live_server_url)
         driver.maximize_window()
         time.sleep(2)
+        theme=driver.find_element(By.CSS_SELECTOR,"a[href*='login2_page']")
+        theme.click()
+        time.sleep(4)
         theme=driver.find_element(By.CSS_SELECTOR,"a[href='/loginn']")
         theme.click()
         time.sleep(4)
         elem = driver.find_element(By.NAME, "username")
-        elem.send_keys("Awin")
+        elem.send_keys("joy32")
         elem = driver.find_element(By.NAME, "password")
         elem.send_keys("12045#CEah")
         submit_button = driver.find_element(By.CSS_SELECTOR, "#btn_login")
         submit_button.click()
-        time.sleep(5)
-        driver.execute_script("window.scrollBy(0, 2900);")
-        time.sleep(5)
-        browse=driver.find_element(By.CSS_SELECTOR,"a[href='/show_events/']")
+        time.sleep(2)
+        browse=driver.find_element(By.CSS_SELECTOR,"a[href='/ecomerce_index/']")
         browse.click()
-        time.sleep(5)
-        driver.execute_script("window.scrollBy(0, 2900);")
-        time.sleep(5)
-        view=driver.find_element(By.CSS_SELECTOR,"a[href^='/book_event/']")
-        view.click()
-        time.sleep(1)
-        driver.execute_script("window.scrollBy(0, 2900);")
-        time.sleep(4)
-        elem = driver.find_element(By.NAME, "attendees")
-        elem.send_keys("4")
-        chap = driver.find_element(By.CSS_SELECTOR, "button.btn.btn-primary.btn-register")
-        chap.click()
-        time.sleep(1)
-        options = driver.find_element(By.CSS_SELECTOR, "a.btn.btn-secondary.btn-back")
-        options.click()
-        time.sleep(1)
-        select=driver.find_element(By.CSS_SELECTOR, "a.logo")
-        select.click()
-        time.sleep(3)
-        options=driver.find_element(By.CSS_SELECTOR, "a[href='/user_profile_view']")
-        options.click()
         time.sleep(2)
-        driver.execute_script("window.scrollBy(0, 600);")
+        driver.execute_script("window.scrollBy(0, 150);")
         time.sleep(2)
-        
-        # options = driver.find_element(By.CSS_SELECTOR, "img[src='/static/images/profile/flat-business-man-user-profile-avatar-in-suit-vector-4333496.jpg']")
-        # options.click()
-        # time.sleep(3)
-        # options = driver.find_element(By.CSS_SELECTOR, "a[href='/loggout']")
-        # options.click()
+        # view=driver.find_element(By.CSS_SELECTOR,"a.nav-link.dropdown-toggle[data-bs-toggle='dropdown']")
+        # view.click()
+        # time.sleep(2)
+        # chaps=driver.find_element(By.CSS_SELECTOR,"a.dropdown-item[href='/view_cart/']")
+        # chaps.click()
+        # driver.execute_script("window.scrollBy(0, 300);")
         # time.sleep(1)
         
+        chaps=driver.find_element(By.CSS_SELECTOR,"a.nav-item.nav-link[href='/order_page/']")
+        chaps.click()
+        driver.execute_script("window.scrollBy(0, 300);")
+        time.sleep(2)
+        chaps=driver.find_element(By.CSS_SELECTOR,"a[href='/order/3/']")
+        chaps.click()
+        time.sleep(2)
+        driver.execute_script("window.scrollBy(0, 300);")
+        browse=driver.find_element(By.CSS_SELECTOR,"a.btn.btn-primary[href='/order_page/']")
+        browse.click()
+        time.sleep(2)
+        browse=driver.find_element(By.CSS_SELECTOR,"a.navbar-brand[href='/']")
+        browse.click()
+        time.sleep(2)
+        browse=driver.find_element(By.CSS_SELECTOR,"a.btn[href='/user_profile_view']")
+        browse.click()
+        time.sleep(2)
+        
+
+
+
+        # submit_button = driver.find_element(By.CSS_SELECTOR, "button.buy--btn")
+        # submit_button.click()
+
+
+
 
     # Add more test methods as needed
 

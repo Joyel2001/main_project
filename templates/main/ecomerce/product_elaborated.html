@@ -100,7 +100,7 @@
             </div>
         </div>
         <!-- Navbar End -->
-<br>
+<br><br><br><br><br><br>
 <section class="product">
   <div class="product__photo">
       <div class="photo-container">
@@ -145,7 +145,68 @@
         {% endif %}
         </div>
         
-</section>
+        <style>
+          .reviews {
+            padding: 20px;
+            background-color: #f9f9f9;
+          }
+        
+          .review {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          }
+        
+          .review h3 {
+            margin-top: 0;
+            color: #333;
+          }
+        
+          .review p {
+            margin-bottom: 5px;
+            color: #666;
+          }
+        
+          .review p.rating {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #ffc107; /* Star color */
+          }
+        </style>
+        
+        <section class="reviews">
+          <div class="container">
+              <h2>Product Reviews</h2>
+              <!-- Iterate over each review for the product -->
+              {% for review in product_reviews %}
+              <div class="review">
+                  <h3>{{ review.user.username }}</h3>
+                  <p>{{ review.comment }}</p>
+                  <p class="rating">Rating: 
+                    {% if review.rating == 1 %}
+                      ★
+                    {% elif review.rating == 2 %}
+                      ★★
+                    {% elif review.rating == 3 %}
+                      ★★★
+                    {% elif review.rating == 4 %}
+                      ★★★★
+                    {% elif review.rating == 5 %}
+                      ★★★★★
+                    {% endif %}
+                  </p>
+                  <p>Date: {{ review.created_at }}</p>
+              </div>
+              {% empty %}
+              <p>No reviews available for this product.</p>
+              {% endfor %}
+          </div>
+        </section>
+        
+        
 
 
 

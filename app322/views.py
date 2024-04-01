@@ -638,13 +638,17 @@ def add_product(request):
 
 
 # prduct details 
-from django.contrib import messages
+from django.shortcuts import render, HttpResponse
+from .models import Product, ProductReview
 
 def product_detail(request, product_id):
     try:
         product = Product.objects.get(pk=product_id)
     except Product.DoesNotExist:
         return HttpResponseBadRequest("Invalid product ID")
+
+    # Fetch product reviews
+    product_reviews = ProductReview.objects.filter(product=product)
 
     # Calculate the number of items in the cart
     cart_item_count = 0
@@ -669,7 +673,7 @@ def product_detail(request, product_id):
                 else:
                     response_message = "Product already in the cart"
 
-    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product, 'cart_item_count': cart_item_count, 'response_message': response_message})
+    return render(request, 'main/ecomerce/product_elaborated.html', {'product': product, 'cart_item_count': cart_item_count, 'response_message': response_message, 'product_reviews': product_reviews})
 
 
 
