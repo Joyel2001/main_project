@@ -353,7 +353,8 @@ def create_tender(request):
 # from django.shortcuts import render
 from django.shortcuts import render
 from .models import Tender
-
+@never_cache
+@login_required(login_url='loginn')
 def tender_list(request):
     tenders = Tender.objects.all()
     return render(request, 'main/company/tender_list.html', {'tenders': tenders})
@@ -378,7 +379,8 @@ def tender_detail(request, tender_id):
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .models import Tender, CompanyApplyForTender
-
+@never_cache
+@login_required(login_url='company_login')
 def registration_page(request, tender_id):
     # Ensure that the tender object exists, or return a 404 page if not found
     tender = get_object_or_404(Tender, id=tender_id)
@@ -449,7 +451,8 @@ def display_company_apply_details(request):
 
 from django.shortcuts import render, redirect, HttpResponse
 from .models import CompanyApplyForTender, RejectedTender
-
+@never_cache
+@login_required(login_url='loginn')
 def reject_application(request):
     if request.method == 'POST':
         application_id = request.POST.get('application_id')
@@ -469,7 +472,8 @@ def reject_application(request):
 
 from django.shortcuts import render, redirect, HttpResponse
 from .models import CompanyApplyForTender, ApprovedTender
-
+@never_cache
+@login_required(login_url='loginn')
 def approve_application(request):
     if request.method == 'POST':
         application_id = request.POST.get('application_id')
@@ -518,7 +522,8 @@ def ecomerce_index(request):
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Category
-
+@never_cache
+@login_required(login_url='loginn')
 def add_category(request):
     if request.method == 'POST':
         # Extract data from the POST request
@@ -557,7 +562,8 @@ from .models import Category
 
 from django.shortcuts import render, redirect
 from .models import Category, Subcategory
-
+@never_cache
+@login_required(login_url='loginn')
 def add_subcategory(request):
     if request.method == 'POST':
         category_id = request.POST.get('category')
@@ -593,7 +599,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Product, Subcategory  # Import the Subcategory model
 from django.contrib.auth.decorators import login_required
-
+@never_cache
+@login_required(login_url='company_login')
 @login_required
 def add_product(request):
     if request.method == 'POST':
@@ -688,7 +695,8 @@ def product_detail(request, product_id):
 
 from django.shortcuts import render
 from .models import Cart
-
+@never_cache
+@login_required(login_url='loginn')
 def view_cart(request):
     # Retrieve cart items for the current user
     cart_items = Cart.objects.filter(user=request.user)
@@ -836,7 +844,8 @@ def add_to_wishlist(request, product_id):
 # views.py
 from django.shortcuts import render
 from .models import Wishlist
-
+@never_cache
+@login_required(login_url='loginn')
 def wishlists(request):
     # Assuming users are authenticated
     wishlist_items = Wishlist.objects.filter(user=request.user)
@@ -1145,7 +1154,8 @@ def redeem_detail(request, product_id):
 # order_page 
 from django.shortcuts import render
 from .models import Order
-
+@never_cache
+@login_required(login_url='loginn')
 def order_page(request):
     if request.user.is_authenticated:
         orders = Order.objects.filter(user=request.user)
@@ -1208,7 +1218,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import CollectionRequest
 
-@login_required
+@never_cache
+@login_required(login_url='loginn')
 def collection_request_form(request):
     success = False
     if request.method == 'POST':
